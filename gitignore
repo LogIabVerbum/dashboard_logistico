@@ -1,0 +1,33 @@
+# Dados processados (grandes demais para o GitHub)
+etl/data/processed/*.parquet
+etl/data/processed/*.json
+etl/data/processed/*.csv
+
+# Snapshots e logs
+etl/data/snapshots/
+etl/data/logs/
+etl/data/
+
+# Cache Python
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+
+# Pasta de restauração/backup local
+dashboard_logistico_RESTAURAR/
+
+# Arquivo de dados JSON gerado (grande)
+dash_data.json
+
+# Arquivo de diagnóstico
+diagnostico.py
+
+# Imagem navegador (desnecessária no repo)
+imagem_navegador_paginainicial.png
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
