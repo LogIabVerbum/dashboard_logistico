@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Dashboard Logístico — IAB & Verbum (04/07 13:14)</title>
+<title>Dashboard Logístico — IAB & Verbum (04/07 18:34)</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -466,6 +466,31 @@ tbody td{padding:9px 11px;font-weight:500}
   .wbtns{flex-direction:column;width:90%;align-items:stretch}
   .wb{justify-content:center}
 }
+@media(max-width:768px){
+  .fin-grid-kpi{grid-template-columns:1fr 1fr}
+  .fin-grid-kpi2{grid-template-columns:1fr 1fr}
+  .ve-grid3{grid-template-columns:1fr 1fr}
+  .tr-grid-kpi{grid-template-columns:1fr 1fr}
+  .fin-charts2{grid-template-columns:1fr}
+  .cg{grid-template-columns:1fr}
+  .fin-kpi-row{grid-template-columns:1fr 1fr}
+  .hbar-row{grid-template-columns:90px 1fr 60px;gap:4px}
+  .hbar-label{font-size:10px}
+}
+@media(max-width:480px){
+  .fin-grid-kpi{grid-template-columns:1fr}
+  .fin-grid-kpi2{grid-template-columns:1fr}
+  .ve-grid3{grid-template-columns:1fr}
+  .tr-grid-kpi{grid-template-columns:1fr}
+  .fin-grid-kpi .fk{flex-direction:row}
+  .hbar-row{grid-template-columns:70px 1fr 50px;gap:3px;font-size:10px}
+  .fkv{font-size:12px}
+  .fkl{font-size:8px}
+  .fkd{font-size:9px}
+  .tc{padding:12px}
+  #mn{padding:8px 8px 80px}
+}
+
 
 </style>
 <style>

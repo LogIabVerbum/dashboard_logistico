@@ -66,6 +66,26 @@ body{background:var(--bg);color:var(--gd);display:flex;flex-direction:column;min
 .psel{padding:6px 12px;border:1px solid var(--gl2);border-radius:8px;font-size:12px;font-weight:600;font-family:var(--font);background:var(--wh);cursor:pointer}
 .ebus{padding:7px 12px;border:1px solid var(--gl2);border-radius:8px;font-size:12px;font-family:var(--font);width:220px}
 .slbl{font-size:10px;font-weight:700;color:var(--gl);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px;margin-top:4px}
+
+@media(max-width:768px){
+  .esb{display:none}
+  .elay{flex-direction:column}
+  .emain{padding:10px}
+  .kg3{grid-template-columns:1fr 1fr}
+  .eh{padding:0 12px;gap:8px}
+  .eh .et{font-size:13px}
+  .etabs{gap:2px}
+  .emp-btn{padding:3px 8px;font-size:10px}
+}
+@media(max-width:480px){
+  .kg{grid-template-columns:1fr 1fr}
+  .kg3{grid-template-columns:1fr}
+  .eh .et{font-size:12px}
+  .bv{padding:4px 8px;font-size:11px}
+  .emain{padding:8px}
+  .kk{padding:10px 12px}
+  .kv{font-size:18px}
+}
 </style>
 
 <style>
