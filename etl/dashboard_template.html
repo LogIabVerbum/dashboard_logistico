@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Dashboard Logístico — IAB & Verbum</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --iab:#0056A8;--iab-dark:#003d7a;
+  --verbum:#6E1184;--verbum-dark:#4a0a5a;
+  --alert:#F39200;
+  --bg:#F5F5F5;--white:#fff;
+  --gd:#333333;--gm:#666666;--gl:#999999;--gl2:#E0E0E0;
+  --ok:#107C41;--err:#D13438;
+  --shadow:0 2px 12px rgba(0,0,0,.08);
+  --r:12px;--r2:8px;
+  --font:'Montserrat',sans-serif;
+  --ac:#0056A8;--ac-rgb:0,86,168;
+}
+body{font-family:var(--font);background:var(--bg);color:var(--gd);min-height:100vh;overflow-x:hidden}
+#ov{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;opacity:0;pointer-events:none;transition:opacity .3s}
+#ov.open{opacity:1;pointer-events:all}
+#sb{position:fixed;left:-280px;top:0;bottom:0;width:280px;background:#1E2A3A;z-index:201;transition:left .3s cubic-bezier(.4,0,.2,1);box-shadow:4px 0 24px rgba(0,0,0,.15);display:flex;flex-direction:column}
+#sb.open{left:0}
+.sbh{padding:20px;border-bottom:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:space-between}
+.sbh img{height:30px;object-fit:contain}
+.sbx{background:none;border:none;cursor:pointer;font-size:20px;color:rgba(255,255,255,.6);padding:4px;line-height:1}
+.sbn{flex:1;padding:8px 0;overflow-y:auto}
+.ni{display:flex;align-items:center;gap:11px;padding:12px 22px;cursor:pointer;color:rgba(255,255,255,.75);font-size:13px;font-weight:500;transition:all .18s;border-left:3px solid transparent;text-decoration:none;user-select:none}
+.ni:hover,.ni.on{background:rgba(255,255,255,.08);color:#fff;border-left-color:var(--ac);font-weight:600}
+.ns{padding:14px 22px 4px;font-size:10px;font-weight:700;color:rgba(255,255,255,.35);letter-spacing:1.5px;text-transform:uppercase}
+#hd{background:var(--white);padding:0 20px;height:60px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.07);position:sticky;top:0;z-index:100}
+.hl{display:flex;align-items:center;gap:14px}
+.mb{background:none;border:none;cursor:pointer;padding:7px;border-radius:7px;display:flex;flex-direction:column;gap:5px;transition:background .2s}
+.mb:hover{background:var(--bg)}
+.mb span{display:block;width:20px;height:2px;background:var(--gd);border-radius:2px}
+.ht{font-size:14px;font-weight:700;line-height:1.2}
+.hs{font-size:10px;color:var(--gl);font-weight:600;margin-top:1px}
+.hr{display:flex;align-items:center;gap:12px}
+.ef{display:flex;align-items:center;gap:7px}
+.eb{background:var(--bg);border:2px solid var(--gl2);border-radius:9px;padding:5px 11px;cursor:pointer;transition:all .22s;line-height:0}
+.eb img{height:23px;object-fit:contain;display:block}
+.eb.ai{border-color:var(--iab);background:#EFF6FF;box-shadow:0 0 0 3px rgba(0,86,168,.12)}
+.eb.av{border-color:var(--verbum);background:#F5EEF8;box-shadow:0 0 0 3px rgba(110,17,132,.12)}
+.cw img{height:42px;object-fit:contain;transition:opacity .35s}
+.chip{background:rgba(var(--ac-rgb),.12);color:var(--ac);border-radius:20px;padding:3px 10px;font-size:10px;font-weight:700;display:none}
+.chip.show{display:inline-block}
+#mn{padding:16px 20px 48px;max-width:1400px;margin:0 auto}
+.ano-bar{display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.ano-label{font-size:10px;font-weight:700;color:var(--gl);text-transform:uppercase;letter-spacing:1px;white-space:nowrap}
+.ano-btn{padding:6px 18px;border-radius:20px;border:2px solid var(--gl2);background:var(--white);font-family:var(--font);font-size:12px;font-weight:700;cursor:pointer;color:var(--gm);transition:all .2s}
+.ano-btn:hover{border-color:var(--ac);color:var(--ac)}
+.ano-btn.on{background:var(--ac);border-color:var(--ac);color:var(--white)}
+.fb{background:var(--white);border-radius:var(--r);padding:12px 18px;margin-bottom:14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;box-shadow:var(--shadow)}
+.fl{font-size:10px;font-weight:700;color:var(--gl);text-transform:uppercase;letter-spacing:1px;white-space:nowrap}
+select{border:1.5px solid var(--gl2);border-radius:var(--r2);padding:7px 10px;font-family:var(--font);font-size:12px;color:var(--gd);background:var(--bg);cursor:pointer;outline:none;min-width:155px;transition:border-color .2s}
+select:focus{border-color:var(--ac)}
+select.ativo{border-color:var(--ac);background:rgba(var(--ac-rgb),.04);font-weight:600}
+.fd{width:1px;height:24px;background:var(--gl2)}
+.bc{background:none;border:1.5px solid var(--gl2);border-radius:var(--r2);padding:7px 13px;font-family:var(--font);font-size:11px;color:var(--gm);cursor:pointer;font-weight:600;transition:all .2s}
+.bc:hover{border-color:var(--alert);color:var(--alert)}
+.kg{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:13px;margin-bottom:14px}
+.kc{background:var(--white);border-radius:var(--r);padding:17px;box-shadow:var(--shadow);border-top:3px solid var(--ac);transition:transform .2s}
+.kc:hover{transform:translateY(-2px)}
+.ki{font-size:19px;margin-bottom:6px}
+.kl{font-size:10px;font-weight:700;color:var(--gl);text-transform:uppercase;letter-spacing:.7px;margin-bottom:4px}
+.kv{font-size:26px;font-weight:800;color:var(--gd);line-height:1;margin-bottom:4px}
+.kv.sm{font-size:19px}
+.kd{font-size:10px;font-weight:600}
+.up{color:var(--ok)}.dn{color:var(--err)}.nt{color:var(--gl)}
+.cg{display:grid;grid-template-columns:2fr 1fr;gap:13px;margin-bottom:14px}
+.cc{background:var(--white);border-radius:var(--r);padding:18px;box-shadow:var(--shadow)}
+.ct{font-size:13px;font-weight:700;margin-bottom:2px}
+.cs{font-size:10px;color:var(--gl);margin-bottom:13px}
+.bl{display:flex;flex-direction:column;gap:10px}
+.bi{display:flex;flex-direction:column;gap:3px}
+.bh{display:flex;justify-content:space-between;align-items:center}
+.bn{font-size:11px;font-weight:600}
+.bv{font-size:11px;font-weight:700;color:var(--gm)}
+.bt{height:7px;background:var(--bg);border-radius:4px;overflow:hidden}
+.bf{height:100%;border-radius:4px;background:var(--ac);transition:width .6s cubic-bezier(.4,0,.2,1)}
+.gw{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;padding:6px 0}
+.gv{font-size:32px;font-weight:800;text-align:center;margin-top:-8px}
+.glt{font-size:10px;color:var(--gl);text-align:center;margin-top:1px}
+.gd2{display:flex;gap:22px;margin-top:12px}
+.gdi{text-align:center}
+.gdv{font-size:16px;font-weight:800}
+.gdl{font-size:9px;color:var(--gl);font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.tc{background:var(--white);border-radius:var(--r);padding:18px;box-shadow:var(--shadow);margin-bottom:14px}
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:12px}
+thead th{padding:9px 11px;text-align:left;font-size:9px;font-weight:700;color:var(--gl);text-transform:uppercase;letter-spacing:.7px;border-bottom:2px solid var(--gl2)}
+tbody tr{border-bottom:1px solid var(--gl2);transition:background .15s}
+tbody tr:last-child{border-bottom:none}
+tbody tr:hover{background:rgba(var(--ac-rgb),.03)}
+tbody td{padding:9px 11px;font-weight:500}
+.bg{display:inline-flex;align-items:center;padding:2px 9px;border-radius:20px;font-size:10px;font-weight:700}
+.bp{background:#E3EEF9;color:#003d7a}
+.ba{background:#FFEBEE;color:#7B0000}
+.bn2{background:#FFF3E0;color:#E65100}
+#wl{position:fixed;inset:0;background:var(--white);z-index:500;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .5s,transform .5s}
+#wl.hide{opacity:0;transform:scale(1.03);pointer-events:none}
+.wlogos{display:flex;align-items:center;gap:32px;margin-bottom:22px}
+.wlogos img{height:42px;object-fit:contain}
+.wsep{width:1px;height:34px;background:var(--gl2)}
+.wtruck{width:100%;max-width:480px;margin-bottom:20px;text-align:center}
+.wtruck img{width:100%;object-fit:contain}
+.wtitle{font-size:20px;font-weight:800;text-align:center;margin-bottom:4px}
+.wsub{font-size:13px;color:var(--gl);text-align:center;margin-bottom:24px}
+.wbtns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+.wb{padding:12px 26px;border-radius:var(--r);font-family:var(--font);font-size:13px;font-weight:700;cursor:pointer;border:none;transition:all .2s;display:flex;align-items:center;gap:8px}
+.wb img{height:20px;object-fit:contain}
+.wi{background:var(--iab);color:#fff}.wi:hover{background:var(--iab-dark);transform:translateY(-2px)}
+.wv{background:var(--verbum);color:#fff}.wv:hover{background:var(--verbum-dark);transform:translateY(-2px)}
+.wa{background:var(--bg);color:var(--gd);border:2px solid var(--gl2)}.wa:hover{border-color:var(--alert);color:var(--alert);transform:translateY(-2px)}
+
+
+/* GRÁFICO DE LINHA */
+.linha-wrap{position:relative;width:100%;height:180px;margin-top:8px}
+.linha-svg{width:100%;height:100%;overflow:visible}
+.linha-grid{stroke:var(--gl2);stroke-width:0.5;stroke-dasharray:3 3}
+.linha-path{fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.linha-dot{r:4;cursor:pointer;transition:r .15s}
+.linha-dot:hover{r:6}
+.linha-label{font-size:9px;fill:var(--gl);font-family:'Montserrat',sans-serif}
+.linha-val{font-size:9px;font-weight:700;font-family:'Montserrat',sans-serif}
+.linha-tooltip{position:absolute;background:var(--gd);color:#fff;padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;pointer-events:none;opacity:0;transition:opacity .2s;white-space:nowrap;z-index:10}
+/* BARRAS HORIZONTAIS */
+.hbar-wrap{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+.hbar-row{display:grid;grid-template-columns:110px 1fr 80px;align-items:center;gap:8px}
+.hbar-label{font-size:11px;font-weight:600;color:var(--gd);text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hbar-track{height:10px;background:var(--bg);border-radius:5px;overflow:hidden;position:relative}
+.hbar-fill{height:100%;border-radius:5px;transition:width .7s cubic-bezier(.4,0,.2,1)}
+.hbar-pct{font-size:11px;font-weight:700;white-space:nowrap}
+.hbar-badge{font-size:9px;font-weight:700;padding:1px 6px;border-radius:10px;margin-left:4px}
+/* ABA ENTREGAS */
+.page{display:none}.page.on{display:block}
+/* TABELA ACOMPANHAMENTO */
+.qtitle{font-size:14px;font-weight:700;margin-bottom:3px}
+.qsub{font-size:11px;color:var(--gl);margin-bottom:14px}
+.qtable-wrap{overflow-x:auto;border-radius:var(--r2);border:1px solid var(--gl2)}
+.qtable{width:100%;border-collapse:collapse;font-size:12px;min-width:900px}
+.qtable thead th{padding:10px 12px;text-align:left;font-size:9px;font-weight:700;color:var(--gl);text-transform:uppercase;letter-spacing:.8px;background:var(--bg);border-bottom:2px solid var(--gl2);white-space:nowrap}
+.qtable tbody tr{border-bottom:1px solid var(--gl2);transition:background .15s}
+.qtable tbody tr:last-child{border-bottom:none}
+.qtable tbody tr:hover{background:rgba(var(--ac-rgb),.03)}
+.qtable tbody td{padding:10px 12px;vertical-align:middle}.qtable tbody td.obs-cell{vertical-align:top}
+.qtable tbody td.obs-cell{max-width:260px;font-size:11px;color:var(--gm);line-height:1.4}
+/* STATUS TAGS */
+.tag{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:700;white-space:nowrap}
+.tag-atrasado{background:#FFEBEE;color:#7B0000}
+.tag-alerta{background:#FFF3E0;color:#E65100}
+.tag-ok{background:#E3EEF9;color:#003d7a}
+.tag-prazo{background:#E8F5E9;color:#2E7D32}
+/* EMPRESA BADGE */
+.emp-badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700}
+.emp-iab{background:#EFF6FF;color:var(--iab)}
+.emp-verbum{background:#F5EEF8;color:var(--verbum)}
+/* KPIs ENTREGAS */
+.ent-kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:14px}
+.ent-kpi{background:var(--white);border-radius:var(--r);padding:14px 16px;box-shadow:var(--shadow);border-left:3px solid var(--ac)}
+.ent-kpi .ki{font-size:16px;margin-bottom:4px}
+.ent-kpi .kl{font-size:10px;font-weight:700;color:var(--gl);text-transform:uppercase;letter-spacing:.6px;margin-bottom:3px}
+.ent-kpi .kv{font-size:22px;font-weight:800;color:var(--gd);line-height:1}
+.ent-kpi .kd{font-size:10px;font-weight:600;color:var(--gl);margin-top:2px}
+/* GRÁFICOS ENTREGAS */
+.ent-charts{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-bottom:14px}
+.ent-chart{background:var(--white);border-radius:var(--r);padding:16px;box-shadow:var(--shadow)}
+/* TABS internas */
+.itab-bar{display:flex;gap:4px;margin-bottom:16px;background:var(--bg);border-radius:var(--r2);padding:4px}
+.itab{padding:7px 16px;border-radius:6px;font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer;border:none;background:none;color:var(--gm);transition:all .2s}
+.itab.on{background:var(--white);color:var(--ac);box-shadow:0 1px 4px rgba(0,0,0,.1)}
+/* Dias atraso coloridos */
+.da-ok{color:var(--gl);font-weight:500}
+.da-warn{color:#E65100;font-weight:700}
+.da-err{color:#7B0000;font-weight:700}
+@media(max-width:768px){
+  .ent-charts{grid-template-columns:1fr}
+  .ent-kpi-row{grid-template-columns:1fr 1fr}
+}
+@media(max-width:768px){
+  #mn{padding:10px 10px 32px}
+  .kg{grid-template-columns:1fr 1fr}
+  .kv{font-size:20px}.kv.sm{font-size:15px}
+  .cg{grid-template-columns:1fr}
+  select{min-width:128px;font-size:11px}
+  .eb img{height:19px}
+  .cw img{height:32px}
+}
+@media(max-width:440px){
+  .kg{grid-template-columns:1fr}
+  .wbtns{flex-direction:column;width:90%;align-items:stretch}
+  .wb{justify-content:center}
+}
+</style>
+</head>
+<body>
+
+
+<div id="wl">
+  <div class="wlogos">
+    <img src="___LI___" alt="IAB">
+    <div class="wsep"></div>
+    <img src="___LV___" alt="Verbum">
+  </div>
+  <div class="wtruck"><img src="___CI___" alt="Carretas"></div>
+  <div class="wtitle">Dashboard Logístico</div>
+  <div class="wsub">Selecione a empresa para iniciar</div>
+  <div class="wbtns">
+    <button class="wb wi" onclick="entrar('IAB')"><img src="___LI___" alt="">Instituto Alfa e Beto</button>
+    <button class="wb wv" onclick="entrar('VERBUM')"><img src="___LV___" alt="">Verbum Educação</button>
+    <button class="wb wa" onclick="entrar('TODAS')">🏢 Ver Todas</button>
+  </div>
+</div>
+
+<div id="ov" onclick="fMenu()"></div>
+<nav id="sb">
+  <div class="sbh">
+    <img id="sblogo" src="___LI___" alt="Logo">
+    <button class="sbx" onclick="fMenu()">✕</button>
+  </div>
+  <div class="sbn">
+    <div class="ns">Painéis</div>
+    <a class="ni on" id="ni-overview" onclick="navPage('overview');fMenu()">📊 Visão Geral</a>
+    <a class="ni" id="ni-ent" onclick="navPage('entregas');fMenu()">📦 Entregas</a>
+    <a class="ni" id="ni-acomp" style="padding-left:36px;font-size:12px" onclick="navPage('acompanhamento');fMenu()">↳ Acompanhamento</a>
+    <a class="ni" id="ni-financeiro" onclick="fMenu()">💰 Financeiro</a>
+    <a class="ni" id="ni-transportadoras" onclick="fMenu()">🚛 Transportadoras</a>
+    <div class="ns">Filtrar por Empresa</div>
+    <a class="ni" onclick="fEmp('IAB');fMenu()">🔵 Instituto Alfa e Beto</a>
+    <a class="ni" onclick="fEmp('VERBUM');fMenu()">🟣 Verbum Educação</a>
+    <a class="ni" onclick="fEmp('TODAS');fMenu()">🏢 Todas as Empresas</a>
+
+  </div>
+</nav>
+
+<header id="hd">
+  <div class="hl">
+    <button class="mb" onclick="aMenu()"><span></span><span></span><span></span></button>
+    <div>
+      <div class="ht">Dashboard Logístico</div>
+      <div class="hs" id="hs">Instituto Alfa e Beto</div>
+    </div>
+    <span class="chip" id="chip-ano"></span>
+  </div>
+  <div class="hr">
+    <div class="ef">
+      <button class="eb ai" id="biab"    onclick="fEmp('IAB')"    title="Instituto Alfa e Beto"><img src="___LI___" alt="IAB"></button>
+      <button class="eb"    id="bverbum" onclick="fEmp('VERBUM')" title="Verbum Educação"><img src="___LV___" alt="Verbum"></button>
+    </div>
+    <div class="cw"><img id="cimg" src="___CI___" alt="Carreta"></div>
+  </div>
+</header>
+
+<main id="mn">
+<!-- NAVEGAÇÃO INTERNA -->
+<div id="page-overview" class="page on">
+  <div class="ano-bar">
+    <span class="ano-label">Ano Ref</span>
+    <button class="ano-btn on" id="abTODOS" onclick="fAno('TODOS')">Todos</button>___ANO_BTNS___
+  </div>
+
+  <div class="fb">
+    <span class="fl">Filtros</span>
+    <select id="fn"  onchange="onFiltro(this)"><option value="">Natureza da Operação</option></select>
+    <select id="ftc" onchange="onFiltro(this)"><option value="">Tipo de Cliente</option></select>
+    <select id="ftr" onchange="onFiltro(this)"><option value="">Transportadora</option></select>
+    <div class="fd"></div>
+    <button class="bc" onclick="lFiltros()">✕ Limpar</button>
+    <span id="finfo" style="margin-left:auto;font-size:10px;color:var(--gl)">carregando...</span>
+  </div>
+
+  <div class="kg">
+    <div class="kc"><div class="ki">📦</div><div class="kl">Total de Entregas</div><div class="kv"   id="k1">—</div><div class="kd nt">Entregas únicas consolidadas</div></div>
+    <div class="kc"><div class="ki">✅</div><div class="kl">No Prazo</div>          <div class="kv"   id="k2">—</div><div class="kd up" id="k2d">—</div></div>
+    <div class="kc"><div class="ki">⚠️</div><div class="kl">Em Atraso</div>         <div class="kv"   id="k3" style="color:var(--err)">—</div><div class="kd dn" id="k3d">—</div></div>
+    <div class="kc"><div class="ki">💰</div><div class="kl">Faturamento</div>       <div class="kv sm" id="k4">—</div><div class="kd nt">Valor total das NFs</div></div>
+    <div class="kc"><div class="ki">🚚</div><div class="kl">Custo de Envio</div>    <div class="kv sm" id="k5">—</div><div class="kd nt">Frete + Embalagem</div></div>
+    <div class="kc"><div class="ki">🧾</div><div class="kl">Total Impostos</div>    <div class="kv sm" id="k6">—</div><div class="kd nt">ICMS + Difal + FCP</div></div>
+  </div>
+
+  <div class="cg">
+    <div class="cc">
+      <div class="ct">Entregas por Transportadora</div>
+      <div class="cs" id="cs-ctx">—</div>
+      <div class="bl" id="cht"></div>
+    </div>
+    <div class="cc" style="display:flex;flex-direction:column">
+      <div class="ct">Nível de Serviço</div>
+      <div class="cs">Entregas no prazo vs em atraso</div>
+      <div class="gw">
+        <svg viewBox="0 0 180 105" style="width:165px;height:97px">
+          <!-- Trilha de fundo -->
+          <path d="M20,90 A70,70 0 0,1 160,90" fill="none" stroke="#EFEFEF" stroke-width="13" stroke-linecap="round"/>
+          <!-- Arco principal (valor real) -->
+          <path id="garc" d="M20,90 A70,70 0 0,1 160,90" fill="none" stroke="#003d7a" stroke-width="13"
+            stroke-linecap="round" stroke-dasharray="220" stroke-dashoffset="2"/>
+          <!-- Marca de meta em 98% -->
+          <!-- 98% = dashoffset 220*(1-0.98)=4.4, posição angular ≈ 3.6° antes do fim -->
+          <!-- Ponto no arco: x=159.6, y=85.6, tick perpendicular ao raio -->
+          <line x1="152" y1="72" x2="162" y2="81" stroke="#F39200" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- Label da meta -->
+          <text x="90" y="105" font-size="9" fill="#F39200" font-family="Montserrat,sans-serif" font-weight="700" text-anchor="middle">meta 98,0%</text>
+        </svg>
+        <div class="gv" id="gpct">—</div>
+        <div class="glt" id="gauge-status">—</div>
+        <div class="gd2">
+          <div class="gdi"><div class="gdv" id="gpr" style="color:var(--ok)">—</div><div class="gdl">No Prazo</div></div>
+          <div class="gdi"><div class="gdv" id="gat" style="color:var(--err)">—</div><div class="gdl">Atraso</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tc">
+    <div class="ct">Desempenho por Transportadora</div>
+    <div class="cs" style="margin-bottom:13px" id="cs-tab">—</div>
+    <div class="tw">
+      <table>
+        <thead><tr>
+          <th>Transportadora</th><th>Entregas</th><th>No Prazo</th>
+          <th>Em Atraso</th><th>% Prazo</th><th>Faturamento</th><th>Frete</th><th>Status</th>
+        </tr></thead>
+        <tbody id="ttransp"></tbody>
+      </table>
+    </div>
+  </div>
+</div><!-- fim page-overview -->
+
+<!-- ═══════════════ PÁGINA ENTREGAS ═══════════════ -->
+<div id="page-entregas" class="page">
+  <div class="ano-bar">
+    <span class="ano-label">Ano Ref</span>
+    <button class="ano-btn on" id="eabTODOS" onclick="eAno('TODOS')">Todos</button>___EANO_BTNS___
+  </div>
+  <div class="fb">
+    <span class="fl">Filtros</span>
+    <select id="efr" onchange="eAtualizar()"><option value="">Região</option></select>
+    <select id="eftc" onchange="eAtualizar()"><option value="">Tipo de Cliente</option></select>
+    <select id="eftr" onchange="eAtualizar()"><option value="">Transportadora</option></select>
+    <div class="fd"></div>
+    <button class="bc" onclick="eLimpar()">✕ Limpar</button>
+    <span id="efinfo" style="margin-left:auto;font-size:10px;color:var(--gl)">—</span>
+  </div>
+  <!-- KPIs entregas -->
+  <div class="ent-kpi-row">
+    <div class="ent-kpi"><div class="ki">📦</div><div class="kl">Total Entregas</div><div class="kv" id="ek1">—</div><div class="kd">Entregas únicas</div></div>
+    <div class="ent-kpi"><div class="ki">✅</div><div class="kl">No Prazo</div><div class="kv" id="ek2">—</div><div class="kd up" id="ek2d">—</div></div>
+    <div class="ent-kpi"><div class="ki">⚠️</div><div class="kl">Em Atraso</div><div class="kv" id="ek3" style="color:var(--err)">—</div><div class="kd dn" id="ek3d">—</div></div>
+    <div class="ent-kpi"><div class="ki">📊</div><div class="kl">Nível de Serviço</div><div class="kv" id="ek4">—</div><div class="kd">meta: 98,0%</div></div>
+  </div>
+  <!-- Gráficos entregas -->
+  <div class="ent-charts">
+    <div class="ent-chart">
+      <div class="ct">Entregas por Região</div>
+      <div class="cs" style="margin-bottom:12px">Distribuição e pontualidade por região do Brasil</div>
+      <div id="echt-reg" class="bl"></div>
+    </div>
+    <div class="ent-chart">
+      <div class="ct">Entregas por Tipo de Cliente</div>
+      <div class="cs" style="margin-bottom:12px">Volume por perfil de cliente</div>
+      <div id="echt-tc" class="bl"></div>
+    </div>
+  </div>
+  <div class="ent-charts" style="grid-template-columns:1fr">
+    <div class="ent-chart">
+      <div class="ct">Evolução Mensal</div>
+      <div class="cs" style="margin-bottom:12px">Entregas no prazo vs em atraso por mês</div>
+      <div id="echt-mes" class="bl"></div>
+    </div>
+    <div class="ent-chart">
+      <div class="ct">Nível de Serviço por Transportadora</div>
+      <div class="cs" style="margin-bottom:12px">% de entregas no prazo</div>
+      <div id="echt-tr" class="bl"></div>
+    </div>
+  </div>
+</div><!-- fim page-entregas -->
+
+<!-- ═══════════════ PÁGINA ACOMPANHAMENTO ═══════════════ -->
+<div id="page-acompanhamento" class="page">
+  <div style="background:var(--white);border-radius:var(--r);padding:16px 20px;margin-bottom:16px;box-shadow:var(--shadow);display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+    <span style="font-size:12px;color:var(--gl);font-weight:600">⚠️ Este quadro exibe dados do <strong style="color:var(--gd)">Ano Ref 2026</strong> e não é afetado pelos filtros globais.</span>
+    <span id="acomp-hoje" style="margin-left:auto;font-size:11px;color:var(--gl)"></span>
+  </div>
+
+  <!-- Q1: Pendentes / Alertas -->
+  <div style="margin-bottom:20px">
+    <div class="qtitle">📋 Quadro 1 — Entregas Pendentes e em Alerta</div>
+    <div class="qsub">Atrasadas (sem data efetiva) e com previsão de entrega nos próximos 2 dias</div>
+    <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+      <span class="tag tag-atrasado">🔴 Atrasado</span>
+      <span class="tag tag-alerta">⚠️ Vence em até 2 dias</span>
+      <span class="tag tag-ok">✅ No prazo</span>
+    </div>
+    <div class="qtable-wrap">
+      <table class="qtable">
+        <thead><tr>
+          <th>Empresa</th><th>NF</th><th>Cliente</th><th>Transportadora</th>
+          <th>Data Coleta</th><th>Prev. Entrega</th><th>Dias p/ Vencer</th><th>Observação</th>
+        </tr></thead>
+        <tbody id="q1-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Q2: Histórico atrasos -->
+  <div>
+    <div class="qtitle">📁 Quadro 2 — Histórico de Atrasos (Ano Ref 2026)</div>
+    <div class="qsub">Entregas concluídas com atraso · Mais recentes primeiro</div>
+    <div class="qtable-wrap">
+      <table class="qtable">
+        <thead><tr>
+          <th>Empresa</th><th>NF</th><th>Cliente</th><th>Transportadora</th>
+          <th>Data Coleta</th><th>Prev. Entrega</th><th>Data Efetiva</th><th>Dias Atraso</th><th>Observação</th>
+        </tr></thead>
+        <tbody id="q2-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</div><!-- fim page-acompanhamento -->
+</main>
+
+<script>
+// ── IMAGENS ──
+const CI='___CI___',CV='___CV___',LI='___LI___',LV='___LV___';
+
+// ── DADOS COMPRIMIDOS (gerados pelo ETL) ──
+// E=empresas, A=anos, T=tipos_cliente, N=naturezas, R=transportadoras
+// D=registros: [emp_i, ano_i, tc_i, nat_i, tr_i, fat, frt, emb, imp, pri, pz, at]
+const P = ___PAYLOAD_GER___;
+const E=P.E, A=P.A, R=P.R, D=P.D;
+const T = P.T.map(t => t==='Pessoa Física'?'PESSOA FÍSICA':t);
+const N = P.N;
+
+// ── ESTADO ──
+let EMP='IAB', ANO='TODOS', FNAT=-1, FTC=-1, FTR=-1;
+
+// ── FORMATAÇÃO ──
+const fmt   = n => Math.round(n).toLocaleString('pt-BR');
+const fmtR  = n => 'R$ ' + Math.round(n).toLocaleString('pt-BR');
+const fmtPct = (a,b) => b ? Math.round(a/b*100) : 0;
+const fmtPct1= (a,b) => b ? (a/b*100) : 0;
+
+// ── FILTRAR ──
+function filtrar() {
+  const eI = EMP==='TODAS' ? -1 : E.indexOf(EMP);
+  const aI = ANO==='TODOS' ? -1 : A.indexOf(ANO);
+  return D.filter(r => {
+    if (eI>=0 && r[0]!==eI) return false;
+    if (aI>=0 && r[1]!==aI) return false;
+    if (FNAT>=0 && r[4-1]!==FNAT) return false; // nat=r[3]
+    if (FTC>=0  && r[2]!==FTC)  return false;
+    if (FTR>=0  && r[4]!==FTR)  return false;
+    return true;
+  });
+}
+
+// Corrigir índices: D=[emp_i=0, ano_i=1, tc_i=2, nat_i=3, tr_i=4, fat=5, frt=6, emb=7, imp=8, pri=9, pz=10, at=11]
+function filtrarCorreto() {
+  const eI = EMP==='TODAS' ? -1 : E.indexOf(EMP);
+  const aI = ANO==='TODOS' ? -1 : A.indexOf(ANO);
+  return D.filter(r => {
+    if (eI>=0  && r[0]!==eI)   return false;
+    if (aI>=0  && r[1]!==aI)   return false;
+    if (FNAT>=0 && r[3]!==FNAT) return false;
+    if (FTC>=0  && r[2]!==FTC)  return false;
+    if (FTR>=0  && r[4]!==FTR)  return false;
+    return true;
+  });
+}
+
+// ── CALCULAR KPIs ──
+function calcKPI(rows) {
+  let total=0, prazo=0, atraso=0, fat=0, frt=0, emb=0, imp=0;
+  rows.forEach(r => {
+    if (r[9]===1) { total++; prazo+=r[10]; atraso+=r[11]; }
+    fat+=r[5]; frt+=r[6]; emb+=r[7]; imp+=r[8];
+  });
+  return {total, prazo, atraso, fat, env:frt+emb, imp};
+}
+
+// ── CALCULAR TRANSPORTADORAS ──
+function calcTransp(rows) {
+  const m = {};
+  rows.forEach(r => {
+    const k = r[4];
+    if (!m[k]) m[k]={n:R[k],t:0,p:0,a:0,fat:0,frt:0};
+    if (r[9]===1) { m[k].t++; m[k].p+=r[10]; m[k].a+=r[11]; }
+    m[k].fat+=r[5]; m[k].frt+=r[6];
+  });
+  return Object.values(m).sort((a,b)=>b.t-a.t);
+}
+
+// ── POPULAR SELECTS ──
+function popularSelects() {
+  const eI = EMP==='TODAS' ? -1 : E.indexOf(EMP);
+  const aI = ANO==='TODOS' ? -1 : A.indexOf(ANO);
+  const base = D.filter(r => {
+    if (eI>=0 && r[0]!==eI) return false;
+    if (aI>=0 && r[1]!==aI) return false;
+    return true;
+  });
+  const nats = [...new Set(base.map(r=>r[3]))].sort();
+  const tcs  = [...new Set(base.map(r=>r[2]))].sort();
+  const trs  = [...new Set(base.map(r=>r[4]))].sort();
+
+  function pOpts(selId, lookup, idxs, atualIdx) {
+    const el = document.getElementById(selId);
+    const label = el.options[0].text;
+    el.innerHTML = '<option value="-1">'+label+'</option>';
+    idxs.forEach(i => {
+      const o = document.createElement('option');
+      o.value = i; o.textContent = lookup[i];
+      el.appendChild(o);
+    });
+    el.value = idxs.includes(atualIdx) ? atualIdx : -1;
+    el.classList.toggle('ativo', el.value != -1);
+  }
+  pOpts('fn',  N, nats, FNAT);
+  pOpts('ftc', T, tcs,  FTC);
+  pOpts('ftr', R, trs,  FTR);
+}
+
+// ── ATUALIZAR ──
+function atualizar() {
+  const rows = filtrarCorreto();
+  const kpi  = calcKPI(rows);
+  const tr   = calcTransp(rows);
+  renderKPI(kpi);
+  renderTransp(tr);
+  renderTabela(tr);
+  // Atualizar aba entregas se estiver ativa
+  if (PAGINA === 'entregas') eAtualizar();
+  // Contexto
+  const emp = {IAB:'IAB',VERBUM:'Verbum',TODAS:'Todas'}[EMP]||EMP;
+  const ano = ANO==='TODOS'?'Todos os anos':'Ano Ref '+ANO;
+  const ctx = emp+' · '+ano;
+  document.getElementById('cs-ctx').textContent = ctx;
+  document.getElementById('cs-tab').textContent = ctx;
+  document.getElementById('finfo').textContent  = fmt(kpi.total)+' entregas  ('+fmt(rows.length)+' registros)';
+}
+
+// ── RENDER KPI ──
+function renderKPI(d) {
+  document.getElementById('k1').textContent = fmt(d.total);
+  document.getElementById('k2').textContent = fmt(d.prazo);
+  document.getElementById('k3').textContent = fmt(d.atraso);
+  document.getElementById('k4').textContent = fmtR(d.fat);
+  document.getElementById('k5').textContent = fmtR(d.env);
+  document.getElementById('k6').textContent = fmtR(d.imp);
+  const pct  = fmtPct(d.prazo,d.total);
+  const pct1d= d.total?(d.prazo/d.total*100).toFixed(1).replace('.',','):'0,0';
+  const pctA = d.total?(d.atraso/d.total*100).toFixed(1).replace('.',','):'0';
+  document.getElementById('k2d').textContent = '▲ '+pct1d+'% do total';
+  document.getElementById('k3d').textContent = '▼ '+pctA+'% do total';
+  document.getElementById('gpct').textContent = pct1d+'%';
+  document.getElementById('gpr').textContent  = fmt(d.prazo);
+  document.getElementById('gat').textContent  = fmt(d.atraso);
+  const arc = document.getElementById('garc');
+  arc.style.strokeDashoffset = 220-(220*pct/100);
+  // Mesma escala das transportadoras
+  const pctNum = parseFloat(pct1d.replace(',','.'));
+  const gaugeColor = pctNum>=98.8 ? '#003d7a' : pctNum>=97.0 ? '#E65100' : '#7B0000';
+  arc.style.stroke = gaugeColor;
+  // Atualiza cor do valor principal tbm
+  document.getElementById('gpct').style.color = gaugeColor;
+  const gaugeLabel = pctNum>=98.8 ? '✓ Acima da meta' : pctNum>=97.0 ? '◉ Próximo da meta' : '✗ Abaixo da meta';
+  const gStatus = document.getElementById('gauge-status');
+  if(gStatus){ gStatus.textContent = gaugeLabel; gStatus.style.color = gaugeColor; gStatus.style.fontWeight='700'; }
+}
+
+// ── RENDER BARRAS ──
+function renderTransp(tr) {
+  const top=tr.slice(0,8), mx=top.length?top[0].t:1;
+  document.getElementById('cht').innerHTML = top.length
+    ? top.map(t=>`<div class="bi"><div class="bh"><span class="bn">${t.n}</span><span class="bv">${fmt(t.t)}</span></div><div class="bt"><div class="bf" style="width:${Math.round(t.t/mx*100)}%"></div></div></div>`).join('')
+    : '<p style="color:var(--gl);font-size:12px;padding:8px 0">Sem dados para os filtros selecionados.</p>';
+}
+
+// ── RENDER TABELA ──
+function renderTabela(tr) {
+  document.getElementById('ttransp').innerHTML = tr.length
+    ? tr.map(t=>{
+        const pct1 = fmtPct1(t.p,t.t);
+        const pctStr = pct1.toFixed(1).replace('.',',')+'%';
+        const b = pct1>=98.8
+          ? '<span class="bg bp">✓ Ótimo</span>'
+          : pct1>=97.0
+          ? '<span class="bg bn2">◉ Bom</span>'
+          : '<span class="bg ba">✗ Ruim</span>';
+        return`<tr><td><strong>${t.n}</strong></td><td>${fmt(t.t)}</td><td style="color:var(--ok);font-weight:700">${fmt(t.p)}</td><td style="color:var(--err);font-weight:700">${t.a}</td><td><strong>${pctStr}</strong></td><td>${fmtR(t.fat)}</td><td>${t.frt?fmtR(t.frt):'—'}</td><td>${b}</td></tr>`;
+      }).join('')
+    : '<tr><td colspan="8" style="text-align:center;color:var(--gl);padding:20px">Nenhum dado encontrado.</td></tr>';
+}
+
+// ── EMPRESA ──
+function fEmp(e) {
+  EMP=e;
+  const isV=e==='VERBUM';
+  const ci=document.getElementById('cimg');
+  ci.style.opacity='0';
+  setTimeout(()=>{ci.src=isV?CV:CI;ci.style.opacity='1';},200);
+  document.getElementById('sblogo').src=isV?LV:LI;
+  document.documentElement.style.setProperty('--ac',     isV?'var(--verbum)':'var(--iab)');
+  document.documentElement.style.setProperty('--ac-rgb', isV?'110,17,132':'0,86,168');
+  document.getElementById('biab').className   ='eb'+(e==='IAB'   ?' ai':'');
+  document.getElementById('bverbum').className='eb'+(e==='VERBUM'?' av':'');
+  const names={IAB:'Instituto Alfa e Beto',VERBUM:'Verbum Educação',TODAS:'Todas as Empresas'};
+  document.getElementById('hs').textContent=names[e]||'';
+  // Sem pré-filtro automático — usuário aplica filtros manualmente
+  FNAT=-1; FTR=-1; FTC=-1;
+  popularSelects();
+  atualizar();
+  if (PAGINA === 'entregas') eAtualizar();
+}
+
+function calcPreFiltroTC(emp) {
+  if (emp === 'IAB')    return T.indexOf('MUNICÍPIO') >= 0 ? T.indexOf('MUNICÍPIO') : -1;
+  if (emp === 'VERBUM') {
+    const eIdx = T.indexOf('ESCOLA');
+    if (eIdx < 0) return -1;
+    const eEmp = E.indexOf('VERBUM');
+    const aIdx = ANO === 'TODOS' ? -1 : A.indexOf(ANO);
+    const count = D.filter(r =>
+      r[0]===eEmp && (aIdx<0||r[1]===aIdx) && r[2]===eIdx && r[9]===1
+    ).length;
+    return count >= 3 ? eIdx : -1;
+  }
+  return -1;
+}
+
+// ── ANO REF ──
+function fAno(ano) {
+  ANO=ano;
+  ['TODOS','2025','2026'].forEach(a=>{
+    document.getElementById('ab'+a).classList.toggle('on',a===ano);
+    const sb=document.getElementById('sb-'+a);
+    if(sb)sb.classList.toggle('on',a===ano);
+  });
+  const chip=document.getElementById('chip-ano');
+  if(ano==='TODOS')chip.classList.remove('show');
+  else{chip.textContent='Ano '+ano;chip.classList.add('show');}
+  popularSelects();
+  atualizar();
+  // Sem pré-filtro automático ao mudar ano
+  // Sincronizar botões de ano da aba entregas
+  if (PAGINA === 'entregas') {
+    ['TODOS','2025','2026'].forEach(a => {
+      const b = document.getElementById('eab'+a);
+      if(b) b.classList.toggle('on', a===ANO);
+    });
+    EANO = ANO;
+    eAtualizar();
+  }
+}
+
+// ── FILTROS MANUAIS ──
+function onFiltro(el) {
+  const v=parseInt(el.value);
+  if(el.id==='fn')  FNAT=isNaN(v)?-1:v;
+  if(el.id==='ftc') FTC =isNaN(v)?-1:v;
+  if(el.id==='ftr') FTR =isNaN(v)?-1:v;
+  el.classList.toggle('ativo',el.value!='-1'&&el.value!='');
+  atualizar();
+}
+
+function lFiltros() {
+  FNAT=-1; FTR=-1;
+  FTC = EMP==='IAB' ? T.indexOf('MUNICÍPIO') : EMP==='VERBUM' ? T.indexOf('ESCOLA') : -1;
+  popularSelects();
+  atualizar();
+}
+
+// ── MENU ──
+function aMenu(){document.getElementById('sb').classList.add('open');document.getElementById('ov').classList.add('open');document.body.style.overflow='hidden'}
+function fMenu(){document.getElementById('sb').classList.remove('open');document.getElementById('ov').classList.remove('open');document.body.style.overflow=''}
+
+// ── WELCOME ──
+function entrar(e){
+  document.getElementById('wl').classList.add('hide');
+  setTimeout(()=>document.getElementById('wl').style.display='none',500);
+  fEmp(e);
+}
+
+
+// ── DADOS ABA ENTREGAS ──
+const EP = ___PAYLOAD_ENT___;
+const MESES_PT = ["", "Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
+
+// ── NAVEGAÇÃO DE PÁGINAS ──
+let PAGINA = 'overview';
+function navPage(p) {
+  PAGINA = p;
+  document.querySelectorAll('.page').forEach(el => el.classList.remove('on'));
+  const pg = document.getElementById('page-' + p);
+  if (pg) pg.classList.add('on');
+  // Atualizar menu
+  document.querySelectorAll('.ni').forEach(el => el.classList.remove('on'));
+  const ni = document.getElementById('ni-' + p);
+  if (ni) ni.classList.add('on');
+  if (p === 'entregas') { eAtualizar(); }
+  if (p === 'acompanhamento') { renderAcompanhamento(); }
+}
+
+// ── ABA ENTREGAS ──
+let EANO = 'TODOS', EFR = '', EFTC = '', EFTR = '';
+
+function getDadosEnt() {
+  const g = EP.G[EMP] || EP.G['TODAS'];
+  return g[EANO] || g['TODOS'] || {};
+}
+
+function eAno(ano) {
+  EANO = ano;
+  ['TODOS','2025','2026'].forEach(a => {
+    const b = document.getElementById('eab'+a);
+    if(b) b.classList.toggle('on', a===ano);
+  });
+  eAtualizar();
+}
+
+function eAtualizar() {
+  const d = getDadosEnt();
+  if(!d || !d.total) return;
+  // KPIs
+  const pct = d.total ? (d.prazo/d.total*100) : 0;
+  const pctStr = pct.toFixed(1).replace('.',',')+'%';
+  const pctA   = d.total ? (d.atraso/d.total*100).toFixed(1).replace('.',',') : '0,0';
+  document.getElementById('ek1').textContent = fmt(d.total);
+  document.getElementById('ek2').textContent = fmt(d.prazo);
+  document.getElementById('ek3').textContent = fmt(d.atraso);
+  document.getElementById('ek4').textContent = pctStr;
+  document.getElementById('ek2d').textContent = '▲ '+pct.toFixed(1).replace('.',',')+'% do total';
+  document.getElementById('ek3d').textContent = '▼ '+pctA+'% do total';
+  const ek4 = document.getElementById('ek4');
+  ek4.style.color = pct>=98.8?'#003d7a':pct>=97.0?'#E65100':'#7B0000';
+  document.getElementById('efinfo').textContent = fmt(d.total)+' entregas';
+  // Gráficos
+  renderEntBars('echt-reg', d.reg || []);
+  renderEntBars('echt-tc',  d.tc  || []);
+  renderEntMes( 'echt-mes', d.mes || []);
+  renderEntNS(  'echt-tr',  d.tr  || []);
+}
+
+function barNS(pct) {
+  return pct>=98.8?'#003d7a':pct>=97.0?'#E65100':'#7B0000';
+}
+
+function renderEntBars(elId, rows) {
+  const el = document.getElementById(elId);
+  if(!el) return;
+  if(!rows.length){ el.innerHTML='<p style="color:var(--gl);font-size:12px">Sem dados.</p>'; return; }
+  const max = Math.max(...rows.map(r=>r.total));
+  el.innerHTML = rows.sort((a,b)=>b.total-a.total).map(r => {
+    const pct = r.total ? Math.round(r.prazo/r.total*100) : 0;
+    return `<div class="bi">
+      <div class="bh">
+        <span class="bn">${r.k}</span>
+        <span class="bv">${fmt(r.total)} <span style="font-size:10px;color:${barNS(pct)};font-weight:700">${pct}%</span></span>
+      </div>
+      <div class="bt"><div class="bf" style="width:${Math.round(r.total/max*100)}%"></div></div>
+    </div>`;
+  }).join('');
+}
+
+function renderEntMes(elId, rows) {
+  const el = document.getElementById(elId);
+  if(!el || !rows.length){ if(el) el.innerHTML='<p style="color:var(--gl);font-size:12px">Sem dados.</p>'; return; }
+
+  const W = el.offsetWidth || 560;
+  const H = 220;
+  const PAD = {top:28, right:52, bottom:40, left:42};
+  const cW = W - PAD.left - PAD.right;
+  const cH = H - PAD.top  - PAD.bottom;
+  const n  = rows.length;
+
+  const maxT = Math.max(...rows.map(r => r.total));
+  // NS entre 90 e 101 para dar perspectiva visual
+  const nsMin = 88, nsMax = 101;
+
+  const barW  = Math.max(4, Math.floor(cW / n) - 3);
+  const xPos  = i => PAD.left + i * (cW / (n - 1 || 1));
+  const xBar  = i => PAD.left + i * (cW / n) + (cW / n - barW) / 2;
+  const yBar  = v => PAD.top  + cH - (v / maxT) * cH;
+  const yNS   = v => PAD.top  + cH - ((v - nsMin) / (nsMax - nsMin)) * cH;
+
+  // Cor da barra NS
+  const nsColor = v => v >= 98.8 ? '#003d7a' : v >= 97.0 ? '#E65100' : '#7B0000';
+
+  // Grid horizontal (5 linhas)
+  const gridLines = [0, 0.25, 0.5, 0.75, 1].map(p => {
+    const y   = (PAD.top + cH - p * cH).toFixed(1);
+    const lbl = Math.round(p * maxT);
+    return `<line stroke="var(--gl2)" stroke-width="0.5" stroke-dasharray="3 3"
+              x1="${PAD.left}" y1="${y}" x2="${PAD.left + cW}" y2="${y}"/>
+            <text font-size="9" fill="var(--gl)" font-family="Montserrat,sans-serif"
+              x="${PAD.left - 5}" y="${y}" text-anchor="end" dominant-baseline="central">${lbl}</text>`;
+  }).join('');
+
+  // Eixo NS direito (90% a 101%)
+  const nsGridLines = [90, 93, 96, 99].map(v => {
+    const y = yNS(v).toFixed(1);
+    return `<text font-size="9" fill="#003d7a" font-family="Montserrat,sans-serif"
+      x="${PAD.left + cW + 5}" y="${y}" dominant-baseline="central">${v}%</text>`;
+  }).join('');
+
+  // Barras com rótulo de total
+  const step = Math.ceil(n / 10);
+  const bars = rows.map((r, i) => {
+    const x  = xBar(i).toFixed(1);
+    const y  = yBar(r.total).toFixed(1);
+    const bH = (cH - (yBar(r.total) - PAD.top)).toFixed(1);
+    const ns = r.total ? (r.prazo / r.total * 100) : 0;
+    const cor = nsColor(ns);
+    const showLbl = true;
+    return `<rect x="${x}" y="${y}" width="${barW}" height="${bH}" rx="2"
+              fill="${cor}" opacity="0.18"/>
+            ${showLbl ? `<text font-size="8" font-weight="700" fill="${cor}"
+              font-family="Montserrat,sans-serif" text-anchor="middle"
+              x="${(parseFloat(x) + barW/2).toFixed(1)}" y="${(parseFloat(y) - 4).toFixed(1)}">${r.total}</text>` : ''}`;
+  }).join('');
+
+  // Linha NS
+  const pathNS = rows.map((r, i) => {
+    const ns = r.total ? (r.prazo / r.total * 100) : 0;
+    return (i === 0 ? 'M' : 'L') + xBar(i).toFixed(1) + ',' + yNS(ns).toFixed(1);
+  }).join(' ');
+
+  // Pontos + rótulos NS
+  const dotsNS = rows.map((r, i) => {
+    const ns    = r.total ? (r.prazo / r.total * 100) : 0;
+    const cor   = nsColor(ns);
+    const cx    = xBar(i).toFixed(1);
+    const cy    = yNS(ns).toFixed(1);
+    const lbl   = MESES_PT[r.mes] + '/' + String(r.ano).slice(2);
+    const nsStr = ns.toFixed(1).replace('.', ',') + '%';
+    const showLbl = true;
+    return `<circle cx="${cx}" cy="${cy}" r="4" fill="${cor}" stroke="#fff" stroke-width="1.5"
+              onmouseenter="showLinhaTip(event,'${lbl}: ${nsStr} NS · ${r.total} entregas')"
+              onmouseleave="hideLinhaTip()" style="cursor:pointer"/>
+            ${showLbl ? `<text font-size="8" font-weight="700" fill="${cor}"
+              font-family="Montserrat,sans-serif" text-anchor="middle"
+              x="${cx}" y="${(parseFloat(cy) - 8).toFixed(1)}">${nsStr}</text>` : ''}`;
+  }).join('');
+
+  // Labels eixo X
+  const xLabels = rows.map((r, i) => {
+    // sempre mostrar todos os labels
+    const lbl = MESES_PT[r.mes] + '/' + String(r.ano).slice(2);
+    const cx  = xBar(i).toFixed(1);
+    return `<text font-size="9" fill="var(--gl)" font-family="Montserrat,sans-serif"
+      text-anchor="middle" x="${cx}" y="${H - 8}">${lbl}</text>`;
+  }).join('');
+
+  // Linha de meta 98%
+  const yMeta = yNS(98).toFixed(1);
+  const metaLine = `<line x1="${PAD.left}" y1="${yMeta}" x2="${PAD.left + cW}" y2="${yMeta}"
+    stroke="#F39200" stroke-width="1" stroke-dasharray="5 3" opacity="0.7"/>
+    <text font-size="8" fill="#F39200" font-family="Montserrat,sans-serif"
+      x="${PAD.left + cW + 5}" y="${yMeta}" dominant-baseline="central" font-weight="700">98%</text>`;
+
+  el.innerHTML = `
+    <div class="linha-tooltip" id="linha-tip"></div>
+    <svg viewBox="0 0 ${W} ${H}" style="width:100%;height:${H}px;overflow:visible">
+      ${gridLines}
+      ${nsGridLines}
+      ${bars}
+      ${metaLine}
+      <path d="${pathNS}" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+        stroke="var(--ac)" style="stroke:var(--ac)"/>
+      ${dotsNS}
+      ${xLabels}
+    </svg>
+    <div style="display:flex;gap:20px;margin-top:6px;justify-content:center;flex-wrap:wrap">
+      <span style="font-size:10px;font-weight:600;color:var(--gl);display:flex;align-items:center;gap:5px">
+        <span style="display:inline-block;width:14px;height:10px;background:rgba(0,86,168,0.18);border-radius:2px"></span>Total de Entregas
+      </span>
+      <span style="font-size:10px;font-weight:600;color:var(--ac);display:flex;align-items:center;gap:5px">
+        <span style="display:inline-block;width:20px;height:2.5px;background:var(--ac);border-radius:2px"></span>Nível de Serviço
+      </span>
+      <span style="font-size:10px;font-weight:600;color:#F39200;display:flex;align-items:center;gap:5px">
+        <span style="display:inline-block;width:20px;height:1px;border-top:2px dashed #F39200"></span>Meta 98%
+      </span>
+    </div>`;
+}
+
+function showLinhaTip(e,txt){
+  const t=document.getElementById('linha-tip');
+  if(!t)return;
+  t.textContent=txt; t.style.opacity='1';
+  t.style.left=(e.offsetX+12)+'px'; t.style.top=(e.offsetY-10)+'px';
+}
+function hideLinhaTip(){
+  const t=document.getElementById('linha-tip');
+  if(t)t.style.opacity='0';
+}
+
+function renderEntNS(elId, rows) {
+  const el = document.getElementById(elId);
+  if(!el) return;
+  if(!rows.length){ el.innerHTML='<p style="color:var(--gl);font-size:12px">Sem dados.</p>'; return; }
+  const sorted = rows.filter(r=>r.total>=3).sort((a,b)=>{
+    const pa=a.total?a.prazo/a.total:0, pb=b.total?b.prazo/b.total:0;
+    return pb-pa;
+  });
+  el.innerHTML = '<div class="hbar-wrap">' + sorted.map(r=>{
+    const pct1  = r.total ? (r.prazo/r.total*100) : 0;
+    const pctStr= pct1.toFixed(1).replace('.',',')+'%';
+    const cor   = barNS(pct1);
+    const label = pct1>=98.8?'Ótimo':pct1>=97.0?'Bom':'Ruim';
+    const bgBadge = pct1>=98.8?'#E3EEF9':pct1>=97.0?'#FFF3E0':'#FFEBEE';
+    return `<div class="hbar-row">
+      <span class="hbar-label" title="${r.k}">${r.k}</span>
+      <div class="hbar-track">
+        <div class="hbar-fill" style="width:${pct1.toFixed(1)}%;background:${cor}"></div>
+      </div>
+      <span class="hbar-pct" style="color:${cor}">
+        ${pctStr}
+        <span class="hbar-badge" style="background:${bgBadge};color:${cor}">${label}</span>
+      </span>
+    </div>`;
+  }).join('') + '</div>';
+}
+
+// ── ACOMPANHAMENTO ──
+function renderAcompanhamento() {
+  // Data de hoje
+  const hoje = EP.hoje;
+  const hojeEl = document.getElementById('acomp-hoje');
+  if(hojeEl) {
+    const d = new Date(hoje);
+    hojeEl.textContent = 'Atualizado em: '+d.toLocaleDateString('pt-BR');
+  }
+
+  // Q1
+  const q1 = EP.q1.filter(r => r.da > 0 || (r.dv !== null && r.dv <= 2));
+  document.getElementById('q1-tbody').innerHTML = q1.length
+    ? q1.map(r => {
+        const dv = r.dv;
+        const da = r.da;
+        let tag, dvTxt;
+        if(da > 0) {
+          tag = '<span class="tag tag-atrasado">🔴 Atrasado</span>';
+          dvTxt = '<span class="da-err">+'+da+' dias</span>';
+        } else if(dv !== null && dv <= 2) {
+          tag = '<span class="tag tag-alerta">⚠️ Alerta</span>';
+          dvTxt = dv === 0 ? '<span class="da-warn">Vence hoje!</span>'
+                : dv < 0  ? '<span class="da-err">Vencido</span>'
+                : '<span class="da-warn">'+dv+' dia(s)</span>';
+        } else {
+          tag = '<span class="tag tag-ok">✅ No prazo</span>';
+          dvTxt = '<span class="da-ok">'+(dv !== null ? dv+' dias' : '—')+'</span>';
+        }
+        const empBadge = r.emp==='IAB'
+          ? '<span class="emp-badge emp-iab">IAB</span>'
+          : '<span class="emp-badge emp-verbum">Verbum</span>';
+        return `<tr>
+          <td>${empBadge}</td>
+          <td style="font-weight:700">${r.nf.split(' / ').reduce((a,n,i)=>i>0&&i%3===0?a+'<br>'+n:i>0?a+' / '+n:n, '')}</td>
+          <td style="font-weight:600;min-width:160px">${r.cli}</td>
+          <td style="white-space:nowrap">${r.tr}</td>
+          <td style="white-space:nowrap">${r.col}</td>
+          <td style="white-space:nowrap">${r.prev} ${tag}</td>
+          <td style="white-space:nowrap;text-align:center">${dvTxt}</td>
+          <td class="obs-cell">${r.obs}</td>
+        </tr>`;
+      }).join('')
+    : '<tr><td colspan="8" style="text-align:center;color:var(--gl);padding:24px">Nenhuma entrega pendente. ✅</td></tr>';
+
+  // Q2
+  const q2 = EP.q2;
+  document.getElementById('q2-tbody').innerHTML = q2.length
+    ? q2.map(r => {
+        const empBadge = r.emp==='IAB'
+          ? '<span class="emp-badge emp-iab">IAB</span>'
+          : '<span class="emp-badge emp-verbum">Verbum</span>';
+        const daClass = r.da<=2?'da-warn':'da-err';
+        return `<tr>
+          <td>${empBadge}</td>
+          <td style="font-weight:700;width:1%;white-space:nowrap;line-height:2">${
+            (function(){
+              const nfs = r.nf.split(' / ');
+              const linhas = [];
+              for(let i=0; i<nfs.length; i+=3){
+                linhas.push(nfs.slice(i,i+3).join(' / '));
+              }
+              return linhas.join('<br>');
+            })()
+          }</td>
+          <td style="font-weight:600;min-width:160px">${r.cli}</td>
+          <td style="white-space:nowrap">${r.tr}</td>
+          <td style="white-space:nowrap">${r.col}</td>
+          <td style="white-space:nowrap">${r.prev}</td>
+          <td style="white-space:nowrap;font-weight:700">${r.ef}</td>
+          <td style="text-align:center"><span class="${daClass}">+${r.da}d</span></td>
+          <td class="obs-cell">${r.obs}</td>
+        </tr>`;
+      }).join('')
+    : '<tr><td colspan="9" style="text-align:center;color:var(--gl);padding:24px">Sem atrasos registrados.</td></tr>';
+}
+// ── INIT ──
+fAno('TODOS');
+</script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+2026-07-04 11:36:13 | INFO     | etl_runner — =================================================================
+2026-07-04 11:36:13 | INFO     | etl_runner —   INÍCIO DO ETL — Dashboard Logístico IAB & Verbum
+2026-07-04 11:36:13 | INFO     | etl_runner —   Arquivo fonte: C:\Users\a2p2t\OneDrive - Instituto Alfa e Beto\Logística-IAB\10 - DASHIBOARDs\Quadro de Envios.xlsx
+2026-07-04 11:36:13 | INFO     | etl_runner — =================================================================
+2026-07-04 11:36:13 | INFO     | etl_runner — [ ETAPA 1 ] Leitura do arquivo...
+2026-07-04 11:36:13 | INFO     | modules.reader — Lendo arquivo: C:\Users\a2p2t\OneDrive - Instituto Alfa e Beto\Logística-IAB\10 - DASHIBOARDs\Quadro de Envios.xlsx
+2026-07-04 11:36:14 | INFO     | modules.reader — Linhas lidas (raw): 4371
+2026-07-04 11:36:14 | INFO     | modules.reader — Linhas após remoção de vazias: 4371
+2026-07-04 11:36:14 | INFO     | etl_runner — [ ETAPA 2 ] Limpeza e normalização...
+2026-07-04 11:36:14 | INFO     | modules.cleaner — Filtro Cons Analise: 682 linhas removidas | Restam: 3689
+2026-07-04 11:36:14 | INFO     | modules.cleaner — Filtro Empresa (Serena/Koala): 0 linhas removidas | Restam: 3689
+2026-07-04 11:36:15 | INFO     | modules.cleaner — Normalização concluída. Shape final: (3689, 55)
+2026-07-04 11:36:15 | INFO     | etl_runner — [ ETAPA 3 ] Cálculo de KPIs...
+2026-07-04 11:36:15 | INFO     | modules.calculator — Status prazo calculado — NO PRAZO: 3642 | ATRASO: 47
+2026-07-04 11:36:15 | INFO     | modules.calculator — Entregas únicas identificadas: 3365
+2026-07-04 11:36:15 | INFO     | modules.calculator — Cálculo de KPIs concluído.
+2026-07-04 11:36:15 | INFO     | etl_runner — [ ETAPA 4 ] Comparação com snapshot anterior...
+2026-07-04 11:36:15 | INFO     | modules.snapshot — Snapshot anterior carregado: 3689 linhas
+2026-07-04 11:36:16 | INFO     | modules.snapshot — Nenhuma mudança detectada em relação ao snapshot anterior.
+2026-07-04 11:36:16 | INFO     | modules.snapshot — Snapshot salvo: C:\Users\a2p2t\OneDrive - Instituto Alfa e Beto\Logística-IAB\10 - DASHIBOARDs\dashboard_logistico\etl\data\snapshots\snapshot_20260704_113615.parquet
+2026-07-04 11:36:16 | INFO     | modules.snapshot — Comparação concluída — Inseridos: 0 | Alterados: 0 | Removidos: 0 | Sem mudança: 3618
+2026-07-04 11:36:16 | INFO     | etl_runner — [ ETAPA 5 ] Exportando dados processados...
+2026-07-04 11:36:16 | INFO     | modules.exporter — Parquet salvo: C:\Users\a2p2t\OneDrive - Instituto Alfa e Beto\Logística-IAB\10 - DASHIBOARDs\dashboard_logistico\etl\data\processed\lancamentos.parquet (573.0 KB)
+2026-07-04 11:36:16 | INFO     | modules.exporter — JSON salvo: C:\Users\a2p2t\OneDrive - Instituto Alfa e Beto\Logística-IAB\10 - DASHIBOARDs\dashboard_logistico\etl\data\processed\lancamentos.json (6228.7 KB)
+2026-07-04 11:36:16 | INFO     | modules.exporter — Métricas agregadas salvas: C:\Users\a2p2t\OneDrive - Instituto Alfa e Beto\Logística-IAB\10 - DASHIBOARDs\dashboard_logistico\etl\data\processed\metricas.json (19.5 KB)
+2026-07-04 11:36:16 | INFO     | etl_runner — =================================================================
+2026-07-04 11:36:16 | INFO     | etl_runner —   ETL CONCLUÍDO COM SUCESSO
+2026-07-04 11:36:16 | INFO     | etl_runner —   Duração total:      3.2s
+2026-07-04 11:36:16 | INFO     | etl_runner —   Linhas processadas: 3689
+2026-07-04 11:36:16 | INFO     | etl_runner —   Inserções:          0
+2026-07-04 11:36:16 | INFO     | etl_runner —   Atualizações:       0
+2026-07-04 11:36:16 | INFO     | etl_runner —   Remoções:           0
+2026-07-04 11:36:16 | INFO     | etl_runner —   Sem mudança:        3618
+2026-07-04 11:36:16 | INFO     | etl_runner —   Log de mudanças:    C:\Users\a2p2t\OneDrive - Instituto Alfa e Beto\Logística-IAB\10 - DASHIBOARDs\dashboard_logistico\etl\data\logs\change_log.csv
+2026-07-04 11:36:16 | INFO     | etl_runner —   Log de execução:    C:\Users\a2p2t\OneDrive - Instituto Alfa e Beto\Logística-IAB\10 - DASHIBOARDs\dashboard_logistico\etl\data\logs\etl_20260704_113613.log
+2026-07-04 11:36:16 | INFO     | etl_runner — =================================================================

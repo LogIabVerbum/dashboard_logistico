@@ -1,0 +1,56 @@
+2026-07-01 13:46:55 | INFO     | etl_runner — =================================================================
+2026-07-01 13:46:55 | INFO     | etl_runner —   INÍCIO DO ETL — Dashboard Logístico IAB & Verbum
+2026-07-01 13:46:55 | INFO     | etl_runner —   Arquivo fonte: C:\Users\a2p2t\OneDrive - Instituto Alfa e Beto\Logística-IAB\10 - DASHIBOARDs\Quadro_de_Envios.xlsx
+2026-07-01 13:46:55 | INFO     | etl_runner — =================================================================
+2026-07-01 13:46:55 | INFO     | etl_runner — [ ETAPA 1 ] Leitura do arquivo...
+2026-07-01 13:46:55 | INFO     | modules.reader — Lendo arquivo: C:\Users\a2p2t\OneDrive - Instituto Alfa e Beto\Logística-IAB\10 - DASHIBOARDs\Quadro_de_Envios.xlsx
+2026-07-01 13:46:55 | ERROR    | modules.reader — Arquivo não encontrado: C:\Users\a2p2t\OneDrive - Instituto Alfa e Beto\Logística-IAB\10 - DASHIBOARDs\Quadro_de_Envios.xlsx
+2026-07-01 13:46:55 | ERROR    | etl_runner — ERRO CRÍTICO: [Errno 2] No such file or directory: 'C:\\Users\\a2p2t\\OneDrive - Instituto Alfa e Beto\\Logística-IAB\\10 - DASHIBOARDs\\Quadro_de_Envios.xlsx'
+Traceback (most recent call last):
+  File "C:\Users\a2p2t\OneDrive - Instituto Alfa e Beto\Logística-IAB\10 - DASHIBOARDs\dashboard_logistico\etl\etl_runner.py", line 80, in executar
+    df_raw = ler_quadro_envios()
+  File "C:\Users\a2p2t\OneDrive - Instituto Alfa e Beto\Logística-IAB\10 - DASHIBOARDs\dashboard_logistico\etl\modules\reader.py", line 29, in ler_quadro_envios
+    df = pd.read_excel(
+        caminho,
+    ...<2 lines>...
+        dtype=str,          # tudo como string primeiro → evita coerção errada
+    )
+  File "C:\Users\a2p2t\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pandas\io\excel\_base.py", line 481, in read_excel
+    io = ExcelFile(
+        io,
+    ...<2 lines>...
+        engine_kwargs=engine_kwargs,
+    )
+  File "C:\Users\a2p2t\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pandas\io\excel\_base.py", line 1621, in __init__
+    self._reader = self._engines[engine](
+                   ~~~~~~~~~~~~~~~~~~~~~^
+        self._io,
+        ^^^^^^^^^
+        storage_options=storage_options,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        engine_kwargs=engine_kwargs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\a2p2t\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pandas\io\excel\_openpyxl.py", line 560, in __init__
+    super().__init__(
+    ~~~~~~~~~~~~~~~~^
+        filepath_or_buffer,
+        ^^^^^^^^^^^^^^^^^^^
+        storage_options=storage_options,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        engine_kwargs=engine_kwargs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\a2p2t\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pandas\io\excel\_base.py", line 544, in __init__
+    self.handles = get_handle(
+                   ~~~~~~~~~~^
+        filepath_or_buffer, "rb", storage_options=storage_options, is_text=False
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\a2p2t\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pandas\io\common.py", line 939, in get_handle
+    handle = open(handle, ioargs.mode)
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\a2p2t\\OneDrive - Instituto Alfa e Beto\\Logística-IAB\\10 - DASHIBOARDs\\Quadro_de_Envios.xlsx'
+2026-07-01 13:46:55 | ERROR    | etl_runner — ETL INTERROMPIDO — verifique o erro acima.

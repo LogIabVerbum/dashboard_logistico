@@ -1,0 +1,31 @@
+2026-07-02 15:23:47 | INFO     | etl_runner — =================================================================
+2026-07-02 15:23:47 | INFO     | etl_runner —   INÍCIO DO ETL — Dashboard Logístico IAB & Verbum
+2026-07-02 15:23:47 | INFO     | etl_runner —   Arquivo fonte: C:\Users\AugustoCesar\OneDrive - Instituto Alfa e Beto\Arquivos de Anderson Pissaia - Logística-IAB\10 - DASHIBOARDs\Quadro de Envios.xlsx
+2026-07-02 15:23:47 | INFO     | etl_runner — =================================================================
+2026-07-02 15:23:47 | INFO     | etl_runner — [ ETAPA 1 ] Leitura do arquivo...
+2026-07-02 15:23:47 | INFO     | modules.reader — Lendo arquivo: C:\Users\AugustoCesar\OneDrive - Instituto Alfa e Beto\Arquivos de Anderson Pissaia - Logística-IAB\10 - DASHIBOARDs\Quadro de Envios.xlsx
+2026-07-02 15:23:48 | INFO     | modules.reader — Linhas lidas (raw): 4365
+2026-07-02 15:23:48 | INFO     | modules.reader — Linhas após remoção de vazias: 4365
+2026-07-02 15:23:48 | INFO     | etl_runner — [ ETAPA 2 ] Limpeza e normalização...
+2026-07-02 15:23:48 | INFO     | modules.cleaner — Filtro Cons Analise: 679 linhas removidas | Restam: 3686
+2026-07-02 15:23:48 | INFO     | modules.cleaner — Filtro Empresa (Serena/Koala): 0 linhas removidas | Restam: 3686
+2026-07-02 15:23:49 | ERROR    | etl_runner — ERRO CRÍTICO: Columns must be same length as key
+Traceback (most recent call last):
+  File "C:\Users\AugustoCesar\OneDrive - Instituto Alfa e Beto\Arquivos de Anderson Pissaia - Logística-IAB\10 - DASHIBOARDs\dashboard_logistico\etl\etl_runner.py", line 86, in executar
+    df_limpo = limpar_e_normalizar(df_raw)
+  File "C:\Users\AugustoCesar\OneDrive - Instituto Alfa e Beto\Arquivos de Anderson Pissaia - Logística-IAB\10 - DASHIBOARDs\dashboard_logistico\etl\modules\cleaner.py", line 320, in limpar_e_normalizar
+    df[str_cols] = df[str_cols].apply(lambda s: s.str.strip())
+    ~~^^^^^^^^^^
+  File "C:\Users\AugustoCesar\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pandas\core\frame.py", line 4660, in __setitem__
+    self._setitem_array(key, value)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "C:\Users\AugustoCesar\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pandas\core\frame.py", line 4701, in _setitem_array
+    self[k1] = value[k2]
+    ~~~~^^^^
+  File "C:\Users\AugustoCesar\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pandas\core\frame.py", line 4662, in __setitem__
+    self._set_item_frame_value(key, value)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "C:\Users\AugustoCesar\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pandas\core\frame.py", line 4786, in _set_item_frame_value
+    raise ValueError("Columns must be same length as key")
+ValueError: Columns must be same length as key
+2026-07-02 15:23:49 | ERROR    | etl_runner — ETL INTERROMPIDO — verifique o erro acima.

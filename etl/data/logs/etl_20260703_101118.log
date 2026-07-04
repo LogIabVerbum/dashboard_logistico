@@ -1,0 +1,26 @@
+2026-07-03 10:11:18 | INFO     | etl_runner — =================================================================
+2026-07-03 10:11:18 | INFO     | etl_runner —   INÍCIO DO ETL — Dashboard Logístico IAB & Verbum
+2026-07-03 10:11:18 | INFO     | etl_runner —   Arquivo fonte: C:\Users\a2p2t\OneDrive - Instituto Alfa e Beto\Logística-IAB\10 - DASHIBOARDs\Quadro de Envios.xlsx
+2026-07-03 10:11:18 | INFO     | etl_runner — =================================================================
+2026-07-03 10:11:18 | INFO     | etl_runner — [ ETAPA 1 ] Leitura do arquivo...
+2026-07-03 10:11:18 | INFO     | modules.reader — Lendo arquivo: C:\Users\a2p2t\OneDrive - Instituto Alfa e Beto\Logística-IAB\10 - DASHIBOARDs\Quadro de Envios.xlsx
+2026-07-03 10:11:18 | INFO     | modules.reader — Linhas lidas (raw): 4368
+2026-07-03 10:11:18 | INFO     | modules.reader — Linhas após remoção de vazias: 4368
+2026-07-03 10:11:18 | INFO     | etl_runner — [ ETAPA 2 ] Limpeza e normalização...
+2026-07-03 10:11:19 | INFO     | modules.cleaner — Filtro Cons Analise: 679 linhas removidas | Restam: 3689
+2026-07-03 10:11:19 | INFO     | modules.cleaner — Filtro Empresa (Serena/Koala): 0 linhas removidas | Restam: 3689
+2026-07-03 10:11:19 | INFO     | modules.cleaner — Normalização concluída. Shape final: (3689, 56)
+2026-07-03 10:11:19 | INFO     | etl_runner — [ ETAPA 3 ] Cálculo de KPIs...
+2026-07-03 10:11:19 | INFO     | modules.calculator — Status prazo calculado — NO PRAZO: 3642 | ATRASO: 47
+2026-07-03 10:11:19 | ERROR    | etl_runner — ERRO CRÍTICO: 'DataFrame' object has no attribute 'str'
+Traceback (most recent call last):
+  File "C:\Users\a2p2t\OneDrive - Instituto Alfa e Beto\Logística-IAB\10 - DASHIBOARDs\dashboard_logistico\etl\etl_runner.py", line 92, in executar
+    df_final = calcular_kpis(df_limpo)
+  File "C:\Users\a2p2t\OneDrive - Instituto Alfa e Beto\Logística-IAB\10 - DASHIBOARDs\dashboard_logistico\etl\modules\calculator.py", line 92, in calcular_kpis
+    + "|" + df["cliente"].str.strip().str.upper()
+            ^^^^^^^^^^^^^^^^^
+  File "C:\Users\a2p2t\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pandas\core\generic.py", line 6206, in __getattr__
+    return object.__getattribute__(self, name)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+AttributeError: 'DataFrame' object has no attribute 'str'. Did you mean: 'std'?
+2026-07-03 10:11:19 | ERROR    | etl_runner — ETL INTERROMPIDO — verifique o erro acima.

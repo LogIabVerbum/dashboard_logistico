@@ -1,0 +1,31 @@
+2026-07-02 09:54:42 | INFO     | etl_runner — =================================================================
+2026-07-02 09:54:42 | INFO     | etl_runner —   INÍCIO DO ETL — Dashboard Logístico IAB & Verbum
+2026-07-02 09:54:42 | INFO     | etl_runner —   Arquivo fonte: C:\Users\a2p2t\OneDrive - Instituto Alfa e Beto\Logística-IAB\10 - DASHIBOARDs\Quadro de Envios.xlsx
+2026-07-02 09:54:42 | INFO     | etl_runner — =================================================================
+2026-07-02 09:54:42 | INFO     | etl_runner — [ ETAPA 1 ] Leitura do arquivo...
+2026-07-02 09:54:42 | INFO     | modules.reader — Lendo arquivo: C:\Users\a2p2t\OneDrive - Instituto Alfa e Beto\Logística-IAB\10 - DASHIBOARDs\Quadro de Envios.xlsx
+2026-07-02 09:54:43 | INFO     | modules.reader — Linhas lidas (raw): 4402
+2026-07-02 09:54:43 | INFO     | modules.reader — Linhas após remoção de vazias: 4402
+2026-07-02 09:54:43 | INFO     | etl_runner — [ ETAPA 2 ] Limpeza e normalização...
+2026-07-02 09:54:43 | INFO     | modules.cleaner — Filtro Cons Analise: 662 linhas removidas | Restam: 3740
+2026-07-02 09:54:43 | INFO     | modules.cleaner — Filtro Empresa (Serena/Koala): 1 linhas removidas | Restam: 3739
+2026-07-02 09:54:43 | INFO     | modules.cleaner — Normalização concluída. Shape final: (3739, 55)
+2026-07-02 09:54:43 | INFO     | etl_runner — [ ETAPA 3 ] Cálculo de KPIs...
+2026-07-02 09:54:43 | INFO     | modules.calculator — Status prazo calculado — NO PRAZO: 3739 | ATRASO: 0
+2026-07-02 09:54:43 | INFO     | modules.calculator — Entregas únicas identificadas: 102
+2026-07-02 09:54:43 | INFO     | modules.calculator — Cálculo de KPIs concluído.
+2026-07-02 09:54:43 | INFO     | etl_runner — [ ETAPA 4 ] Comparação com snapshot anterior...
+2026-07-02 09:54:43 | INFO     | modules.snapshot — Snapshot anterior carregado: 3675 linhas
+2026-07-02 09:54:44 | ERROR    | etl_runner — ERRO CRÍTICO: NaTType does not support strftime
+Traceback (most recent call last):
+  File "C:\Users\a2p2t\OneDrive - Instituto Alfa e Beto\Logística-IAB\10 - DASHIBOARDs\dashboard_logistico\etl\etl_runner.py", line 98, in executar
+    resumo_mudancas = comparar_e_registrar(df_final)
+  File "C:\Users\a2p2t\OneDrive - Instituto Alfa e Beto\Logística-IAB\10 - DASHIBOARDs\dashboard_logistico\etl\modules\snapshot.py", line 118, in comparar_e_registrar
+    indice_novo = _preparar_indice(df_novo)
+  File "C:\Users\a2p2t\OneDrive - Instituto Alfa e Beto\Logística-IAB\10 - DASHIBOARDs\dashboard_logistico\etl\modules\snapshot.py", line 82, in _preparar_indice
+    chave = _chave_str(row)
+  File "C:\Users\a2p2t\OneDrive - Instituto Alfa e Beto\Logística-IAB\10 - DASHIBOARDs\dashboard_logistico\etl\modules\snapshot.py", line 71, in _chave_str
+    v = v.strftime("%Y-%m-%d")
+  File "pandas/_libs/tslibs/nattype.pyx", line 54, in pandas._libs.tslibs.nattype._make_error_func.f
+ValueError: NaTType does not support strftime
+2026-07-02 09:54:44 | ERROR    | etl_runner — ETL INTERROMPIDO — verifique o erro acima.
