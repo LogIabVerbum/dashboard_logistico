@@ -473,6 +473,252 @@ tbody td{padding:9px 11px;font-weight:500}
   .wb{justify-content:center}
 }
 
+
+/* ═══════════════════════════════════════════════
+   DESIGN SYSTEM — Elevação Visual
+   ═══════════════════════════════════════════════ */
+
+/* Variáveis aprimoradas */
+:root {
+  --shadow-sm: 0 1px 4px rgba(0,0,0,.06);
+  --shadow-md: 0 4px 16px rgba(0,0,0,.10);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,.14);
+  --shadow-glow: 0 0 20px rgba(0,86,168,.15);
+  --transition-fast: all .18s cubic-bezier(.4,0,.2,1);
+  --transition-smooth: all .3s cubic-bezier(.4,0,.2,1);
+  --glass-bg: rgba(255,255,255,.72);
+  --glass-border: rgba(255,255,255,.45);
+}
+
+/* ═══════════════════════════════════════════════
+   CARDS — Glassmorphism + Profundidade
+   ═══════════════════════════════════════════════ */
+
+.fk {
+  transition: var(--transition-fast);
+  will-change: transform, box-shadow;
+}
+.fk:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md) !important;
+}
+.tc {
+  transition: var(--transition-fast);
+}
+.tc:hover {
+  box-shadow: var(--shadow-md) !important;
+  transform: translateY(-1px);
+}
+
+/* Cards KPI da VE com glassmorphism */
+.ve-card {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  background: var(--glass-bg) !important;
+  border: 1px solid var(--glass-border) !important;
+  transition: var(--transition-fast) !important;
+}
+.ve-card:hover {
+  transform: translateY(-3px) !important;
+  box-shadow: var(--shadow-lg) !important;
+}
+
+/* ═══════════════════════════════════════════════
+   KPI — Animação de contagem
+   ═══════════════════════════════════════════════ */
+
+.kv, .fkv {
+  transition: color .3s ease;
+}
+
+/* ═══════════════════════════════════════════════
+   GRÁFICOS — Tooltips touch-friendly
+   ═══════════════════════════════════════════════ */
+
+.chart-tooltip {
+  position: absolute;
+  background: #1E2A3A;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .18s ease;
+  z-index: 100;
+  white-space: nowrap;
+  box-shadow: var(--shadow-md);
+  min-width: 80px;
+  text-align: center;
+}
+.chart-tooltip::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-bottom: none;
+  border-top-color: #1E2A3A;
+}
+.chart-tooltip.visible { opacity: 1; }
+
+/* ═══════════════════════════════════════════════
+   TABELAS — Sem ruído visual
+   ═══════════════════════════════════════════════ */
+
+/* Remover linhas verticais desnecessárias */
+.dt td, .dt th { border-left: none !important; border-right: none !important; }
+/* Hover suave nas linhas */
+.dt tbody tr {
+  transition: background .15s ease;
+}
+.dt tbody tr:hover td {
+  background: rgba(0,86,168,.04) !important;
+}
+/* Cabeçalho mais limpo */
+.dt thead th {
+  font-size: 9px;
+  letter-spacing: .8px;
+  font-weight: 700;
+  border-bottom: 2px solid var(--gl2) !important;
+}
+
+/* Tabelas de acompanhamento */
+.qtable tbody tr {
+  transition: background .15s ease;
+}
+.qtable tbody tr:hover td {
+  background: rgba(0,86,168,.04);
+}
+
+/* ═══════════════════════════════════════════════
+   BARRAS HORIZONTAIS — Gradiente + Animação
+   ═══════════════════════════════════════════════ */
+
+.hbar-fill {
+  background: linear-gradient(90deg, var(--ac) 0%, rgba(0,86,168,.7) 100%) !important;
+  transition: width .6s cubic-bezier(.4,0,.2,1) !important;
+  position: relative;
+  overflow: hidden;
+}
+.hbar-fill::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%; bottom: 0;
+  width: 60%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.25), transparent);
+  animation: shimmer 2s infinite;
+}
+@keyframes shimmer {
+  0% { left: -100%; }
+  100% { left: 200%; }
+}
+
+/* Barras de NS% em azul escuro */
+.hbar-fill.ns { background: linear-gradient(90deg, #003d7a 0%, #0056A8 100%) !important; }
+.hbar-fill.ok { background: linear-gradient(90deg, #107C41 0%, #2E7D32 100%) !important; }
+.hbar-fill.warn { background: linear-gradient(90deg, #E65100 0%, #F39200 100%) !important; }
+.hbar-fill.bad { background: linear-gradient(90deg, #7B0000 0%, #D13438 100%) !important; }
+
+/* ═══════════════════════════════════════════════
+   HEADER — Glassmorphism
+   ═══════════════════════════════════════════════ */
+
+#hd {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  background: rgba(255,255,255,.88) !important;
+  border-bottom: 1px solid rgba(0,0,0,.06) !important;
+  box-shadow: 0 1px 20px rgba(0,0,0,.06) !important;
+}
+
+/* ═══════════════════════════════════════════════
+   TROCA DE ABAS — Transição suave
+   ═══════════════════════════════════════════════ */
+
+.page {
+  animation: fadeInUp .3s cubic-bezier(.4,0,.2,1) both;
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ═══════════════════════════════════════════════
+   BOTÕES DE FILTRO — Mais destaque
+   ═══════════════════════════════════════════════ */
+
+.ano-btn, .emp-btn {
+  transition: var(--transition-fast) !important;
+  font-weight: 600 !important;
+}
+.ano-btn:hover:not(.on), .emp-btn:hover:not(.on) {
+  background: rgba(0,86,168,.08) !important;
+  border-color: var(--ac) !important;
+  color: var(--ac) !important;
+}
+.ano-btn.on, .emp-btn.on {
+  box-shadow: 0 2px 8px rgba(0,86,168,.3) !important;
+}
+
+/* ═══════════════════════════════════════════════
+   HAMBURGER MENU — Animação
+   ═══════════════════════════════════════════════ */
+
+.mb span {
+  transition: var(--transition-fast);
+  transform-origin: center;
+}
+.mb.open span:nth-child(1) { transform: translateY(10px) rotate(45deg); }
+.mb.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.mb.open span:nth-child(3) { transform: translateY(-10px) rotate(-45deg); }
+
+/* ═══════════════════════════════════════════════
+   RESPONSIVIDADE MOBILE-FIRST — Completa
+   ═══════════════════════════════════════════════ */
+
+@media(max-width:768px) {
+  /* Grids */
+  .fin-grid-kpi  { grid-template-columns: 1fr 1fr !important; }
+  .fin-grid-kpi2 { grid-template-columns: 1fr 1fr !important; }
+  .ve-grid3      { grid-template-columns: 1fr !important; }
+  .kg            { grid-template-columns: 1fr 1fr !important; }
+  .fin-charts    { grid-template-columns: 1fr !important; }
+  .fin-charts2   { grid-template-columns: 1fr !important; }
+  .ent-charts    { grid-template-columns: 1fr !important; }
+  /* Tabelas */
+  .dt-wrap, .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  /* Tipografia */
+  .fkv  { font-size: 13px !important; }
+  .kv   { font-size: 20px !important; }
+  /* Espaçamento */
+  #mn   { padding: 10px 12px 80px !important; }
+}
+
+@media(max-width:480px) {
+  /* Grids 1 coluna */
+  .fin-grid-kpi  { grid-template-columns: 1fr !important; }
+  .fin-grid-kpi2 { grid-template-columns: 1fr !important; }
+  .kg            { grid-template-columns: 1fr 1fr !important; }
+  /* Cards internos */
+  .fk { flex-direction: row !important; }
+  .fkv  { font-size: 12px !important; }
+  .fkl  { font-size: 8px !important; }
+  .fkd  { font-size: 9px !important; }
+  /* Gráficos SVG responsivos */
+  svg { max-width: 100% !important; height: auto !important; }
+  /* Espaçamento */
+  #mn   { padding: 8px 8px 80px !important; }
+  .tc   { padding: 12px !important; }
+  /* Filtros maiores para toque */
+  .ano-btn { padding: 8px 16px !important; font-size: 12px !important; min-height: 40px; }
+  .eb   { padding: 8px 12px !important; font-size: 12px !important; min-height: 40px; }
+  /* Header compacto */
+  .ht   { font-size: 13px !important; }
+  .hs   { font-size: 10px !important; }
+}
 </style>
 <style>
 .ve-grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:14px}
@@ -2204,6 +2450,131 @@ const _updateAbaNome = (p) => {
 fAno('TODOS');
 _updateAbaNome(PAGINA);
 setTimeout(renderVE, 150);
+</script>
+
+<script>
+/* ═══════════════════════════════════════════════
+   ANIMAÇÃO DE CONTAGEM NOS KPIs
+   ═══════════════════════════════════════════════ */
+function animateCount(el, target, prefix, suffix, decimals) {
+  if (!el || el._animating) return;
+  el._animating = true;
+  const start = 0;
+  const duration = 800;
+  const startTime = performance.now();
+  function update(now) {
+    const elapsed = now - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    const ease = 1 - Math.pow(1 - progress, 3); // easeOutCubic
+    const current = start + (target - start) * ease;
+    el.textContent = prefix + current.toFixed(decimals).replace('.', ',') + suffix;
+    if (progress < 1) requestAnimationFrame(update);
+    else el._animating = false;
+  }
+  requestAnimationFrame(update);
+}
+
+/* Observar quando KPIs ficam visíveis e animar */
+function setupKpiAnimations() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const el = entry.target;
+        const text = el.textContent.trim();
+        // Detectar R$ X,XM ou X%
+        const mMatch = text.match(/R\$\s*([\d,]+)M/);
+        const kMatch = text.match(/R\$\s*([\d,.]+)K/);
+        const pMatch = text.match(/([\d,]+)%/);
+        if (mMatch) {
+          const val = parseFloat(mMatch[1].replace(',', '.'));
+          animateCount(el, val, 'R$ ', 'M', 1);
+        } else if (kMatch) {
+          const val = parseFloat(kMatch[1].replace(',', '.'));
+          animateCount(el, val, 'R$ ', 'K', 0);
+        } else if (pMatch) {
+          const val = parseFloat(pMatch[1].replace(',', '.'));
+          animateCount(el, val, '', '%', 1);
+        }
+        observer.unobserve(el);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  document.querySelectorAll('.fkv, .kv').forEach(el => observer.observe(el));
+}
+
+/* ═══════════════════════════════════════════════
+   HAMBURGER MENU — toggle animação
+   ═══════════════════════════════════════════════ */
+function setupHamburger() {
+  const btn = document.querySelector('.mb');
+  if (!btn) return;
+  const orig = btn.onclick;
+  btn.addEventListener('click', function() {
+    this.classList.toggle('open');
+  });
+}
+
+/* ═══════════════════════════════════════════════
+   TOOLTIPS NAS BARRAS HORIZONTAIS
+   ═══════════════════════════════════════════════ */
+function setupBarTooltips() {
+  const tooltip = document.createElement('div');
+  tooltip.className = 'chart-tooltip';
+  document.body.appendChild(tooltip);
+
+  document.querySelectorAll('.hbar-track').forEach(track => {
+    const fill = track.querySelector('.hbar-fill');
+    const row = track.closest('.hbar-row');
+    if (!fill || !row) return;
+
+    const label = row.querySelector('.hbar-label');
+    const pct = row.querySelector('.hbar-pct');
+    const labelText = label ? label.textContent.trim() : '';
+    const pctText = pct ? pct.textContent.trim() : '';
+
+    ['mouseenter', 'touchstart'].forEach(ev => {
+      track.addEventListener(ev, function(e) {
+        tooltip.innerHTML = `<strong>${labelText}</strong><br>${pctText}`;
+        tooltip.classList.add('visible');
+      });
+    });
+    ['mousemove'].forEach(ev => {
+      track.addEventListener(ev, function(e) {
+        tooltip.style.left = (e.pageX - tooltip.offsetWidth/2) + 'px';
+        tooltip.style.top  = (e.pageY - 48) + 'px';
+      });
+    });
+    ['mouseleave', 'touchend'].forEach(ev => {
+      track.addEventListener(ev, function() {
+        tooltip.classList.remove('visible');
+      });
+    });
+  });
+}
+
+/* ═══════════════════════════════════════════════
+   INICIALIZAÇÃO
+   ═══════════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', function() {
+  setupHamburger();
+  setupBarTooltips();
+  // Animar KPIs quando renderizados
+  const orig_renderVE = window.renderVE;
+  const orig_renderFin = window.renderFinanceiro;
+  const orig_renderTr  = window.renderTransportadoras;
+
+  function wrapRender(fn, name) {
+    return function() {
+      if (fn) fn.apply(this, arguments);
+      setTimeout(setupKpiAnimations, 100);
+    };
+  }
+
+  if (typeof renderVE !== 'undefined') window.renderVE = wrapRender(renderVE);
+  if (typeof renderFinanceiro !== 'undefined') window.renderFinanceiro = wrapRender(renderFinanceiro);
+  if (typeof renderTransportadoras !== 'undefined') window.renderTransportadoras = wrapRender(renderTransportadoras);
+});
 </script>
 </body>
 </html>

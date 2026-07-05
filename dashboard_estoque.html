@@ -86,6 +86,164 @@ body{background:var(--bg);color:var(--gd);display:flex;flex-direction:column;min
   .kk{padding:10px 12px}
   .kv{font-size:18px}
 }
+
+/* ═══════════════════════════════════════════════
+   DESIGN SYSTEM — Estoque
+   ═══════════════════════════════════════════════ */
+:root {
+  --shadow-sm: 0 1px 4px rgba(0,0,0,.06);
+  --shadow-md: 0 4px 16px rgba(0,0,0,.10);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,.14);
+  --transition-fast: all .18s cubic-bezier(.4,0,.2,1);
+  --glass-bg: rgba(255,255,255,.72);
+  --glass-border: rgba(255,255,255,.45);
+}
+
+/* ═══════════════════════════════════════════════
+   HEADER — Glassmorphism
+   ═══════════════════════════════════════════════ */
+header, .eh {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  background: rgba(255,255,255,.88) !important;
+  border-bottom: 1px solid rgba(0,0,0,.06) !important;
+  box-shadow: 0 1px 20px rgba(0,0,0,.06) !important;
+}
+
+/* ═══════════════════════════════════════════════
+   CARDS KPI — Hover + Profundidade
+   ═══════════════════════════════════════════════ */
+.kk {
+  transition: var(--transition-fast) !important;
+  will-change: transform, box-shadow;
+}
+.kk:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md) !important;
+}
+
+/* ═══════════════════════════════════════════════
+   SIDEBAR — Itens com hover suave
+   ═══════════════════════════════════════════════ */
+.esb-item, .esb a {
+  transition: var(--transition-fast) !important;
+}
+.esb-item:hover, .esb a:hover {
+  background: rgba(255,255,255,.12) !important;
+  padding-left: 24px !important;
+}
+
+/* ═══════════════════════════════════════════════
+   TABELA — Sem ruído visual + hover suave
+   ═══════════════════════════════════════════════ */
+.et td, .et th {
+  border-left: none !important;
+  border-right: none !important;
+}
+.et tbody tr {
+  transition: background .15s ease;
+}
+.et tbody tr:hover td {
+  background: rgba(0,86,168,.04) !important;
+  cursor: pointer;
+}
+.et thead th {
+  font-size: 9px !important;
+  letter-spacing: .8px !important;
+  font-weight: 700 !important;
+  border-bottom: 2px solid var(--gl2) !important;
+  white-space: nowrap;
+}
+
+/* ═══════════════════════════════════════════════
+   BARRA DE PROGRESSO — Gradiente + Shimmer
+   ═══════════════════════════════════════════════ */
+.prog-fill, .barra-fill, [class*="prog"] {
+  background: linear-gradient(90deg, var(--ac) 0%, rgba(0,86,168,.7) 100%) !important;
+  transition: width .6s cubic-bezier(.4,0,.2,1) !important;
+  position: relative;
+  overflow: hidden;
+}
+.prog-fill::after, .barra-fill::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%; bottom: 0;
+  width: 60%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.3), transparent);
+  animation: shimmer-est 2s infinite;
+}
+@keyframes shimmer-est {
+  0% { left: -100%; }
+  100% { left: 200%; }
+}
+
+/* ═══════════════════════════════════════════════
+   TOOLTIPS
+   ═══════════════════════════════════════════════ */
+.chart-tooltip {
+  position: fixed;
+  background: #1E2A3A;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .18s ease;
+  z-index: 9999;
+  white-space: nowrap;
+  box-shadow: var(--shadow-md);
+}
+.chart-tooltip.visible { opacity: 1; }
+
+/* ═══════════════════════════════════════════════
+   TROCA DE SEÇÃO — Transição suave
+   ═══════════════════════════════════════════════ */
+.sec, .table-wrap, .emain > div {
+  animation: fadeInUp-est .25s cubic-bezier(.4,0,.2,1) both;
+}
+@keyframes fadeInUp-est {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ═══════════════════════════════════════════════
+   BOTÕES — Maior para toque mobile
+   ═══════════════════════════════════════════════ */
+.emp-btn, .sec-btn, .bv {
+  transition: var(--transition-fast) !important;
+}
+.emp-btn:hover:not(.on), .sec-btn:hover:not(.on) {
+  background: rgba(0,86,168,.08) !important;
+  border-color: var(--ac) !important;
+}
+.emp-btn.on, .sec-btn.on {
+  box-shadow: 0 2px 8px rgba(0,86,168,.3) !important;
+}
+
+/* ═══════════════════════════════════════════════
+   MOBILE — Responsivo completo
+   ═══════════════════════════════════════════════ */
+@media(max-width:768px) {
+  .esb { display: none !important; }
+  .elay { flex-direction: column !important; }
+  .emain { padding: 10px !important; }
+  .kg3 { grid-template-columns: 1fr 1fr !important; }
+  .kg  { grid-template-columns: 1fr 1fr !important; }
+  .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .et { min-width: 600px; }
+  .emp-btn { padding: 6px 10px !important; font-size: 11px !important; }
+}
+@media(max-width:480px) {
+  .kg3 { grid-template-columns: 1fr !important; }
+  .kg  { grid-template-columns: 1fr 1fr !important; }
+  .kk  { padding: 10px 12px !important; }
+  .kv  { font-size: 14px !important; }
+  .emain { padding: 8px !important; }
+  .emp-btn { min-height: 40px !important; padding: 8px 10px !important; }
+  .bv  { padding: 8px 14px !important; font-size: 12px !important; min-height: 40px !important; }
+}
 </style>
 
 <style>
@@ -1394,6 +1552,66 @@ if(DADOS['IAB']){
   initGiroCtx();
   renderPos();
 }
+</script>
+
+<script>
+/* Contagem animada nos KPIs do estoque */
+function animateCountEst(el, target, prefix, suffix, decimals) {
+  if (!el || el._anim) return;
+  el._anim = true;
+  const duration = 700;
+  const startTime = performance.now();
+  function update(now) {
+    const p = Math.min((now - startTime) / duration, 1);
+    const ease = 1 - Math.pow(1 - p, 3);
+    el.textContent = prefix + (target * ease).toFixed(decimals).replace('.', ',') + suffix;
+    if (p < 1) requestAnimationFrame(update);
+    else el._anim = false;
+  }
+  requestAnimationFrame(update);
+}
+
+function setupEstoqueAnimations() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const el = entry.target;
+      const text = el.textContent.trim();
+      const numMatch = text.match(/^[\d.,]+$/);
+      if (numMatch) {
+        const val = parseFloat(text.replace('.', '').replace(',', '.'));
+        if (!isNaN(val) && val > 0) animateCountEst(el, val, '', '', 0);
+      }
+      observer.unobserve(el);
+    });
+  }, { threshold: 0.5 });
+
+  document.querySelectorAll('.kv').forEach(el => observer.observe(el));
+}
+
+/* Tooltips nas células da tabela */
+function setupEstoqueTooltips() {
+  const tip = document.createElement('div');
+  tip.className = 'chart-tooltip';
+  document.body.appendChild(tip);
+
+  document.querySelectorAll('.et td[title]').forEach(td => {
+    td.addEventListener('mouseenter', function(e) {
+      tip.textContent = this.getAttribute('title');
+      tip.classList.add('visible');
+    });
+    td.addEventListener('mousemove', function(e) {
+      tip.style.left = (e.clientX + 12) + 'px';
+      tip.style.top  = (e.clientY - 32) + 'px';
+    });
+    td.addEventListener('mouseleave', () => tip.classList.remove('visible'));
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  setupEstoqueAnimations();
+  setupEstoqueTooltips();
+});
 </script>
 </body>
 </html>
