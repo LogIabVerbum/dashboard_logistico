@@ -36,13 +36,14 @@ body{background:var(--bg);color:var(--gd);display:flex;flex-direction:column;min
 /* CARDS */
 .kg{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:10px;margin-bottom:14px}
 .kg3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
-.kk{background:var(--wh);border-radius:var(--r);padding:9px 12px;box-shadow:var(--sh);border-left:4px solid transparent}
+.kk{background:var(--wh);border-radius:var(--r);padding:14px 16px;box-shadow:var(--sh);border-left:4px solid transparent;transition:transform .2s,box-shadow .2s;display:flex;flex-direction:column;justify-content:space-between}
+.kk:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.12)}
 .kk.bl{border-color:var(--ac)}.kk.gr{border-color:var(--ok)}.kk.or{border-color:var(--al)}.kk.rd{border-color:var(--err)}.kk.gy{border-color:#607D8B}
-.kk .ki{font-size:14px;margin-bottom:2px}
-.kk .kl{font-size:8px;font-weight:700;color:var(--gl);text-transform:uppercase;letter-spacing:.6px;margin-bottom:1px}
-.kk .kv{font-size:15px;font-weight:800;color:var(--gd);line-height:1.1}
-.kk .ks{font-size:10px;color:var(--gm);margin-top:3px}
-.kk .kf{font-size:9px;color:var(--gl);margin-top:1px}
+.kk .ki{font-size:18px;margin-bottom:4px}
+.kk .kl{font-size:9px;font-weight:700;color:var(--gl);text-transform:uppercase;letter-spacing:.7px;margin-bottom:3px;white-space:nowrap}
+.kk .kv{font-size:22px;font-weight:800;color:var(--gd);line-height:1;margin-bottom:4px}
+.kk .ks{font-size:11px;color:var(--gm);margin-top:4px}
+.kk .kf{font-size:10px;color:var(--gl);margin-top:2px}
 .pill{display:inline-block;padding:1px 7px;border-radius:10px;font-size:10px;font-weight:700}
 .pr{background:#FFEBEE;color:#7B0000}.py{background:#FFF3E0;color:#E65100}.pg{background:#E8F5E9;color:#2E7D32}
 /* CHARTS */
@@ -83,8 +84,9 @@ body{background:var(--bg);color:var(--gd);display:flex;flex-direction:column;min
   .eh .et{font-size:12px}
   .bv{padding:4px 8px;font-size:11px}
   .emain{padding:8px}
-  .kk{padding:10px 12px}
-  .kv{font-size:18px}
+  .kk{padding:10px 14px}
+  .kk .kv{font-size:18px}
+  .kk .ki{font-size:15px}
 }
 
 /* ═══════════════════════════════════════════════
@@ -365,6 +367,8 @@ td.valor{font-weight:600}
     <div class="ni on" id="ni-posicao" onclick="navEst('posicao')">📊 Posição Atual</div>
     <div class="ni"    id="ni-giro"    onclick="navEst('giro')">📈 Análise de Giro</div>
     <div class="ni"    id="ni-kardex"  onclick="navEst('kardex')">📦 Kardex</div>
+    <div class="ss" style="margin-top:16px">Navegação</div>
+    <a href="dashboard.html" class="ni" style="color:rgba(255,255,255,.6);text-decoration:none;border-left-color:transparent">🚚 Dashboard Logístico</a>
   </nav>
 
   <main class="emain">
@@ -1537,6 +1541,60 @@ tr.tr-total td.col-b.valor-total{color:#B8D8F8}
 .emp-btn.active {
   box-shadow: 0 2px 8px rgba(0,86,168,.3) !important;
 }
+</style>
+
+<style>
+/* ═══════════════════════════════════════════════════════════
+   MOBILE DEFINITIVO — Dashboard Estoque — coluna única ≤768px
+   ═══════════════════════════════════════════════════════════ */
+@media(max-width:768px){
+  /* KPI Cards — 1 coluna */
+  .kg  { grid-template-columns: 1fr !important; }
+  .kg3 { grid-template-columns: 1fr !important; }
+  .ve-grid3 { grid-template-columns: 1fr !important; }
+
+  /* Gráficos/Charts — 1 coluna */
+  .ech2 { grid-template-columns: 1fr !important; }
+
+  /* Grid inline repeat(3,1fr) e repeat(2,1fr) */
+  [style*="repeat(3,1fr)"],
+  [style*="repeat(3, 1fr)"],
+  [style*="repeat(2,1fr)"],
+  [style*="repeat(2, 1fr)"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Tabelas — scroll horizontal */
+  table, .et {
+    display: block !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    max-width: 100% !important;
+  }
+  .et-wrap, [class*="table-wrap"], [class*="table-container"],
+  [style*="overflow-x:auto"] {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    max-width: 100% !important;
+  }
+
+  /* Layout geral */
+  #mn { padding: 8px 8px 80px !important; }
+  .tc { padding: 12px !important; }
+
+  /* Tipografia */
+  .fkv { font-size: 12px !important; }
+  .kv  { font-size: 18px !important; }
+  .fki { font-size: 13px !important; }
+
+  /* Botões touch-friendly */
+  .ano-btn { min-height: 40px !important; padding: 8px 16px !important; font-size: 12px !important; }
+  .eb      { min-height: 40px !important; padding: 8px 12px !important; }
+
+  /* SVG responsivo */
+  svg { max-width: 100% !important; height: auto !important; }
+}
+
 </style>
 </head><body>
 <div class="doc-header">
