@@ -146,7 +146,7 @@ tbody td{padding:9px 11px;font-weight:500}
 /* TABELA ACOMPANHAMENTO */
 .qtitle{font-size:14px;font-weight:700;margin-bottom:3px}
 .qsub{font-size:11px;color:var(--gl);margin-bottom:14px}
-.qtable-wrap{overflow-x:auto;border-radius:var(--r2);border:1px solid var(--gl2)}
+.qtable-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:var(--r2);border:1px solid var(--gl2);overscroll-behavior-x:contain}
 .qtable{width:100%;border-collapse:collapse;font-size:12px;min-width:900px}
 .qtable thead th{padding:10px 12px;text-align:left;font-size:9px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:.8px;background:#2d3a4a;border-bottom:2px solid #1a2330;white-space:nowrap;cursor:pointer;user-select:none}
 .qtable tbody tr{border-bottom:1px solid var(--gl2);transition:background .15s}
@@ -684,6 +684,7 @@ tbody td{padding:9px 11px;font-weight:500}
   .fin-grid-kpi  { grid-template-columns: 1fr 1fr !important; }
   .fin-grid-kpi2 { grid-template-columns: 1fr 1fr !important; }
   .ve-grid3      { grid-template-columns: 1fr !important; }
+  .ve-charts-grid { grid-template-columns: 1fr !important; }
   .kg            { grid-template-columns: 1fr 1fr !important; }
   .fin-charts    { grid-template-columns: 1fr !important; }
   .fin-charts2   { grid-template-columns: 1fr !important; }
@@ -889,7 +890,7 @@ tbody td{padding:9px 11px;font-weight:500}
   <div id="ve-kpi2" class="ve-grid3"></div>
   <div style="font-size:10px;font-weight:700;color:var(--err);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px;margin-top:4px">🚨 Alertas de Exceção</div>
   <div id="ve-alertas" class="ve-grid3" style="margin-bottom:14px"></div>
-  <div style="display:grid;grid-template-columns:2fr 1fr;gap:13px;margin-bottom:14px">
+  <div class="ve-charts-grid" style="display:grid;grid-template-columns:2fr 1fr;gap:13px;margin-bottom:14px">
     <div class="tc"><div class="ct">Evolução — NS% e Faturamento Líquido</div><div class="cs" id="ve-ctx-evol">—</div><div id="ve-chart-evol"></div></div>
     <div class="tc"><div class="ct">Resultado por Região</div><div class="cs">NS% · FSF% · Entregas</div><div id="ve-chart-reg"></div></div>
   </div>
@@ -2726,6 +2727,71 @@ document.addEventListener('DOMContentLoaded', function() {
   // Observer para tabelas renderizadas via JS
   var obs = new MutationObserver(applySort);
   obs.observe(document.body, { childList: true, subtree: true });
+})();
+</script>
+
+<script>
+/* ═══════════════════════════════════════════════
+   FIX: Scroll horizontal nas tabelas no mobile
+   Captura gestos horizontais nos wrappers de tabela
+   sem interferir no scroll vertical da página
+   ═══════════════════════════════════════════════ */
+(function() {
+  var SCROLL_THRESHOLD = 10; // px mínimos para detectar direção
+
+  function setupTableScroll(el) {
+    if (el._scrollBound) return;
+    el._scrollBound = true;
+
+    var startX, startY, startScrollLeft;
+
+    el.addEventListener('touchstart', function(e) {
+      var t = e.touches[0];
+      startX = t.clientX;
+      startY = t.clientY;
+      startScrollLeft = el.scrollLeft;
+    }, { passive: true });
+
+    el.addEventListener('touchmove', function(e) {
+      if (startX === undefined) return;
+      var t = e.touches[0];
+      var dx = Math.abs(t.clientX - startX);
+      var dy = Math.abs(t.clientY - startY);
+
+      // Se movimento horizontal dominante E tem conteúdo para rolar
+      if (dx > dy && dx > SCROLL_THRESHOLD && el.scrollWidth > el.clientWidth) {
+        e.preventDefault(); // impede scroll da página
+        el.scrollLeft = startScrollLeft - (t.clientX - startX);
+      }
+    }, { passive: false }); // passive:false para poder chamar preventDefault
+  }
+
+  function applyToAllWrappers() {
+    // Aplicar em todos os wrappers de tabela
+    document.querySelectorAll(
+      '.qtable-wrap, .fin-table-wrap, .tr-table-wrap, ' +
+      '.dt-wrap, [class*="table-wrap"], ' +
+      '.fin-table, .tr-table, .qtable, ' +
+      '.fin-table-container, .tr-table-container'
+    ).forEach(setupTableScroll);
+
+    // Também aplicar nos containers diretos de tabela
+    document.querySelectorAll('table').forEach(function(t) {
+      var p = t.parentElement;
+      if (p && (p.style.overflowX === 'auto' || 
+          getComputedStyle(p).overflowX === 'auto')) {
+        setupTableScroll(p);
+      }
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', applyToAllWrappers);
+  
+  // Re-aplicar quando tabelas forem renderizadas dinamicamente
+  var obs = new MutationObserver(function() { applyToAllWrappers(); });
+  document.addEventListener('DOMContentLoaded', function() {
+    obs.observe(document.body, { childList: true, subtree: true });
+  });
 })();
 </script>
 </body>

@@ -347,7 +347,7 @@ td.valor{font-weight:600}
 </head>
 <body>
 
-<div class="eh">
+<div class="eh"><button class="est-mb" id="est-mb" onclick="toggleEstMenu()" aria-label="Menu"><span></span><span></span><span></span></button>
   <img id="logo-emp" class="logo" src="" alt="">
   <div><div class="et_">Dashboard de Estoque</div><div class="es" id="header-sub">Instituto Alfa e Beto</div></div>
   <div class="sp"></div>
@@ -358,6 +358,7 @@ td.valor{font-weight:600}
   <a href="dashboard.html" class="bv">← Dashboard Logístico</a>
 </div>
 
+<div class="est-overlay" id="est-overlay" onclick="toggleEstMenu()"></div>
 <div class="elay">
   <nav class="esb">
     <div class="ss">Painéis</div>
@@ -391,10 +392,43 @@ td.valor{font-weight:600}
           <div id="pos-faixas"></div>
         </div>
       </div>
+      
+      <!-- SALDO EM ESTOQUE -->
+      <div class="ech" id="pos-saldo-section">
+        <!-- KPI total de itens -->
+        <div class="kg" id="pos-saldo-kpi" style="margin-bottom:14px"></div>
+
+        <div class="ct">📦 Saldo em Estoque por Item</div>
+        <div class="cs">Agrupado por nome · período selecionado</div>
+
+        <!-- Busca -->
+        <div style="margin:10px 0 8px">
+          <input id="pos-saldo-busca" type="text" placeholder="🔍 Pesquisar item..."
+            oninput="renderSaldoTabela()"
+            style="width:100%;padding:8px 12px;border:1.5px solid var(--gl2);border-radius:8px;
+                   font-size:13px;font-family:var(--font);outline:none;box-sizing:border-box">
+        </div>
+
+        <!-- Tabela -->
+        <div class="et-wrap" style="overflow-x:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain">
+          <table class="et" id="pos-saldo-table">
+            <thead><tr>
+              <th style="text-align:left;min-width:220px">Item</th>
+              <th>Empresa</th>
+              <th>Saldo Final (un.)</th>
+              <th>Valor Unit.</th>
+              <th>Valor em Estoque</th>
+            </tr></thead>
+            <tbody id="pos-saldo-tbody"></tbody>
+          </table>
+        </div>
+        <div id="pos-saldo-info" style="font-size:10px;color:var(--gl);margin-top:6px;text-align:right"></div>
+      </div>
+
       <div class="ech">
         <div class="ct">🚨 Itens Críticos — Cobertura &lt; 30 dias ou Ruptura</div>
         <div class="cs">Requerem reposição imediata</div>
-        <div style="overflow-x:auto"><table class="et">
+        <div class="et-wrap" style="overflow-x:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain"><table class="et">
           <thead><tr>
             <th style="text-align:left">Produto</th>
             <th>Saldo</th><th>Saídas</th><th>Cobertura</th><th>Valor</th><th>Status</th>
@@ -436,7 +470,7 @@ td.valor{font-weight:600}
             <span onclick="fABC='C';renderGiro()" style="cursor:pointer"><span class="abc-badge abc-c">C</span></span>
           </div>
         </div>
-        <div style="overflow-x:auto"><table class="et">
+        <div class="et-wrap" style="overflow-x:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain"><table class="et">
           <thead><tr>
             <th style="text-align:center">ABC</th>
             <th style="text-align:left">Produto</th>
@@ -1122,6 +1156,387 @@ tr.tr-total td.col-b.valor-total{color:#B8D8F8}
   .kk  { padding: 10px 12px !important; }
   .emain { padding: 8px !important; }
 }
+
+/* ═══ HAMBÚRGUER MENU — Estoque Mobile ═══ */
+.est-mb {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  flex-direction: column;
+  gap: 5px;
+  border-radius: 6px;
+  transition: background .2s;
+}
+.est-mb span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: #fff;
+  border-radius: 2px;
+  transition: all .25s cubic-bezier(.4,0,.2,1);
+  transform-origin: center;
+}
+.est-mb.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.est-mb.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.est-mb.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+.est-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.45);
+  z-index: 299;
+}
+.est-overlay.open { display: block; }
+
+@media(max-width:768px) {
+  .est-mb { display: flex !important; }
+
+  /* Sidebar deslizante */
+  .esb {
+    position: fixed !important;
+    left: -220px !important;
+    top: 54px !important;
+    height: calc(100vh - 54px) !important;
+    z-index: 300 !important;
+    transition: left .3s cubic-bezier(.4,0,.2,1) !important;
+    display: flex !important;
+    flex-direction: column;
+    width: 200px !important;
+    min-width: 200px !important;
+  }
+  .esb.open { left: 0 !important; }
+
+  /* Cards KPI — 1 coluna */
+  .kg  { grid-template-columns: 1fr !important; }
+  .kg3 { grid-template-columns: 1fr !important; }
+
+  /* Gráficos — 1 coluna */
+  .ech2 { grid-template-columns: 1fr !important; }
+
+  /* Tabela críticos scroll */
+  .et { display: block !important; overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; }
+  .et-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain; }
+
+  /* Layout */
+  .elay { flex-direction: column !important; }
+  .emain { padding: 10px !important; }
+}
+/* ═══════════════════════════════════════════════
+   DESIGN SYSTEM — Elevação Visual
+   ═══════════════════════════════════════════════ */
+
+/* Variáveis aprimoradas */
+:root {
+  --shadow-sm: 0 1px 4px rgba(0,0,0,.06);
+  --shadow-md: 0 4px 16px rgba(0,0,0,.10);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,.14);
+  --shadow-glow: 0 0 20px rgba(0,86,168,.15);
+  --transition-fast: all .18s cubic-bezier(.4,0,.2,1);
+  --transition-smooth: all .3s cubic-bezier(.4,0,.2,1);
+  --glass-bg: rgba(255,255,255,.72);
+  --glass-border: rgba(255,255,255,.45);
+}
+
+/* ═══════════════════════════════════════════════
+   CARDS — Glassmorphism + Profundidade
+   ═══════════════════════════════════════════════ */
+
+.fk {
+  transition: var(--transition-fast);
+  will-change: transform, box-shadow;
+}
+.fk:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md) !important;
+}
+.tc {
+  transition: var(--transition-fast);
+}
+.tc:hover {
+  box-shadow: var(--shadow-md) !important;
+  transform: translateY(-1px);
+}
+
+
+
+/* ═══════════════════════════════════════════════
+   KPI — Animação de contagem
+   ═══════════════════════════════════════════════ */
+
+.kv, .fkv {
+  transition: color .3s ease;
+}
+
+/* ═══════════════════════════════════════════════
+   GRÁFICOS — Tooltips touch-friendly
+   ═══════════════════════════════════════════════ */
+
+.chart-tooltip {
+  position: absolute;
+  background: #1E2A3A;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .18s ease;
+  z-index: 100;
+  white-space: nowrap;
+  box-shadow: var(--shadow-md);
+  min-width: 80px;
+  text-align: center;
+}
+.chart-tooltip::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-bottom: none;
+  border-top-color: #1E2A3A;
+}
+.chart-tooltip.visible { opacity: 1; }
+
+/* ═══════════════════════════════════════════════
+   TABELAS — Sem ruído visual
+   ═══════════════════════════════════════════════ */
+
+/* Remover linhas verticais desnecessárias */
+.dt td, .dt th { border-left: none !important; border-right: none !important; }
+/* Hover suave nas linhas */
+.dt tbody tr {
+  transition: background .15s ease;
+}
+.dt tbody tr:hover td {
+  background: rgba(0,86,168,.04) !important;
+}
+/* Cabeçalho mais limpo */
+.dt thead th {
+  font-size: 9px;
+  letter-spacing: .8px;
+  font-weight: 700;
+  border-bottom: 2px solid var(--gl2) !important;
+}
+
+/* Tabelas de acompanhamento */
+.qtable tbody tr {
+  transition: background .15s ease;
+}
+.qtable tbody tr:hover td {
+  background: rgba(0,86,168,.04);
+}
+
+/* ═══════════════════════════════════════════════
+   BARRAS HORIZONTAIS — Gradiente + Animação
+   ═══════════════════════════════════════════════ */
+
+.hbar-fill {
+  background: linear-gradient(90deg, var(--ac) 0%, rgba(0,86,168,.7) 100%) !important;
+  transition: width .6s cubic-bezier(.4,0,.2,1) !important;
+  position: relative;
+  overflow: hidden;
+}
+.hbar-fill::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%; bottom: 0;
+  width: 60%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.25), transparent);
+  animation: shimmer 2s infinite;
+}
+@keyframes shimmer {
+  0% { left: -100%; }
+  100% { left: 200%; }
+}
+
+/* Barras de NS% em azul escuro */
+.hbar-fill.ns { background: linear-gradient(90deg, #003d7a 0%, #0056A8 100%) !important; }
+.hbar-fill.ok { background: linear-gradient(90deg, #107C41 0%, #2E7D32 100%) !important; }
+.hbar-fill.warn { background: linear-gradient(90deg, #E65100 0%, #F39200 100%) !important; }
+.hbar-fill.bad { background: linear-gradient(90deg, #7B0000 0%, #D13438 100%) !important; }
+
+/* ═══════════════════════════════════════════════
+   HEADER — Glassmorphism
+   ═══════════════════════════════════════════════ */
+
+#hd {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  background: rgba(255,255,255,.88) !important;
+  border-bottom: 1px solid rgba(0,0,0,.06) !important;
+  box-shadow: 0 1px 20px rgba(0,0,0,.06) !important;
+}
+
+/* ═══════════════════════════════════════════════
+   TROCA DE ABAS — Transição suave
+   ═══════════════════════════════════════════════ */
+
+.page {
+  animation: fadeInUp .3s cubic-bezier(.4,0,.2,1) both;
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ═══════════════════════════════════════════════
+   BOTÕES DE FILTRO — Mais destaque
+   ═══════════════════════════════════════════════ */
+
+.ano-btn, .emp-btn {
+  transition: var(--transition-fast) !important;
+  font-weight: 600 !important;
+}
+.ano-btn:hover:not(.on), .emp-btn:hover:not(.on) {
+  background: rgba(0,86,168,.08) !important;
+  border-color: var(--ac) !important;
+  color: var(--ac) !important;
+}
+.ano-btn.on, .emp-btn.on {
+  box-shadow: 0 2px 8px rgba(0,86,168,.3) !important;
+}
+
+/* ═══════════════════════════════════════════════
+   HAMBURGER MENU — Animação
+   ═══════════════════════════════════════════════ */
+
+.mb span {
+  transition: var(--transition-fast);
+  transform-origin: center;
+}
+.mb.open span:nth-child(1) { transform: translateY(10px) rotate(45deg); }
+.mb.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.mb.open span:nth-child(3) { transform: translateY(-10px) rotate(-45deg); }
+
+/* ═══════════════════════════════════════════════
+   RESPONSIVIDADE MOBILE-FIRST — Completa
+   ═══════════════════════════════════════════════ */
+
+@media(max-width:768px) {
+  /* Grids */
+  .fin-grid-kpi  { grid-template-columns: 1fr 1fr !important; }
+  .fin-grid-kpi2 { grid-template-columns: 1fr 1fr !important; }
+  .ve-grid3      { grid-template-columns: 1fr !important; }
+  .ve-charts-grid { grid-template-columns: 1fr !important; }
+  .kg            { grid-template-columns: 1fr 1fr !important; }
+  .fin-charts    { grid-template-columns: 1fr !important; }
+  .fin-charts2   { grid-template-columns: 1fr !important; }
+  .ent-charts    { grid-template-columns: 1fr !important; }
+  /* Tabelas */
+  .dt-wrap, .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  /* Tipografia */
+  .fkv  { font-size: 13px !important; }
+  .kv   { font-size: 20px !important; }
+  /* Espaçamento */
+  #mn   { padding: 10px 12px 80px !important; }
+}
+
+@media(max-width:480px) {
+  /* Grids 1 coluna */
+  .fin-grid-kpi  { grid-template-columns: 1fr !important; }
+  .fin-grid-kpi2 { grid-template-columns: 1fr !important; }
+  .kg            { grid-template-columns: 1fr 1fr !important; }
+  /* Cards internos */
+  .fk { flex-direction: row !important; }
+  .fkv  { font-size: 12px !important; }
+  .fkl  { font-size: 8px !important; }
+  .fkd  { font-size: 9px !important; }
+  /* Gráficos SVG responsivos */
+  svg { max-width: 100% !important; height: auto !important; }
+  /* Espaçamento */
+  #mn   { padding: 8px 8px 80px !important; }
+  .tc   { padding: 12px !important; }
+  /* Filtros maiores para toque */
+  .ano-btn { padding: 8px 16px !important; font-size: 12px !important; min-height: 40px; }
+  .eb   { padding: 8px 12px !important; font-size: 12px !important; min-height: 40px; }
+  /* Header compacto */
+  .ht   { font-size: 13px !important; }
+  .hs   { font-size: 10px !important; }
+}
+</style>
+<style>
+.ve-grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:14px}
+.ve-card{background:var(--white);border-radius:var(--r);padding:11px 14px;box-shadow:var(--shadow);border-left:5px solid transparent;cursor:pointer;transition:box-shadow .15s;display:flex;flex-direction:column}
+.ve-card:hover{box-shadow:0 4px 20px rgba(0,0,0,.12)}
+.ve-card.ok{border-color:var(--ok)}.ve-card.warn{border-color:var(--alert)}.ve-card.bad{border-color:var(--err)}.ve-card.neu{border-color:var(--ac)}
+.ve-card .vc-row1{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:4px}.vc-head{display:flex;align-items:center;gap:5px;min-width:0}.vc-ico{font-size:14px;flex-shrink:0}
+.ve-card .vc-lbl{font-size:9px;font-weight:700;color:var(--gl);text-transform:uppercase;letter-spacing:.6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ve-card .vc-val{font-size:22px;font-weight:800;color:var(--gd);line-height:1.1;margin-bottom:4px}
+.ve-card .vc-badge{display:inline-block;padding:2px 7px;border-radius:8px;font-size:9px;font-weight:700;white-space:nowrap;flex-shrink:0}
+.ve-card .vc-row3{display:flex;align-items:center;justify-content:space-between;gap:4px}.vc-yoy{font-size:10px;font-weight:700;min-width:0}
+.ve-card .vc-drill{font-size:9px;color:var(--ac);cursor:pointer;white-space:nowrap;flex-shrink:0;font-weight:600}
+.ve-alerta{border-radius:var(--r);padding:14px 16px}
+.ve-alerta.crit{background:#FFF5F5;border:1.5px solid #FFCDD2}
+.ve-alerta.aviso{background:#FFFDE7;border:1.5px solid #FFF176}
+.ve-alerta-tit{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px}
+.ve-alerta-item{font-size:12px;padding:5px 0;border-bottom:1px solid rgba(0,0,0,.06);display:flex;justify-content:space-between;align-items:center}
+.ve-alerta-item:last-child{border:none}
+.ve-alerta-vazio{font-size:12px;color:var(--gl);font-style:italic;text-align:center;padding:10px 0}
+.tc{background:var(--white);border-radius:var(--r);padding:16px;box-shadow:var(--shadow);margin-bottom:14px}
+
+
+/* ═══ EFEITOS ESTOQUE ═══ */
+.kk {
+  transition: var(--transition-fast) !important;
+  will-change: transform, box-shadow;
+}
+.kk:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md) !important;
+}
+.ech {
+  transition: var(--transition-fast);
+}
+/* Shimmer nas barras do estoque */
+.bar-inner, .barra, [class*="bar-fill"] {
+  position: relative;
+  overflow: hidden;
+}
+.bar-inner::after, .barra::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%; bottom: 0;
+  width: 60%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.25), transparent);
+  animation: shimmer-est 2s infinite;
+}
+/* Fade nas seções */
+.epage.on {
+  animation: fadeInUp-est .3s cubic-bezier(.4,0,.2,1) both;
+}
+@keyframes fadeInUp-est {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+/* Hover nas linhas da tabela */
+.et tbody tr { transition: background .15s ease; }
+.et tbody tr:hover td { background: rgba(0,86,168,.04) !important; }
+/* Cabeçalho tabela estoque com fundo escuro */
+.et thead th {
+  background: #2d3a4a;
+  color: #fff;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+/* Input busca */
+#pos-saldo-busca:focus {
+  border-color: var(--ac) !important;
+  box-shadow: 0 0 0 3px rgba(0,86,168,.12);
+}
+/* Botões empresa */
+.emp-btn {
+  transition: var(--transition-fast) !important;
+}
+.emp-btn.active {
+  box-shadow: 0 2px 8px rgba(0,86,168,.3) !important;
+}
 </style>
 </head><body>
 <div class="doc-header">
@@ -1642,6 +2057,314 @@ function setupEstoqueTooltips() {
 document.addEventListener('DOMContentLoaded', function() {
   setupEstoqueAnimations();
   setupEstoqueTooltips();
+});
+</script>
+
+<script>
+/* Hambúrguer menu — Estoque */
+function toggleEstMenu() {
+  var sb  = document.querySelector('.esb');
+  var btn = document.getElementById('est-mb');
+  var ov  = document.getElementById('est-overlay');
+  if (!sb) return;
+  var open = sb.classList.toggle('open');
+  if (btn) btn.classList.toggle('open', open);
+  if (ov)  ov.classList.toggle('open', open);
+}
+
+/* Fechar menu ao navegar */
+var _origNavEst = window.navEst;
+window.navEst = function(p) {
+  if (_origNavEst) _origNavEst(p);
+  var sb  = document.querySelector('.esb');
+  var btn = document.getElementById('est-mb');
+  var ov  = document.getElementById('est-overlay');
+  if (sb)  sb.classList.remove('open');
+  if (btn) btn.classList.remove('open');
+  if (ov)  ov.classList.remove('open');
+};
+
+/* Ordenação de tabelas */
+(function() {
+  var sortState = {};
+  function sortTable(th) {
+    var thead = th.closest('thead');
+    var table = th.closest('table');
+    var tbody = table.querySelector('tbody');
+    if (!tbody) return;
+    var tid = table.id || (table.id = 'tbl_' + Math.random().toString(36).slice(2));
+    var ths = Array.from(thead.querySelectorAll('th'));
+    var col = ths.indexOf(th);
+    if (col < 0) return;
+    var state = sortState[tid] || {};
+    var asc = state.col === col ? !state.asc : true;
+    sortState[tid] = { col: col, asc: asc };
+    ths.forEach(function(h, i) {
+      h.textContent = h.textContent.replace(/ [▲▼]$/, '');
+      if (i === col) h.textContent += asc ? ' ▲' : ' ▼';
+    });
+    var rows = Array.from(tbody.querySelectorAll('tr'));
+    rows.sort(function(a, b) {
+      var ca = a.cells[col] ? a.cells[col].textContent.trim() : '';
+      var cb = b.cells[col] ? b.cells[col].textContent.trim() : '';
+      function parsePtBR(s) {
+        // Remove tudo exceto dígitos, ponto e vírgula
+        var clean = s.replace(/[^0-9.,]/g, '');
+        // Se tem ponto E vírgula: ponto é milhar, vírgula é decimal (ex: 1.234,56)
+        if (clean.indexOf('.') >= 0 && clean.indexOf(',') >= 0) {
+          clean = clean.replace(/\./g, '').replace(',', '.');
+        }
+        // Se só tem ponto: pode ser milhar (ex: 3.397) ou decimal (ex: 3.5)
+        else if (clean.indexOf('.') >= 0 && clean.indexOf(',') < 0) {
+          // Se o ponto separa grupos de 3 dígitos, é milhar
+          var parts = clean.split('.');
+          if (parts.length > 1 && parts[parts.length-1].length === 3) {
+            clean = clean.replace(/\./g, ''); // remove milhar
+          }
+        }
+        // Se só tem vírgula: é decimal (ex: 440,00)
+        else if (clean.indexOf(',') >= 0) {
+          clean = clean.replace(',', '.');
+        }
+        return parseFloat(clean);
+      }
+      var na = parsePtBR(ca);
+      var nb = parsePtBR(cb);
+      var r = (!isNaN(na) && !isNaN(nb)) ? na - nb : ca.localeCompare(cb, 'pt-BR');
+      return asc ? r : -r;
+    });
+    rows.forEach(function(r) { tbody.appendChild(r); });
+  }
+  function applySort() {
+    document.querySelectorAll('thead th').forEach(function(th) {
+      if (!th._sortBound) {
+        th._sortBound = true;
+        th.style.cursor = 'pointer';
+        th.title = 'Clique para ordenar';
+        th.addEventListener('click', function() { sortTable(this); });
+      }
+    });
+  }
+  document.addEventListener('DOMContentLoaded', applySort);
+  new MutationObserver(applySort).observe(document.documentElement, { childList: true, subtree: true });
+})();
+
+/* Scroll horizontal nas tabelas — fix mobile */
+(function() {
+  function setupScroll(el) {
+    if (el._scrollBound) return;
+    el._scrollBound = true;
+    var startX, startY, startLeft;
+    el.addEventListener('touchstart', function(e) {
+      var t = e.touches[0];
+      startX = t.clientX; startY = t.clientY; startLeft = el.scrollLeft;
+    }, { passive: true });
+    el.addEventListener('touchmove', function(e) {
+      if (startX === undefined) return;
+      var t = e.touches[0];
+      var dx = Math.abs(t.clientX - startX);
+      var dy = Math.abs(t.clientY - startY);
+      if (dx > dy && dx > 10 && el.scrollWidth > el.clientWidth) {
+        e.preventDefault();
+        el.scrollLeft = startLeft - (t.clientX - startX);
+      }
+    }, { passive: false });
+  }
+  function apply() {
+    document.querySelectorAll('.et-wrap, .table-wrap, [style*="overflow-x"]').forEach(setupScroll);
+  }
+  document.addEventListener('DOMContentLoaded', apply);
+  new MutationObserver(apply).observe(document.documentElement, { childList: true, subtree: true });
+})();
+
+/* Inicializar tabela de saldo após carregamento */
+document.addEventListener('DOMContentLoaded', function() {
+  setTimeout(function() {
+    try {
+      var d = DADOS[empAtual];
+      if (!d || !d.periodos) return;
+      var ultimoPer = d.periodos[d.periodos.length - 1];
+      buildSaldoCache(ultimoPer);
+      renderSaldoKpi();
+      renderSaldoTabela();
+    } catch(e) { console.error('init saldo:', e); }
+  }, 300);
+});
+</script>
+
+<script>
+
+/* ══════════════════════════════════════════
+   TABELA SALDO EM ESTOQUE — por nome
+   ══════════════════════════════════════════ */
+var _saldoCache = [];
+
+function renderSaldoTabela() {
+  var busca = (document.getElementById('pos-saldo-busca') || {}).value || '';
+  busca = busca.toLowerCase().trim();
+
+  var rows = _saldoCache.filter(function(r) {
+    return !busca || r.desc.toLowerCase().indexOf(busca) >= 0;
+  });
+
+  var tbody = document.getElementById('pos-saldo-tbody');
+  var info  = document.getElementById('pos-saldo-info');
+  if (!tbody) return;
+
+  if (!rows.length) {
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--gl);padding:16px">Nenhum item encontrado</td></tr>';
+    if (info) info.textContent = '';
+    return;
+  }
+
+  tbody.innerHTML = rows.map(function(r) {
+    var sf  = r.sf  != null ? r.sf.toLocaleString('pt-BR')  : '—';
+    var vu  = r.vu  != null ? 'R$ ' + r.vu.toLocaleString('pt-BR', {minimumFractionDigits:2,maximumFractionDigits:2}) : '—';
+    var val = r.val != null ? 'R$ ' + r.val.toLocaleString('pt-BR', {minimumFractionDigits:2,maximumFractionDigits:2}) : '—';
+    return '<tr>' +
+      '<td style="text-align:left;font-size:11px">' + r.desc + '</td>' +
+      '<td style="text-align:center">' + r.emp + '</td>' +
+      '<td>' + sf + '</td>' +
+      '<td>' + vu + '</td>' +
+      '<td style="font-weight:600">' + val + '</td>' +
+    '</tr>';
+  }).join('');
+
+  if (info) info.textContent = rows.length + ' de ' + _saldoCache.length + ' itens';
+}
+
+function buildSaldoCache(per) {
+  _saldoCache = [];
+  var emps = empAtual === 'TODOS' ? ['IAB','VE'] : [empAtual];
+  emps.forEach(function(emp) {
+    var d = DADOS[emp]; if (!d) return;
+    var empLabel = emp === 'IAB' ? 'IAB' : 'Verbum';
+    // Agrupar por descrição
+    var grupos = {};
+    d.produtos.forEach(function(p) {
+      var pd = p.periodos[per]; if (!pd) return;
+      var key = p.descricao.trim();
+      if (!grupos[key]) grupos[key] = { desc: key, emp: empLabel, sf: 0, val: 0, vu: pd.vlr_unit };
+      grupos[key].sf  += pd.saldo_final  || 0;
+      grupos[key].val += pd.valor_estoque || 0;
+    });
+    Object.values(grupos).forEach(function(g) { _saldoCache.push(g); });
+  });
+  // Ordenar por valor desc
+  _saldoCache.sort(function(a,b) { return (b.val||0) - (a.val||0); });
+}
+
+function renderSaldoKpi() {
+  var kpi = document.getElementById('pos-saldo-kpi');
+  if (!kpi) return;
+  var total = _saldoCache.length;
+  var totalSaldo = _saldoCache.reduce(function(s,r){ return s+(r.sf||0); }, 0);
+  var totalVal   = _saldoCache.reduce(function(s,r){ return s+(r.val||0); }, 0);
+  kpi.innerHTML =
+    '<div class="kk" style="border-left-color:var(--ac)">' +
+      '<div class="kl">Total de Itens</div>' +
+      '<div class="kv">' + total.toLocaleString('pt-BR') + '</div>' +
+      '<div class="ks">Itens distintos em estoque</div>' +
+    '</div>' +
+    '<div class="kk" style="border-left-color:var(--ok)">' +
+      '<div class="kl">Saldo Total (un.)</div>' +
+      '<div class="kv">' + totalSaldo.toLocaleString('pt-BR') + '</div>' +
+      '<div class="ks">Soma dos saldos finais</div>' +
+    '</div>' +
+    '<div class="kk" style="border-left-color:var(--al)">' +
+      '<div class="kl">Valor Total</div>' +
+      '<div class="kv">R$ ' + (totalVal/1e6).toFixed(2).replace('.',',') + 'M</div>' +
+      '<div class="ks">Saldo × Valor Unitário</div>' +
+    '</div>';
+}
+
+/* Interceptar render() para atualizar a tabela de saldo */
+var _origRender = window.render;
+window.render = function() {
+  if (_origRender) _origRender.apply(this, arguments);
+  // Usar o último período dos dados da empresa atual
+  try {
+    var d = DADOS[empAtual];
+    if (!d || !d.periodos || !d.periodos.length) return;
+    // Pegar o último período disponível
+    var ultimoPer = d.periodos[d.periodos.length - 1];
+    buildSaldoCache(ultimoPer);
+    renderSaldoKpi();
+    renderSaldoTabela();
+  } catch(e) { console.error('saldo:', e); }
+};
+
+/* Também chamar quando empresa muda */
+var _origSetEmp = window.doSetEmp;
+window.doSetEmp = function(emp, btn) {
+  if (_origSetEmp) _origSetEmp.apply(this, arguments);
+  try {
+    var d = DADOS[empAtual] || DADOS[emp];
+    if (!d || !d.periodos) return;
+    var ultimoPer = d.periodos[d.periodos.length - 1];
+    buildSaldoCache(ultimoPer);
+    renderSaldoKpi();
+    renderSaldoTabela();
+  } catch(e) { console.error('saldo emp:', e); }
+};
+
+</script>
+
+<script>
+/* ═══ ANIMAÇÃO CONTAGEM KPIs — Estoque ═══ */
+function animateCountEst(el, target, prefix, suffix, decimals) {
+  if (!el || el._animating) return;
+  el._animating = true;
+  const duration = 700;
+  const startTime = performance.now();
+  function update(now) {
+    const p = Math.min((now - startTime) / duration, 1);
+    const ease = 1 - Math.pow(1 - p, 3);
+    const val = target * ease;
+    el.textContent = prefix + (decimals > 0 ? val.toFixed(decimals).replace('.', ',') : Math.round(val).toLocaleString('pt-BR')) + suffix;
+    if (p < 1) requestAnimationFrame(update);
+    else el._animating = false;
+  }
+  requestAnimationFrame(update);
+}
+
+function setupEstKpiAnimations() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const el = entry.target;
+      const text = el.textContent.trim();
+      const mMatch = text.match(/R\$\s*([\d,]+)M/);
+      const kMatch = text.match(/R\$\s*([\d,.]+)K/);
+      const nMatch = text.match(/^[\d.]+$/);
+      if (mMatch) {
+        const val = parseFloat(mMatch[1].replace(',', '.'));
+        el.textContent = 'R$ 0,0M';
+        animateCountEst(el, val, 'R$ ', 'M', 1);
+      } else if (kMatch) {
+        const val = parseFloat(kMatch[1].replace(',', '.'));
+        el.textContent = 'R$ 0K';
+        animateCountEst(el, val, 'R$ ', 'K', 0);
+      } else if (nMatch) {
+        const val = parseInt(text.replace(/\./g, ''));
+        if (!isNaN(val) && val > 0) animateCountEst(el, val, '', '', 0);
+      }
+      observer.unobserve(el);
+    });
+  }, { threshold: 0.5 });
+  document.querySelectorAll('.kv').forEach(el => observer.observe(el));
+}
+
+/* Chamar ao renderizar */
+const _origRenderEst = window.render;
+if (_origRenderEst) {
+  window.render = function() {
+    _origRenderEst.apply(this, arguments);
+    setTimeout(setupEstKpiAnimations, 150);
+  };
+}
+document.addEventListener('DOMContentLoaded', function() {
+  setTimeout(setupEstKpiAnimations, 500);
 });
 </script>
 </body>
