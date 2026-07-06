@@ -148,7 +148,7 @@ tbody td{padding:9px 11px;font-weight:500}
 .qsub{font-size:11px;color:var(--gl);margin-bottom:14px}
 .qtable-wrap{overflow-x:auto;border-radius:var(--r2);border:1px solid var(--gl2)}
 .qtable{width:100%;border-collapse:collapse;font-size:12px;min-width:900px}
-.qtable thead th{padding:10px 12px;text-align:left;font-size:9px;font-weight:700;color:var(--gl);text-transform:uppercase;letter-spacing:.8px;background:var(--bg);border-bottom:2px solid var(--gl2);white-space:nowrap}
+.qtable thead th{padding:10px 12px;text-align:left;font-size:9px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:.8px;background:#2d3a4a;border-bottom:2px solid #1a2330;white-space:nowrap;cursor:pointer;user-select:none}
 .qtable tbody tr{border-bottom:1px solid var(--gl2);transition:background .15s}
 .qtable tbody tr:last-child{border-bottom:none}
 .qtable tbody tr:hover{background:rgba(var(--ac-rgb),.03)}
@@ -345,7 +345,7 @@ tbody td{padding:9px 11px;font-weight:500}
 .kpct.neg{background:#FFEBEE;color:#7B0000}
 .kpct.warn{background:#FFF3E0;color:#E65100}
 .fin-table{width:100%;border-collapse:collapse;font-size:12px}
-.fin-table thead th{padding:9px 11px;text-align:right;font-size:9px;font-weight:700;color:var(--gl);text-transform:uppercase;letter-spacing:.7px;border-bottom:2px solid var(--gl2)}
+.fin-table thead th{padding:9px 11px;text-align:right;font-size:9px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:.7px;background:#2d3a4a;border-bottom:2px solid #1a2330;cursor:pointer;user-select:none}
 .fin-table thead th:first-child,.fin-table thead th:nth-child(2),.fin-table thead th:nth-child(3){text-align:left}
 .fin-table tbody tr{border-bottom:1px solid var(--gl2);transition:background .15s}
 .fin-table tbody tr:hover{background:rgba(var(--ac-rgb),.03)}
@@ -401,7 +401,7 @@ tbody td{padding:9px 11px;font-weight:500}
 .tr-charts2{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-bottom:14px}
 .tr-chart{background:var(--white);border-radius:var(--r);padding:16px;box-shadow:var(--shadow)}
 .tr-table{width:100%;border-collapse:collapse;font-size:12px}
-.tr-table thead th{padding:8px 10px;text-align:right;font-size:9px;font-weight:700;color:var(--gl);text-transform:uppercase;letter-spacing:.6px;border-bottom:2px solid var(--gl2);white-space:nowrap}
+.tr-table thead th{padding:8px 10px;text-align:right;font-size:9px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:.6px;background:#2d3a4a;border-bottom:2px solid #1a2330;white-space:nowrap;cursor:pointer;user-select:none}
 .tr-table thead th:first-child{text-align:left}
 .tr-table tbody tr{border-bottom:1px solid var(--gl2);transition:background .15s}
 .tr-table tbody tr:hover{background:rgba(var(--ac-rgb),.03)}
@@ -862,7 +862,7 @@ tbody td{padding:9px 11px;font-weight:500}
         <th style="padding:7px 10px;font-size:9px;font-weight:700;color:var(--gl);text-transform:uppercase;text-align:right">LT (dias)</th>
         <th style="padding:7px 10px;font-size:9px;font-weight:700;color:var(--gl);text-transform:uppercase;text-align:right">FSF %</th>
         <th style="padding:7px 10px;font-size:9px;font-weight:700;color:var(--gl);text-transform:uppercase;text-align:right">Custo/Entrega</th>
-        <th style="padding:7px 10px;font-size:9px;font-weight:700;color:var(--gl);text-transform:uppercase;text-align:center">Status</th>
+        <th style="padding:7px 10px;font-size:9px;font-weight:700;color:#fff;background:#2d3a4a;text-transform:uppercase;text-align:center;cursor:pointer;user-select:none">Status</th>
       </tr></thead>
       <tbody id="ve-tbody"></tbody>
     </table></div>
@@ -2609,6 +2609,82 @@ document.addEventListener('DOMContentLoaded', function() {
   if (typeof renderFinanceiro !== 'undefined') window.renderFinanceiro = wrapRender(renderFinanceiro);
   if (typeof renderTransportadoras !== 'undefined') window.renderTransportadoras = wrapRender(renderTransportadoras);
 });
+</script>
+
+<script>
+/* ═══════════════════════════════════════
+   ORDENAÇÃO DE TABELAS — clique no th
+   ═══════════════════════════════════════ */
+(function() {
+  var sortState = {}; // { tableId: { col: N, asc: bool } }
+
+  function sortTable(th) {
+    var thead = th.closest('thead');
+    var table = th.closest('table');
+    var tbody = table.querySelector('tbody');
+    if (!tbody) return;
+
+    // ID único para a tabela
+    var tid = table.id || (table.id = 'tbl_' + Math.random().toString(36).slice(2));
+    var ths = Array.from(thead.querySelectorAll('th'));
+    var col = ths.indexOf(th);
+    if (col < 0) return;
+
+    // Alternar direção
+    var state = sortState[tid] || {};
+    var asc = state.col === col ? !state.asc : true;
+    sortState[tid] = { col: col, asc: asc };
+
+    // Atualizar indicadores visuais
+    ths.forEach(function(h, i) {
+      h.style.opacity = '1';
+      // Remover seta anterior
+      h.textContent = h.textContent.replace(/ [▲▼]$/, '');
+      if (i === col) {
+        h.textContent += asc ? ' ▲' : ' ▼';
+      }
+    });
+
+    // Ordenar linhas
+    var rows = Array.from(tbody.querySelectorAll('tr'));
+    rows.sort(function(a, b) {
+      var ca = a.cells[col] ? a.cells[col].textContent.trim() : '';
+      var cb = b.cells[col] ? b.cells[col].textContent.trim() : '';
+
+      // Tentar comparação numérica (remove R$, %, pontos, vírgulas)
+      var na = parseFloat(ca.replace(/[^0-9,.-]/g,'').replace(',','.'));
+      var nb = parseFloat(cb.replace(/[^0-9,.-]/g,'').replace(',','.'));
+
+      var result;
+      if (!isNaN(na) && !isNaN(nb)) {
+        result = na - nb;
+      } else {
+        result = ca.localeCompare(cb, 'pt-BR');
+      }
+      return asc ? result : -result;
+    });
+
+    rows.forEach(function(r) { tbody.appendChild(r); });
+  }
+
+  // Aplicar listener em todos os th de thead ao carregar e quando DOM mudar
+  function applySort() {
+    document.querySelectorAll('thead th').forEach(function(th) {
+      if (!th._sortBound) {
+        th._sortBound = true;
+        th.style.cursor = 'pointer';
+        th.title = 'Clique para ordenar';
+        th.addEventListener('click', function() { sortTable(this); });
+      }
+    });
+  }
+
+  // Aplicar imediatamente e também após renderização dinâmica
+  document.addEventListener('DOMContentLoaded', applySort);
+  // Observer para tabelas renderizadas via JS
+  var obs = new MutationObserver(applySort);
+  obs.observe(document.body, { childList: true, subtree: true });
+})();
 </script>
 </body>
 </html>
