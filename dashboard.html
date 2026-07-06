@@ -363,7 +363,7 @@ tbody td{padding:9px 11px;font-weight:500}
 /* ═══ ABA FINANCEIRO ═══ */
 .fin-grid-kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;align-items:start}.fin-grid-kpi .fk{display:flex!important;flex-direction:row!important;align-items:flex-start;box-sizing:border-box;height:auto}
 .fin-grid-kpi2{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
-.fk{background:var(--white);border-radius:var(--r);padding:12px 14px;box-shadow:var(--shadow);border-left:4px solid transparent;display:flex;flex-direction:row;align-items:flex-start;gap:10px}
+.fk{background:var(--white);border-radius:var(--r);padding:10px 12px;box-shadow:var(--shadow);border-left:4px solid transparent;display:flex;flex-direction:row;align-items:flex-start;gap:8px}
 .fk.fb{border-color:var(--ac)}
 .fk.fd{border-color:#e57373;background:#FFF5F5}
 .fk.fl{border-color:var(--ok)}
@@ -371,10 +371,10 @@ tbody td{padding:9px 11px;font-weight:500}
 .fk.fm{border-color:#6A1B9A}
 .fk.fi{border-color:#00838F}
 .fk.ft{border-color:#37474F}
-.fk .fki{font-size:20px;flex-shrink:0;margin-top:2px}
-.fk .fkl{font-size:9px;font-weight:700;color:var(--gl);text-transform:uppercase;letter-spacing:.7px;margin-bottom:2px}
-.fk .fkv{font-size:14px;font-weight:800;color:var(--gd);line-height:1.2}
-.fk .fkd{font-size:10px;font-weight:600;margin-top:3px}
+.fk .fki{font-size:16px;flex-shrink:0;margin-top:1px}
+.fk .fkl{font-size:9px;font-weight:700;color:var(--gl);text-transform:uppercase;letter-spacing:.7px;margin-bottom:2px;white-space:nowrap}
+.fk .fkv{font-size:13px;font-weight:800;color:var(--gd);line-height:1.2;white-space:nowrap}
+.fk .fkd{font-size:9px;font-weight:600;margin-top:2px}
 .fk .fkpct{display:inline-block;padding:1px 7px;border-radius:10px;font-size:9px;font-weight:700}
 .pct-ok{background:#E3EEF9;color:#003d7a}
 .pct-warn{background:#FFF3E0;color:#E65100}
@@ -396,7 +396,7 @@ tbody td{padding:9px 11px;font-weight:500}
 .fin-table tfoot td:first-child{text-align:left}
 
 /* ═══ ABA TRANSPORTADORAS ═══ */
-.tr-grid-kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+.tr-grid-kpi{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
 .tr-grid-kpi2{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:14px}
 .tr-charts2{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-bottom:14px}
 .tr-chart{background:var(--white);border-radius:var(--r);padding:16px;box-shadow:var(--shadow)}
@@ -722,15 +722,15 @@ tbody td{padding:9px 11px;font-weight:500}
 </style>
 <style>
 .ve-grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:14px}
-.ve-card{background:var(--white);border-radius:var(--r);padding:16px 18px;box-shadow:var(--shadow);border-left:5px solid transparent;cursor:pointer;transition:box-shadow .15s;display:flex;flex-direction:column}
+.ve-card{background:var(--white);border-radius:var(--r);padding:11px 14px;box-shadow:var(--shadow);border-left:5px solid transparent;cursor:pointer;transition:box-shadow .15s;display:flex;flex-direction:column}
 .ve-card:hover{box-shadow:0 4px 20px rgba(0,0,0,.12)}
 .ve-card.ok{border-color:var(--ok)}.ve-card.warn{border-color:var(--alert)}.ve-card.bad{border-color:var(--err)}.ve-card.neu{border-color:var(--ac)}
-.ve-card .vc-ico{font-size:16px;margin-bottom:4px}
-.ve-card .vc-lbl{font-size:10px;font-weight:700;color:var(--gl);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px}
-.ve-card .vc-val{font-size:26px;font-weight:800;color:var(--gd);line-height:1;margin-bottom:8px}
-.ve-card .vc-badge{display:inline-block;padding:2px 9px;border-radius:10px;font-size:10px;font-weight:700;margin-bottom:6px}
-.ve-card .vc-yoy{font-size:11px;font-weight:700;margin-bottom:6px;min-height:18px}
-.ve-card .vc-drill{font-size:9px;color:var(--gl);cursor:pointer;margin-top:auto}
+.ve-card .vc-row1{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:4px}.vc-head{display:flex;align-items:center;gap:5px;min-width:0}.vc-ico{font-size:14px;flex-shrink:0}
+.ve-card .vc-lbl{font-size:9px;font-weight:700;color:var(--gl);text-transform:uppercase;letter-spacing:.6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ve-card .vc-val{font-size:22px;font-weight:800;color:var(--gd);line-height:1.1;margin-bottom:4px}
+.ve-card .vc-badge{display:inline-block;padding:2px 7px;border-radius:8px;font-size:9px;font-weight:700;white-space:nowrap;flex-shrink:0}
+.ve-card .vc-row3{display:flex;align-items:center;justify-content:space-between;gap:4px}.vc-yoy{font-size:10px;font-weight:700;min-width:0}
+.ve-card .vc-drill{font-size:9px;color:var(--ac);cursor:pointer;white-space:nowrap;flex-shrink:0;font-weight:600}
 .ve-alerta{border-radius:var(--r);padding:14px 16px}
 .ve-alerta.crit{background:#FFF5F5;border:1.5px solid #FFCDD2}
 .ve-alerta.aviso{background:#FFFDE7;border:1.5px solid #FFF176}
@@ -739,6 +739,35 @@ tbody td{padding:9px 11px;font-weight:500}
 .ve-alerta-item:last-child{border:none}
 .ve-alerta-vazio{font-size:12px;color:var(--gl);font-style:italic;text-align:center;padding:10px 0}
 .tc{background:var(--white);border-radius:var(--r);padding:16px;box-shadow:var(--shadow);margin-bottom:14px}
+
+/* ═══════════════════════════════════════════════
+   MOBILE — Gráficos e Tabelas em coluna única
+   Aplicado APENAS em telas até 768px
+   ═══════════════════════════════════════════════ */
+@media(max-width:768px){
+  /* Gráficos Financeiro */
+  .fin-charts  { grid-template-columns: 1fr !important; }
+  .fin-charts2 { grid-template-columns: 1fr !important; }
+  /* Gráficos Visão Executiva */
+  .ve-grid3    { grid-template-columns: 1fr !important; }
+  .cg          { grid-template-columns: 1fr !important; }
+  /* Gráficos Acompanhamento */
+  .ent-charts  { grid-template-columns: 1fr !important; }
+  /* Tabelas — scroll horizontal */
+  .dt, .qt, .qtable, table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+  }
+  /* Containers de tabela */
+  .dt-wrap, .qtable-wrap, [class*="table-wrap"] {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  /* Gráficos SVG — não ultrapassar a tela */
+  svg { max-width: 100% !important; }
+}
 </style>
 </head>
 <body>
@@ -806,10 +835,11 @@ tbody td{padding:9px 11px;font-weight:500}
     <button class="ano-btn"   id="veab2025"  onclick="veAno('2025')">2025</button>
     <button class="ano-btn"   id="veab2026"  onclick="veAno('2026')">2026</button>
   </div>
-  <div style="font-size:10px;color:var(--gl);margin-bottom:12px;padding:8px 12px;background:var(--white);border-radius:8px;box-shadow:var(--shadow);display:flex;gap:16px;flex-wrap:wrap">
-    <span><b>NS%</b> = Nível de Serviço</span><span><b>FSF%</b> = Frete ÷ Fat. Líquido</span>
-    <span><b>LT</b> = Lead Time médio (dias)</span><span><b>▲▼</b> = Variação vs Ano Ref anterior</span>
-    <span>🔍 = Clique para ver detalhes</span>
+  <div style="font-size:10px;color:var(--gl);margin-bottom:8px;display:flex;align-items:center;gap:6px">
+    <span style="cursor:pointer;color:var(--ac);font-size:10px;font-weight:600;user-select:none" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'':'none';this.textContent=this.nextElementSibling.style.display==='none'?'ℹ️ Ver legenda':'✕ Fechar legenda'">ℹ️ Ver legenda</span>
+    <span id="ve-legenda" style="display:none;font-size:10px;color:var(--gl);padding:6px 10px;background:var(--white);border-radius:6px;box-shadow:var(--shadow);flex-wrap:wrap;gap:12px;display:none">
+      <b>NS%</b> Nível de Serviço &nbsp;·&nbsp; <b>FSF%</b> Frete ÷ Fat. Líq. &nbsp;·&nbsp; <b>LT</b> Lead Time &nbsp;·&nbsp; <b>▲▼</b> Variação vs Ano ant. &nbsp;·&nbsp; 🔍 Ver detalhes
+    </span>
   </div>
   <div style="font-size:10px;font-weight:700;color:var(--gl);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">🎯 Confiabilidade &amp; Eficiência</div>
   <div id="ve-kpi1" class="ve-grid3"></div>
@@ -1674,15 +1704,19 @@ function veYoy(cur, prev, inv) {
 function veCard(cor, ico, lbl, val, badge, yoy, page) {
   const badgeBg  = cor==='ok'?'#E8F5E9':cor==='warn'?'#FFF3E0':cor==='bad'?'#FFEBEE':'#E3EEF9';
   const badgeCor = cor==='ok'?'#2E7D32':cor==='warn'?'#E65100':cor==='bad'?'#7B0000':'#003d7a';
-  const drill = page ? '<div class="vc-drill" onclick="navPage(\''+page+'\');event.stopPropagation()">🔍 Ver detalhes em '+page+' →</div>' : '';
+  const drill = page ? '<span class="vc-drill" onclick="navPage(\''+page+'\');event.stopPropagation()">🔍 '+page+' →</span>' : '';
   const click = page ? 'onclick="navPage(\''+page+'\')"' : '';
   return '<div class="ve-card '+cor+'" '+click+'>'+
-    '<div class="vc-ico">'+ico+'</div>'+
-    '<div class="vc-lbl">'+lbl+'</div>'+
+    '<div class="vc-row1">'+
+      '<div class="vc-head"><span class="vc-ico">'+ico+'</span><span class="vc-lbl">'+lbl+'</span></div>'+
+      '<span class="vc-badge" style="background:'+badgeBg+';color:'+badgeCor+'">'+badge+'</span>'+
+    '</div>'+
     '<div class="vc-val">'+val+'</div>'+
-    '<div><span class="vc-badge" style="background:'+badgeBg+';color:'+badgeCor+'">'+badge+'</span></div>'+
-    '<div class="vc-yoy">'+yoy+'</div>'+
-    drill+'</div>';
+    '<div class="vc-row3">'+
+      '<span class="vc-yoy">'+yoy+'</span>'+
+      drill+
+    '</div>'+
+  '</div>';
 }
 
 function renderVE() {
@@ -1713,7 +1747,7 @@ function renderVE() {
   const veK1 = document.getElementById('ve-kpi1');
   if(veK1) veK1.innerHTML =
     veCard(nsCor,'🎯','Nível de Serviço', veD(t.ns)+'%',
-      (nsCor==='ok'?'Ótimo':nsCor==='warn'?'Atenção':'Crítico')+' · Meta ≥ 98,8%',
+      (nsCor==='ok'?'Ótimo':nsCor==='warn'?'Atenção':'Crítico')+' · Meta ≥ 98,0%',
       veYoy(t.ns, tPrev?.ns), 'transportadoras') +
     veCard(ltCor,'⏱️','Lead Time Médio', veD(t.lt)+' dias',
       (ltCor==='ok'?'Ótimo':ltCor==='warn'?'Atenção':'Crítico')+' · Meta ≤ 7 dias',
@@ -1954,8 +1988,8 @@ function renderFinanceiro() {
   // ── BLOCO 1: FATURAMENTO ──
   document.getElementById('fin-kpi-fat').innerHTML =
     fk('fb','💰','Faturamento Bruto',   fmtM(t.fat_b),  'Σ Valor NFs de Venda','')  +
-    fk('fd','🔄','Devoluções', fmtM(t.dev), pctPill(t.pct_dev,'neg')+' · Fat.Bruto','') +
-    fk('fd','🎁','Bonificações', fmtM(t.bon), pctPill(t.pct_bon,'warn')+' · Fat.Bruto','') +
+    fk('fb','🔄','Devoluções',   fmtM(t.dev),  (Math.round(t.pct_dev*10)/10).toString().replace('.',',')+'% do Fat.Bruto','') +
+    fk('fb','🎁','Bonificações', fmtM(t.bon),  (Math.round(t.pct_bon*10)/10).toString().replace('.',',')+'% do Fat.Bruto','') +
     fk('fl','✅','Faturamento Líquido', fmtM(t.fat_l),  'Bruto - Dev. - Bon.','var(--ok)');
 
   // ── BLOCO 2: CUSTOS ──
@@ -1982,7 +2016,7 @@ function renderFinanceiro() {
 function fk(cls, icon, label, valor, sub, subCor) {
   return '<div class="fk '+cls+'">'+
     '<div class="fki">'+icon+'</div>'+
-    '<div style="flex:1;min-width:0">'+ '<div class="fkl">'+label+'</div>'+
+    '<div style="flex:1;min-width:0;display:flex;flex-direction:column">'+ '<div class="fkl">'+label+'</div>'+
     '<div class="fkv" style="'+(subCor?'color:'+subCor:'')+'">'+valor+'</div>'+
     '<div class="fkd">'+sub+'</div>'+'</div></div>';
 }
@@ -2204,6 +2238,7 @@ function renderTransportadoras() {
   document.getElementById('tr-kpi-op').innerHTML =
     trKpi('fb','📦','Total Entregas',      fmt(t.total),          'Entregas únicas','','') +
     trKpi('fl','✅','Nível de Serviço',    trFmtD(t.ns)+'%',        'Entregas no prazo ÷ Total','',corNS) +
+    trKpi('fb','⚠️','Tx. Atraso',          trFmtD(t.taxa_at)+'%',   'Atrasos ÷ Total','','') +
     trKpi('fc','⏱️','Lead Time Médio',     trFmtD(t.lt_med)+' dias','Data Efetiva - Data Coleta','',corLT) +
     trKpi('fm','🎯','Entregas no Prazo',   fmt(t.prazo),          fmt(t.prazo)+' de '+fmt(t.total),'','var(--ok)');
 
@@ -2212,8 +2247,7 @@ function renderTransportadoras() {
     trKpi('fc','💸','Frete Total',         trFmtR(t.frete),         'Σ Custo de Frete','','') +
     trKpi('fc','📊','Custo/Entrega',       trFmtR2(t.c_ent),        'Frete ÷ Nº Entregas','','') +
     trKpi('fc','⚖️','Custo/KG',           trFmtR2(t.c_kg),         'Frete ÷ Peso Total (kg)','','') +
-    trKpi('fi','📉','FSF',                 trFmtD(t.fsf)+'%',       'Frete ÷ Fat. Líquido × 100','',corFSF) +
-    trKpi('fd','⚠','Tx. Atraso',          trFmtD(t.taxa_at)+'%',   'Atrasos ÷ Total','',corTaxa);
+    trKpi('fi','📉','FSF',                 trFmtD(t.fsf)+'%',       'Frete ÷ Fat. Líquido × 100','',corFSF) ;
 
   // Gráficos
   trRenderNS(d.transp || []);
