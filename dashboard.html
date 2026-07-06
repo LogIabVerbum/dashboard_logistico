@@ -768,6 +768,48 @@ tbody td{padding:9px 11px;font-weight:500}
   /* Gráficos SVG — não ultrapassar a tela */
   svg { max-width: 100% !important; }
 }
+
+/* ═══════════════════════════════════════════════════
+   MOBILE DEFINITIVO — Tudo em coluna única ≤768px
+   ═══════════════════════════════════════════════════ */
+@media(max-width:768px){
+  /* Cards KPI — 1 coluna */
+  .tr-grid-kpi   { grid-template-columns: 1fr !important; }
+  .tr-grid-kpi2  { grid-template-columns: 1fr !important; }
+  .fin-grid-kpi  { grid-template-columns: 1fr !important; }
+  .fin-grid-kpi2 { grid-template-columns: 1fr !important; }
+  .ve-grid3      { grid-template-columns: 1fr !important; }
+  .kg            { grid-template-columns: 1fr !important; }
+  .ent-kpi-row   { grid-template-columns: 1fr !important; }
+
+  /* Gráficos — 1 coluna */
+  .tr-charts2    { grid-template-columns: 1fr !important; }
+  .fin-charts2   { grid-template-columns: 1fr !important; }
+  .fin-charts    { grid-template-columns: 1fr !important; }
+  .cg            { grid-template-columns: 1fr !important; }
+  .ent-charts    { grid-template-columns: 1fr !important; }
+
+  /* Tabelas — scroll horizontal */
+  .fin-table, .tr-table, .qtable, table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Padding geral */
+  #mn { padding: 8px 8px 80px !important; }
+  .tc { padding: 12px !important; }
+}
+
+@media(max-width:480px){
+  /* Cards ainda menores */
+  .fkv { font-size: 12px !important; }
+  .kv  { font-size: 16px !important; }
+  .fki { font-size: 14px !important; }
+  /* Botões maiores para toque */
+  .ano-btn { min-height: 40px !important; padding: 8px 16px !important; }
+  .eb { min-height: 40px !important; }
+}
 </style>
 </head>
 <body>

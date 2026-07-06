@@ -1091,6 +1091,37 @@ tr.tr-total td.col-b.valor-total{color:#B8D8F8}
   .doc-header{margin-bottom:8px}
   @page{size:A3 landscape;margin:6mm}
 }
+
+/* ═══════════════════════════════════════════════════
+   MOBILE DEFINITIVO — Estoque ≤768px
+   ═══════════════════════════════════════════════════ */
+@media(max-width:768px){
+  /* Sidebar some */
+  .esb { display: none !important; }
+  .elay { flex-direction: column !important; }
+  .emain { padding: 10px !important; }
+
+  /* Cards KPI — 1 coluna */
+  .kg  { grid-template-columns: 1fr !important; }
+  .kg3 { grid-template-columns: 1fr !important; }
+
+  /* Gráficos — 1 coluna */
+  .ech2 { grid-template-columns: 1fr !important; }
+
+  /* Tabelas — scroll horizontal */
+  .et { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+  /* Botões maiores */
+  .emp-btn { min-height: 40px !important; padding: 8px 12px !important; }
+  .bv { min-height: 40px !important; }
+}
+
+@media(max-width:480px){
+  .kv  { font-size: 15px !important; }
+  .kl  { font-size: 8px !important; }
+  .kk  { padding: 10px 12px !important; }
+  .emain { padding: 8px !important; }
+}
 </style>
 </head><body>
 <div class="doc-header">
