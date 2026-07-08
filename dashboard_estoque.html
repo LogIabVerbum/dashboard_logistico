@@ -346,6 +346,37 @@ td.valor{font-weight:600}
 .export-spinner{display:inline-block;width:12px;height:12px;border:2px solid currentColor;border-top-color:transparent;border-radius:50%;animation:spin .6s linear infinite;vertical-align:middle}
 @keyframes spin{to{transform:rotate(360deg)}}
 </style>
+<style>
+/* MOBILE PREMIUM EXTRA */
+@media (max-width: 767px) {
+  body { background: #f1f5f9 !important; }
+  .emain, .ec { padding: 10px 10px 72px !important; }
+  .kc, .ecard { border-radius: 12px !important; box-shadow: 0 2px 8px rgba(0,0,0,.07) !important; background: #fff !important; }
+  .kg { grid-template-columns: 1fr 1fr !important; gap: 10px !important; }
+  .et-wrap, .table-wrap { border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,.07); background: #fff; }
+  th, td { font-size: 0.78rem !important; padding: 7px 9px !important; }
+  button, .btn, .ni { min-height: 44px !important; }
+  .est-mb { min-height: 44px !important; min-width: 44px !important; }
+}
+#est-bottom-nav {
+  display: none;
+  position: fixed; bottom: 0; left: 0; right: 0;
+  height: 60px; background: #fff;
+  border-top: 1px solid #e2e8f0;
+  box-shadow: 0 -4px 16px rgba(0,0,0,.10);
+  z-index: 400; align-items: center;
+  justify-content: space-around; padding: 0 4px;
+}
+@media (max-width: 767px) { #est-bottom-nav { display: flex !important; } }
+#est-bottom-nav .mbn-item {
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; flex: 1; min-height: 44px; cursor: pointer;
+  color: #64748b; font-size: 0.65rem; font-weight: 600; gap: 2px;
+  border-radius: 8px; transition: color .2s;
+}
+#est-bottom-nav .mbn-item.active { color: #1E2A3A; }
+#est-bottom-nav .mbn-item .icon { font-size: 1.3rem; line-height: 1; }
+</style>
 </head>
 <body>
 
@@ -2424,6 +2455,19 @@ if (_origRenderEst) {
 document.addEventListener('DOMContentLoaded', function() {
   setTimeout(setupEstKpiAnimations, 500);
 });
+</script>
+
+<nav id="est-bottom-nav">
+  <div class="mbn-item active" id="mbn-posicao" onclick="navEst('posicao');estnActive('mbn-posicao')"><span class="icon">&#128202;</span><span>Posicao</span></div>
+  <div class="mbn-item" id="mbn-giro" onclick="navEst('giro');estnActive('mbn-giro')"><span class="icon">&#128200;</span><span>Giro</span></div>
+  <div class="mbn-item" id="mbn-kardex" onclick="navEst('kardex');estnActive('mbn-kardex')"><span class="icon">&#128230;</span><span>Kardex</span></div>
+  <div class="mbn-item" id="mbn-dash" onclick="window.location.href='dashboard.html'"><span class="icon">&#128665;</span><span>Logistica</span></div>
+</nav>
+<script>
+function estnActive(id){
+  document.querySelectorAll('#est-bottom-nav .mbn-item').forEach(function(el){el.classList.remove('active');});
+  var el=document.getElementById(id);if(el)el.classList.add('active');
+}
 </script>
 </body>
 </html>

@@ -469,6 +469,242 @@ tbody td{padding:9px 11px;font-weight:500}
   .wb{justify-content:center}
 }
 
+
+/* ═══════════════════════════════════════════════════════
+   MOBILE-FIRST PREMIUM — @media max-width: 767px
+   ═══════════════════════════════════════════════════════ */
+@media (max-width: 767px) {
+
+  /* ── FUNDO SPLIT ── */
+  body { background: #f1f5f9 !important; }
+
+  /* ── HEADER ── */
+  #hd {
+    padding: 0 12px;
+    height: 52px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,.10);
+  }
+  .mb { min-height: 44px; min-width: 44px; }
+  .cw img { height: 26px !important; }
+  .eb img { height: 16px !important; }
+
+  /* ── SIDEBAR → GAVETA OVERLAY ── */
+  #sb {
+    width: 80vw !important;
+    max-width: 300px;
+    top: 52px !important;
+    height: calc(100vh - 52px - 60px) !important;
+    overflow-y: auto;
+    box-shadow: 4px 0 24px rgba(0,0,0,.25) !important;
+  }
+  .sbh { padding: 16px 12px 8px; }
+  .sbn { padding: 0 12px 80px; }
+  .ni {
+    padding: 12px 14px !important;
+    font-size: 0.9rem !important;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    border-radius: 8px;
+    margin-bottom: 2px;
+  }
+
+  /* ── BOTTOM NAVIGATION BAR ── */
+  #mobile-bottom-nav {
+    display: flex !important;
+  }
+
+  /* ── CONTAINER PRINCIPAL ── */
+  #mn {
+    padding: 12px 12px 72px !important;
+    margin-left: 0 !important;
+  }
+
+  /* ── SEÇÕES ── */
+  .sec-title, .ct, .section-label {
+    font-size: 1.1rem !important;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+
+  /* ── GRID KPIs → 2 colunas ── */
+  .kg {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px !important;
+    margin-bottom: 12px !important;
+  }
+  .kc {
+    padding: 12px !important;
+    border-radius: 12px !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,.07) !important;
+    background: #fff !important;
+  }
+  .kh { margin-bottom: 4px; }
+  .ki { font-size: 14px !important; }
+  .kl { font-size: 0.72rem !important; letter-spacing: .4px; }
+  .kv { font-size: 1.2rem !important; line-height: 1.1; }
+  .kv.sm { font-size: 1rem !important; }
+  .kd { font-size: 0.72rem !important; }
+
+  /* ── VE-CARDS (Visão Executiva) → 1 coluna ── */
+  .ve-grid3 {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+  .ve-card {
+    padding: 12px 14px !important;
+    border-radius: 12px !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,.07) !important;
+    background: #fff !important;
+  }
+  .vc-header { margin-bottom: 4px; }
+  .vc-ico { font-size: 14px !important; }
+  .vc-lbl { font-size: 0.72rem !important; }
+  .vc-val { font-size: 1.35rem !important; margin-bottom: 4px; }
+  .vc-badge { font-size: 0.72rem !important; padding: 2px 7px; }
+  .vc-yoy { font-size: 0.72rem !important; }
+  .vc-drill { font-size: 0.72rem !important; margin-top: 6px; }
+
+  /* ── GRID FINANCEIRO → 1 coluna ── */
+  .fin-kpi-grid, .fin-grid, [id^="fin-kpi"] {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px !important;
+  }
+  .fk {
+    padding: 12px !important;
+    border-radius: 12px !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,.07) !important;
+    background: #fff !important;
+  }
+  .fki { font-size: 14px !important; }
+  .fkl { font-size: 0.72rem !important; }
+  .fkv { font-size: 1.1rem !important; }
+  .fkd { font-size: 0.72rem !important; }
+
+  /* ── GRID GRÁFICOS → 1 coluna ── */
+  .cg, .ve-charts, .charts-grid,
+  .ent-charts, .tr-charts, .fin-charts {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+  .chart-box, .ve-chart, .ent-chart {
+    border-radius: 12px !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,.07) !important;
+    background: #fff !important;
+    padding: 12px !important;
+  }
+
+  /* ── TABELAS → scroll horizontal ── */
+  .ve-table-wrap, .table-wrap, .tr-table {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.07);
+    background: #fff;
+  }
+  table { min-width: 520px; }
+  th, td {
+    white-space: nowrap !important;
+    font-size: 0.78rem !important;
+    padding: 8px 10px !important;
+  }
+  thead tr { position: sticky; top: 0; z-index: 2; }
+
+  /* ── CARDS DE ALERTA ── */
+  .alerta, .exc-card, [class*="alerta"], [class*="alert"] {
+    border-radius: 12px !important;
+    padding: 12px !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,.07) !important;
+    margin-bottom: 10px;
+  }
+
+  /* ── BOTÕES E TOUCH TARGETS ── */
+  button, .btn, .ni, select, input {
+    min-height: 44px !important;
+  }
+  .wbtns { flex-direction: column; gap: 8px; }
+  .wbtns button { width: 100% !important; border-radius: 10px !important; }
+
+  /* ── ANO REF BUTTONS ── */
+  .veab, .flab, .trab {
+    min-height: 36px !important;
+    padding: 0 14px !important;
+    font-size: 0.82rem !important;
+    border-radius: 20px !important;
+  }
+
+  /* ── LEGENDAS E TEXTOS SECUNDÁRIOS ── */
+  .legenda, .gl, .label-sm {
+    font-size: 0.75rem !important;
+  }
+
+  /* ── ENT-KPI ENTREGAS ── */
+  .ent-kpi-row {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px !important;
+  }
+  .ent-kpi {
+    padding: 12px !important;
+    border-radius: 12px !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,.07) !important;
+    background: #fff !important;
+  }
+
+  /* ── TRANSPORTADORAS KPI ── */
+  .tr-kpi-row, .tr-kpi-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px !important;
+  }
+  .tr-kpi {
+    padding: 12px !important;
+    border-radius: 12px !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,.07) !important;
+    background: #fff !important;
+  }
+
+  /* ── SEÇÃO HEADER ── */
+  .sec-header, .page-header {
+    font-size: 1rem !important;
+    padding: 8px 0 !important;
+  }
+  .page-sub { font-size: 0.78rem !important; }
+}
+
+/* ── BOTTOM NAV — sempre oculto no desktop ── */
+#mobile-bottom-nav {
+  display: none;
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: 60px;
+  background: #fff;
+  border-top: 1px solid #e2e8f0;
+  box-shadow: 0 -4px 16px rgba(0,0,0,.10);
+  z-index: 300;
+  align-items: center;
+  justify-content: space-around;
+  padding: 0 4px;
+}
+#mobile-bottom-nav .mbn-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  min-height: 44px;
+  cursor: pointer;
+  color: #64748b;
+  font-size: 0.65rem;
+  font-weight: 600;
+  gap: 2px;
+  border-radius: 8px;
+  transition: color .2s;
+}
+#mobile-bottom-nav .mbn-item.active { color: var(--ac, #003d7a); }
+#mobile-bottom-nav .mbn-item span.icon { font-size: 1.3rem; line-height: 1; }
+
 </style>
 <style>
 .ve-grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:14px}
@@ -2201,5 +2437,29 @@ fAno('TODOS');
 _updateAbaNome(PAGINA);
 setTimeout(renderVE, 150);
 </script>
+
+<!-- BOTTOM NAV MOBILE -->
+<nav id="mobile-bottom-nav">
+  <div class="mbn-item active" id="mbn-ve" onclick="navPage('visao-executiva');mbnActive('mbn-ve')">
+    <span class="icon">📊</span><span>Executivo</span>
+  </div>
+  <div class="mbn-item" id="mbn-fin" onclick="navPage('financeiro');mbnActive('mbn-fin')">
+    <span class="icon">💰</span><span>Financeiro</span>
+  </div>
+  <div class="mbn-item" id="mbn-tr" onclick="navPage('transportadoras');mbnActive('mbn-tr')">
+    <span class="icon">🚛</span><span>Transportad.</span>
+  </div>
+  <div class="mbn-item" id="mbn-est" onclick="abrirEstoque();mbnActive('mbn-est')">
+    <span class="icon">📦</span><span>Estoque</span>
+  </div>
+</nav>
+<script>
+function mbnActive(id) {
+  document.querySelectorAll('.mbn-item').forEach(el => el.classList.remove('active'));
+  var el = document.getElementById(id);
+  if(el) el.classList.add('active');
+}
+</script>
+
 </body>
 </html>
