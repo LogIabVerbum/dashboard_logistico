@@ -280,7 +280,7 @@ header, .eh {
 .modal-header{padding:16px 18px;border-bottom:1px solid #E0DDD5;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
 .modal-header h3{font-size:14px;font-weight:700}
 .modal-close{border:none;background:none;font-size:20px;cursor:pointer;color:#8C8A85;padding:2px 6px;border-radius:6px;line-height:1}
-.modal-
+.modal-body{padding:12px 18px;overflow-y:auto;flex:1}
 .modal-actions{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
 .btn-sm{padding:5px 12px;border:1px solid #E0DDD5;border-radius:6px;background:#F7F5F0;font-size:11px;cursor:pointer;color:#2D2B27;font-weight:500}
 .btn-sm:hover{background:#E0DDD5}
@@ -346,195 +346,101 @@ td.valor{font-weight:600}
 .export-spinner{display:inline-block;width:12px;height:12px;border:2px solid currentColor;border-top-color:transparent;border-radius:50%;animation:spin .6s linear infinite;vertical-align:middle}
 @keyframes spin{to{transform:rotate(360deg)}}
 </style>
+
+<!-- ═══════════════════════════════════════════════
+     MOBILE-FIRST — Dashboard Estoque
+     ═══════════════════════════════════════════════ -->
 <style>
-/* MOBILE PREMIUM EXTRA */
+:root {
+  --mob-bg: #f1f5f9;
+  --mob-card: #ffffff;
+  --mob-pad: 12px;
+  --mob-radius: 12px;
+  --mob-nav-h: 64px;
+}
+#mob-bottom-nav { display: none; }
 @media (max-width: 767px) {
-  body { background: #f1f5f9 !important; }
-  .emain, .ec { padding: 10px 10px 72px !important; }
-  .kc, .ecard { border-radius: 12px !important; box-shadow: 0 2px 8px rgba(0,0,0,.07) !important; background: #fff !important; }
-  .kg { grid-template-columns: 1fr 1fr !important; gap: 10px !important; }
-  .et-wrap, .table-wrap { border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,.07); background: #fff; }
-  th, td { font-size: 0.78rem !important; padding: 7px 9px !important; }
-  button, .btn, .ni { min-height: 44px !important; }
-  .est-mb { min-height: 44px !important; min-width: 44px !important; }
-}
-#est-bottom-nav {
-  display: none;
-  position: fixed; bottom: 0; left: 0; right: 0;
-  height: 60px; background: #fff;
-  border-top: 1px solid #e2e8f0;
-  box-shadow: 0 -4px 16px rgba(0,0,0,.10);
-  z-index: 400; align-items: center;
-  justify-content: space-around; padding: 0 4px;
-}
-@media (max-width: 767px) { #est-bottom-nav { display: flex !important; } }
-#est-bottom-nav .mbn-item {
-  display: flex; flex-direction: column; align-items: center;
-  justify-content: center; flex: 1; min-height: 44px; cursor: pointer;
-  color: #64748b; font-size: 0.65rem; font-weight: 600; gap: 2px;
-  border-radius: 8px; transition: color .2s;
-}
-#est-bottom-nav .mbn-item.active { color: #1E2A3A; }
-#est-bottom-nav .mbn-item .icon { font-size: 1.3rem; line-height: 1; }
-</style>
-<style>
-/* ── MOBILE PREMIUM COMPLETO max-width:767px ── */
-@media (max-width: 767px) {
-
-  /* FUNDO SPLIT */
-  body { background: #f1f5f9 !important; }
-
-  /* HEADER */
-  .eh { padding: 0 12px !important; height: 52px !important; gap: 8px !important; }
-  .est-mb { min-height: 44px !important; min-width: 44px !important; }
-  .et_ { font-size: 0.88rem !important; }
-  .es  { font-size: 0.7rem !important; }
-  .emp-btn { min-height: 36px !important; font-size: 0.75rem !important; padding: 0 8px !important; border-radius: 18px !important; }
-  .etabs { gap: 4px !important; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-
-  /* CONTAINER PRINCIPAL */
-  .emain { padding: 12px 12px 72px !important; }
-  .elay  { flex-direction: column !important; }
-
-  /* TITULOS DE SECAO */
-  .slbl { font-size: 0.78rem !important; padding: 4px 0 8px !important; }
-  .ct   { font-size: 1rem !important; font-weight: 700; }
-  .cs   { font-size: 0.75rem !important; }
-
-  /* TITULOS DAS ABAS */
-  .epage > div > div[style*="font-size:16px"] {
-    font-size: 1.1rem !important;
+  #mob-bottom-nav {
+    display: flex;
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    height: var(--mob-nav-h);
+    background: #1E2A3A;
+    z-index: 1000;
+    border-top: 1px solid rgba(255,255,255,.08);
+    box-shadow: 0 -2px 16px rgba(0,0,0,.25);
   }
-
-  /* KPIs — 2 colunas */
-  .kg  { grid-template-columns: 1fr 1fr !important; gap: 10px !important; margin-bottom: 12px !important; }
-  .kg3 { grid-template-columns: 1fr 1fr !important; gap: 10px !important; margin-bottom: 12px !important; }
-
-  /* CARDS KPI */
-  .ekpi, .ecard, .kpi-box {
-    padding: 12px !important;
-    border-radius: 12px !important;
-    box-shadow: 0 2px 8px rgba(0,0,0,.07) !important;
-    background: #fff !important;
-  }
-  .ekpi .ev  { font-size: 1.2rem !important; font-weight: 800; }
-  .ekpi .el  { font-size: 0.72rem !important; }
-  .ekpi .es2 { font-size: 0.72rem !important; }
-
-  /* GRAFICOS — 1 coluna */
-  .ech2 { grid-template-columns: 1fr !important; gap: 10px !important; }
-  .ech  {
-    border-radius: 12px !important;
-    box-shadow: 0 2px 8px rgba(0,0,0,.07) !important;
-    background: #fff !important;
-    padding: 12px !important;
-    margin-bottom: 10px !important;
-  }
-
-  /* TABELAS — scroll horizontal */
-  .et-wrap, .table-wrap, .et {
-    overflow-x: auto !important;
-    -webkit-overflow-scrolling: touch;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,.07);
-    background: #fff;
-    margin-bottom: 12px;
-  }
-  table { min-width: 480px; }
-  th { font-size: 0.72rem !important; padding: 8px 8px !important; white-space: nowrap !important; }
-  td { font-size: 0.78rem !important; padding: 7px 8px !important; white-space: nowrap !important; }
-
-  /* BARRA DE BUSCA */
-  .search-box {
-    width: 100% !important;
-    min-height: 44px !important;
-    font-size: 0.85rem !important;
-    border-radius: 8px !important;
-    padding: 0 12px !important;
-  }
-  .toolbar {
-    flex-wrap: wrap !important;
-    gap: 8px !important;
-    margin-bottom: 10px !important;
-  }
-
-  /* BOTOES */
-  button, .btn, .btn-periodo, .btn-export {
-    min-height: 44px !important;
-    border-radius: 8px !important;
-    font-size: 0.82rem !important;
-  }
-  .btn-periodo { padding: 0 12px !important; }
-
-  /* SELECT */
-  select, .psel {
-    min-height: 44px !important;
-    font-size: 0.85rem !important;
-    border-radius: 8px !important;
-  }
-
-  /* MODAL */
-  .modal-overlay { align-items: flex-end !important; }
-  .modal-box {
-    border-radius: 16px 16px 0 0 !important;
-    max-height: 80vh !important;
-    overflow-y: auto;
-    width: 100% !important;
-    margin: 0 !important;
-  }
-
-  /* SIDEBAR — garantir gaveta */
-  .esb {
-    position: fixed !important;
-    left: -220px !important;
-    top: 52px !important;
-    height: calc(100vh - 52px - 60px) !important;
-    z-index: 300 !important;
-    transition: left .3s ease !important;
-    display: flex !important;
+  .mob-nav-item {
+    flex: 1;
+    display: flex;
     flex-direction: column;
-    width: 200px !important;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    background: transparent;
+    border: none;
+    color: rgba(255,255,255,.5);
+    font-size: 9px;
+    font-weight: 600;
+    font-family: var(--font);
+    cursor: pointer;
+    min-height: 44px;
+    transition: all .15s;
+    padding: 4px 2px;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+    border-top: 2px solid transparent;
+    white-space: nowrap;
   }
-  .esb.open { left: 0 !important; }
-  .esb .ni { min-height: 44px !important; font-size: 0.88rem !important; display: flex; align-items: center; }
-
-  /* KARDEX — selects e filtros */
-  #kardex-filtros, .kardex-top {
-    flex-wrap: wrap !important;
-    gap: 8px !important;
+  .mob-nav-item .mob-nav-icon { font-size: 18px; line-height: 1; }
+  .mob-nav-item.on { color: #fff; border-top-color: #0056A8; background: rgba(0,86,168,.18); }
+  .mob-nav-item:active { background: rgba(255,255,255,.07); }
+  body { background: var(--mob-bg) !important; padding-bottom: var(--mob-nav-h); }
+  .kk, .ech, .ech2 > div {
+    background: var(--mob-card) !important;
+    border-radius: var(--mob-radius) !important;
+    box-shadow: 0 1px 8px rgba(0,0,0,.07) !important;
   }
-  #kardex-filtros select { width: 100% !important; }
-
-  /* ITENS CRITICOS */
-  .crit-card {
-    border-radius: 12px !important;
-    padding: 10px !important;
-    box-shadow: 0 2px 8px rgba(0,0,0,.07) !important;
-  }
+  .esb { display: none !important; }
+  .elay { flex-direction: column !important; }
+  .emain { padding: var(--mob-pad) !important; }
+  .kg  { grid-template-columns: 1fr 1fr !important; gap: 8px !important; }
+  .kg3 { grid-template-columns: 1fr 1fr !important; gap: 8px !important; }
+  .kk { padding: 10px 12px !important; }
+  .kk .kv { font-size: 18px !important; }
+  .kk .kl { font-size: 9px !important; }
+  .kk .ki { font-size: 15px !important; }
+  .ech2 { grid-template-columns: 1fr !important; }
+  .table-wrap, .et-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .eh { padding: 0 10px !important; gap: 6px !important; height: 50px !important; }
+  .etabs { gap: 2px !important; }
+  .emp-btn { padding: 3px 7px !important; font-size: 10px !important; min-height: 40px !important; }
+  .bv { display: none !important; }
+  .toolbar { flex-wrap: wrap !important; gap: 6px !important; padding: 8px 10px !important; background: var(--mob-card) !important; border-radius: var(--mob-radius) !important; }
+  .search-box { min-width: 120px !important; }
+  .btn-periodo { min-height: 40px !important; }
+  .ct { font-size: 12px !important; }
+  .cs { font-size: 10px !important; }
 }
-
-/* BOTTOM NAV */
-#est-bottom-nav {
-  display: none;
-  position: fixed; bottom: 0; left: 0; right: 0;
-  height: 60px; background: #fff;
-  border-top: 1px solid #e2e8f0;
-  box-shadow: 0 -4px 16px rgba(0,0,0,.10);
-  z-index: 400; align-items: center;
-  justify-content: space-around; padding: 0 4px;
-}
-@media (max-width: 767px) { #est-bottom-nav { display: flex !important; } }
-#est-bottom-nav .mbn-item {
-  display: flex; flex-direction: column; align-items: center;
-  justify-content: center; flex: 1; min-height: 44px; cursor: pointer;
-  color: #64748b; font-size: 0.65rem; font-weight: 600; gap: 2px;
-  border-radius: 8px; transition: color .2s;
-}
-#est-bottom-nav .mbn-item.active { color: #1E2A3A; }
-#est-bottom-nav .mbn-item .icon { font-size: 1.3rem; line-height: 1; }
+.mob-prog-wrap { height: 4px; background: rgba(0,0,0,.07); border-radius: 2px; margin-top: 5px; overflow: hidden; }
+.mob-prog-fill { height: 100%; border-radius: 2px; transition: width .6s cubic-bezier(.4,0,.2,1); }
 </style>
+
 </head>
 <body>
+
+<nav id="mob-bottom-nav">
+  <button class="mob-nav-item on" id="mob-nav-posicao" onclick="navEst('posicao');mobNavEstActive('mob-nav-posicao')">
+    <span class="mob-nav-icon">📊</span>Posição
+  </button>
+  <button class="mob-nav-item" id="mob-nav-giro" onclick="navEst('giro');mobNavEstActive('mob-nav-giro')">
+    <span class="mob-nav-icon">📈</span>Giro
+  </button>
+  <button class="mob-nav-item" id="mob-nav-kardex" onclick="navEst('kardex');mobNavEstActive('mob-nav-kardex')">
+    <span class="mob-nav-icon">📦</span>Kardex
+  </button>
+</nav>
+
 
 <div class="eh"><button class="est-mb" id="est-mb" onclick="toggleEstMenu()" aria-label="Menu"><span></span><span></span><span></span></button>
   <img id="logo-emp" class="logo" src="" alt="">
@@ -678,7 +584,7 @@ td.valor{font-weight:600}
       <div style="font-size:16px;font-weight:800;margin-bottom:14px">📦 Kardex — Movimentação Detalhada</div>
       <div class="toolbar" style="display:flex">
         <input class="search-box" type="text" id="search" placeholder="🔍 Buscar código ou descrição..." oninput="render()">
-        <button class="btn-periodo" onclick="abreModal()">📅 Períodos <span class="badge" id="badge-per">0</span></button>
+        <button class="btn-periodo" onclick="openModal()">📅 Períodos <span class="badge" id="badge-per">0</span></button>
         <button class="btn-export btn-export-xlsx" onclick="exportarExcel()" title="Exportar tabela para Excel">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/><line x1="8" y1="9" x2="10" y2="9"/></svg>
           Excel
@@ -2613,30 +2519,81 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
-<nav id="est-bottom-nav">
-  <div class="mbn-item active" id="mbn-posicao" onclick="navEst('posicao');estnActive('mbn-posicao')"><span class="icon">&#128202;</span><span>Posicao</span></div>
-  <div class="mbn-item" id="mbn-giro" onclick="navEst('giro');estnActive('mbn-giro')"><span class="icon">&#128200;</span><span>Giro</span></div>
-  <div class="mbn-item" id="mbn-kardex" onclick="navEst('kardex');estnActive('mbn-kardex')"><span class="icon">&#128230;</span><span>Kardex</span></div>
-  <div class="mbn-item" id="mbn-dash" onclick="window.location.href='dashboard.html'"><span class="icon">&#128665;</span><span>Logistica</span></div>
-</nav>
 <script>
-function estnActive(id){
-  document.querySelectorAll('#est-bottom-nav .mbn-item').forEach(function(el){el.classList.remove('active');});
-  var el=document.getElementById(id);if(el)el.classList.add('active');
+/* ── Mobile Nav Active State ── */
+function mobNavEstActive(id) {
+  document.querySelectorAll('.mob-nav-item').forEach(function(b){ b.classList.remove('on'); });
+  var el = document.getElementById(id);
+  if (el) el.classList.add('on');
 }
-</script>
 
-<nav id="est-bottom-nav">
-  <div class="mbn-item active" id="mbn-posicao" onclick="navEst('posicao');estnActive('mbn-posicao')"><span class="icon">&#128202;</span><span>Posicao</span></div>
-  <div class="mbn-item" id="mbn-giro" onclick="navEst('giro');estnActive('mbn-giro')"><span class="icon">&#128200;</span><span>Giro</span></div>
-  <div class="mbn-item" id="mbn-kardex" onclick="navEst('kardex');estnActive('mbn-kardex')"><span class="icon">&#128230;</span><span>Kardex</span></div>
-  <div class="mbn-item" id="mbn-dash" onclick="window.location.href='dashboard.html'"><span class="icon">&#128665;</span><span>Logistica</span></div>
-</nav>
-<script>
-function estnActive(id){
-  document.querySelectorAll('#est-bottom-nav .mbn-item').forEach(function(el){el.classList.remove('active');});
-  var el=document.getElementById(id);if(el)el.classList.add('active');
+/* Sync sidebar nav clicks with bottom nav */
+(function(){
+  var origNavEst = window.navEst;
+  window.navEst = function(p) {
+    if (origNavEst) origNavEst(p);
+    var map = { posicao:'mob-nav-posicao', giro:'mob-nav-giro', kardex:'mob-nav-kardex' };
+    if (map[p]) mobNavEstActive(map[p]);
+  };
+})();
+
+/* ── Mobile Progress Bars on KPI cards ── */
+function injectEstProgressBars() {
+  if (window.innerWidth > 767) return;
+  document.querySelectorAll('.kk').forEach(function(card) {
+    if (card.querySelector('.mob-prog-wrap')) return; // already injected
+    var kv = card.querySelector('.kv');
+    if (!kv) return;
+    var txt = kv.textContent.trim();
+    var pct = null;
+    var m = txt.match(/(\d+(?:[,\.]\d+)?)\s*%/);
+    if (m) {
+      pct = parseFloat(m[1].replace(',','.'));
+    } else {
+      // Try to extract numeric — scale 0-100 by context
+      var num = parseFloat(txt.replace(/[^\d,\.]/g,'').replace(',','.'));
+      if (!isNaN(num) && num >= 0 && num <= 100) pct = num;
+    }
+    if (pct === null) return;
+    var color = pct >= 90 ? '#107C41' : pct >= 70 ? '#F39200' : '#D13438';
+    var wrap = document.createElement('div');
+    wrap.className = 'mob-prog-wrap';
+    var fill = document.createElement('div');
+    fill.className = 'mob-prog-fill';
+    fill.style.width = '0%';
+    fill.style.background = color;
+    wrap.appendChild(fill);
+    kv.parentNode.insertBefore(wrap, kv.nextSibling);
+    setTimeout(function(){ fill.style.width = Math.min(pct,100) + '%'; }, 80);
+  });
 }
+
+/* Run progress bars after renders */
+(function(){
+  var orig = window.render;
+  window.render = function() {
+    if (orig) orig.apply(this, arguments);
+    setTimeout(injectEstProgressBars, 300);
+  };
+  var origPos = window.renderPos;
+  window.renderPos = function() {
+    if (origPos) origPos.apply(this, arguments);
+    setTimeout(injectEstProgressBars, 300);
+  };
+  var origGiro = window.renderGiro;
+  window.renderGiro = function() {
+    if (origGiro) origGiro.apply(this, arguments);
+    setTimeout(injectEstProgressBars, 300);
+  };
+})();
+
+window.addEventListener('resize', function(){
+  if (window.innerWidth > 767) {
+    document.querySelectorAll('.mob-prog-wrap').forEach(function(el){ el.remove(); });
+  }
+});
+
+setTimeout(injectEstProgressBars, 600);
 </script>
 </body>
 </html>

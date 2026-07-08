@@ -469,242 +469,6 @@ tbody td{padding:9px 11px;font-weight:500}
   .wb{justify-content:center}
 }
 
-
-/* ═══════════════════════════════════════════════════════
-   MOBILE-FIRST PREMIUM — @media max-width: 767px
-   ═══════════════════════════════════════════════════════ */
-@media (max-width: 767px) {
-
-  /* ── FUNDO SPLIT ── */
-  body { background: #f1f5f9 !important; }
-
-  /* ── HEADER ── */
-  #hd {
-    padding: 0 12px;
-    height: 52px;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    box-shadow: 0 2px 8px rgba(0,0,0,.10);
-  }
-  .mb { min-height: 44px; min-width: 44px; }
-  .cw img { height: 26px !important; }
-  .eb img { height: 16px !important; }
-
-  /* ── SIDEBAR → GAVETA OVERLAY ── */
-  #sb {
-    width: 80vw !important;
-    max-width: 300px;
-    top: 52px !important;
-    height: calc(100vh - 52px - 60px) !important;
-    overflow-y: auto;
-    box-shadow: 4px 0 24px rgba(0,0,0,.25) !important;
-  }
-  .sbh { padding: 16px 12px 8px; }
-  .sbn { padding: 0 12px 80px; }
-  .ni {
-    padding: 12px 14px !important;
-    font-size: 0.9rem !important;
-    min-height: 44px;
-    display: flex;
-    align-items: center;
-    border-radius: 8px;
-    margin-bottom: 2px;
-  }
-
-  /* ── BOTTOM NAVIGATION BAR ── */
-  #mobile-bottom-nav {
-    display: flex !important;
-  }
-
-  /* ── CONTAINER PRINCIPAL ── */
-  #mn {
-    padding: 12px 12px 72px !important;
-    margin-left: 0 !important;
-  }
-
-  /* ── SEÇÕES ── */
-  .sec-title, .ct, .section-label {
-    font-size: 1.1rem !important;
-    font-weight: 700;
-    margin-bottom: 10px;
-  }
-
-  /* ── GRID KPIs → 2 colunas ── */
-  .kg {
-    grid-template-columns: 1fr 1fr !important;
-    gap: 10px !important;
-    margin-bottom: 12px !important;
-  }
-  .kc {
-    padding: 12px !important;
-    border-radius: 12px !important;
-    box-shadow: 0 2px 8px rgba(0,0,0,.07) !important;
-    background: #fff !important;
-  }
-  .kh { margin-bottom: 4px; }
-  .ki { font-size: 14px !important; }
-  .kl { font-size: 0.72rem !important; letter-spacing: .4px; }
-  .kv { font-size: 1.2rem !important; line-height: 1.1; }
-  .kv.sm { font-size: 1rem !important; }
-  .kd { font-size: 0.72rem !important; }
-
-  /* ── VE-CARDS (Visão Executiva) → 1 coluna ── */
-  .ve-grid3 {
-    grid-template-columns: 1fr !important;
-    gap: 10px !important;
-  }
-  .ve-card {
-    padding: 12px 14px !important;
-    border-radius: 12px !important;
-    box-shadow: 0 2px 8px rgba(0,0,0,.07) !important;
-    background: #fff !important;
-  }
-  .vc-header { margin-bottom: 4px; }
-  .vc-ico { font-size: 14px !important; }
-  .vc-lbl { font-size: 0.72rem !important; }
-  .vc-val { font-size: 1.35rem !important; margin-bottom: 4px; }
-  .vc-badge { font-size: 0.72rem !important; padding: 2px 7px; }
-  .vc-yoy { font-size: 0.72rem !important; }
-  .vc-drill { font-size: 0.72rem !important; margin-top: 6px; }
-
-  /* ── GRID FINANCEIRO → 1 coluna ── */
-  .fin-kpi-grid, .fin-grid, [id^="fin-kpi"] {
-    grid-template-columns: 1fr 1fr !important;
-    gap: 10px !important;
-  }
-  .fk {
-    padding: 12px !important;
-    border-radius: 12px !important;
-    box-shadow: 0 2px 8px rgba(0,0,0,.07) !important;
-    background: #fff !important;
-  }
-  .fki { font-size: 14px !important; }
-  .fkl { font-size: 0.72rem !important; }
-  .fkv { font-size: 1.1rem !important; }
-  .fkd { font-size: 0.72rem !important; }
-
-  /* ── GRID GRÁFICOS → 1 coluna ── */
-  .cg, .ve-charts, .charts-grid,
-  .ent-charts, .tr-charts, .fin-charts {
-    grid-template-columns: 1fr !important;
-    gap: 10px !important;
-  }
-  .chart-box, .ve-chart, .ent-chart {
-    border-radius: 12px !important;
-    box-shadow: 0 2px 8px rgba(0,0,0,.07) !important;
-    background: #fff !important;
-    padding: 12px !important;
-  }
-
-  /* ── TABELAS → scroll horizontal ── */
-  .ve-table-wrap, .table-wrap, .tr-table {
-    overflow-x: auto !important;
-    -webkit-overflow-scrolling: touch;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,.07);
-    background: #fff;
-  }
-  table { min-width: 520px; }
-  th, td {
-    white-space: nowrap !important;
-    font-size: 0.78rem !important;
-    padding: 8px 10px !important;
-  }
-  thead tr { position: sticky; top: 0; z-index: 2; }
-
-  /* ── CARDS DE ALERTA ── */
-  .alerta, .exc-card, [class*="alerta"], [class*="alert"] {
-    border-radius: 12px !important;
-    padding: 12px !important;
-    box-shadow: 0 2px 8px rgba(0,0,0,.07) !important;
-    margin-bottom: 10px;
-  }
-
-  /* ── BOTÕES E TOUCH TARGETS ── */
-  button, .btn, .ni, select, input {
-    min-height: 44px !important;
-  }
-  .wbtns { flex-direction: column; gap: 8px; }
-  .wbtns button { width: 100% !important; border-radius: 10px !important; }
-
-  /* ── ANO REF BUTTONS ── */
-  .veab, .flab, .trab {
-    min-height: 36px !important;
-    padding: 0 14px !important;
-    font-size: 0.82rem !important;
-    border-radius: 20px !important;
-  }
-
-  /* ── LEGENDAS E TEXTOS SECUNDÁRIOS ── */
-  .legenda, .gl, .label-sm {
-    font-size: 0.75rem !important;
-  }
-
-  /* ── ENT-KPI ENTREGAS ── */
-  .ent-kpi-row {
-    grid-template-columns: 1fr 1fr !important;
-    gap: 10px !important;
-  }
-  .ent-kpi {
-    padding: 12px !important;
-    border-radius: 12px !important;
-    box-shadow: 0 2px 8px rgba(0,0,0,.07) !important;
-    background: #fff !important;
-  }
-
-  /* ── TRANSPORTADORAS KPI ── */
-  .tr-kpi-row, .tr-kpi-grid {
-    grid-template-columns: 1fr 1fr !important;
-    gap: 10px !important;
-  }
-  .tr-kpi {
-    padding: 12px !important;
-    border-radius: 12px !important;
-    box-shadow: 0 2px 8px rgba(0,0,0,.07) !important;
-    background: #fff !important;
-  }
-
-  /* ── SEÇÃO HEADER ── */
-  .sec-header, .page-header {
-    font-size: 1rem !important;
-    padding: 8px 0 !important;
-  }
-  .page-sub { font-size: 0.78rem !important; }
-}
-
-/* ── BOTTOM NAV — sempre oculto no desktop ── */
-#mobile-bottom-nav {
-  display: none;
-  position: fixed;
-  bottom: 0; left: 0; right: 0;
-  height: 60px;
-  background: #fff;
-  border-top: 1px solid #e2e8f0;
-  box-shadow: 0 -4px 16px rgba(0,0,0,.10);
-  z-index: 300;
-  align-items: center;
-  justify-content: space-around;
-  padding: 0 4px;
-}
-#mobile-bottom-nav .mbn-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  flex: 1;
-  min-height: 44px;
-  cursor: pointer;
-  color: #64748b;
-  font-size: 0.65rem;
-  font-weight: 600;
-  gap: 2px;
-  border-radius: 8px;
-  transition: color .2s;
-}
-#mobile-bottom-nav .mbn-item.active { color: var(--ac, #003d7a); }
-#mobile-bottom-nav .mbn-item span.icon { font-size: 1.3rem; line-height: 1; }
-
 </style>
 <style>
 .ve-grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:14px}
@@ -728,6 +492,335 @@ tbody td{padding:9px 11px;font-weight:500}
 .ve-alerta-vazio{font-size:12px;color:var(--gl);font-style:italic;text-align:center;padding:10px 0}
 .tc{background:var(--white);border-radius:var(--r);padding:16px;box-shadow:var(--shadow);margin-bottom:14px}
 </style>
+
+<style>
+/* ═══════════════════════════════════════════════════════
+   MOBILE-FIRST REFACTOR — Dashboard Logístico / Estoque
+   Padrão: Bottom Nav · Cards com Progress Bar · Split BG
+   @media max-width: 767px — isolado, legível, premium
+   ═══════════════════════════════════════════════════════ */
+
+/* ── 1. VARIÁVEIS MOBILE ── */
+:root {
+  --mob-bg: #f1f5f9;
+  --mob-card: #ffffff;
+  --mob-pad: 12px;
+  --mob-radius: 12px;
+  --mob-shadow: 0 1px 6px rgba(0,0,0,.07), 0 2px 16px rgba(0,0,0,.05);
+  --mob-nav-h: 64px;
+}
+
+/* ── 2. BOTTOM NAVIGATION BAR ── */
+#mob-bottom-nav {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  /* Fundo split */
+  body {
+    background: var(--mob-bg) !important;
+  }
+
+  /* Esconde hamburger header no mobile — substituído pela bottom nav */
+  #hd .mb { display: none; }
+  #hd {
+    padding: 0 var(--mob-pad);
+    height: 52px;
+    border-bottom: 1px solid var(--gl2);
+  }
+  .ht { font-size: 13px; }
+  .hs { font-size: 9px; }
+  .ef { display: none; } /* esconde logos empresa no topo */
+  .cw img { height: 26px; }
+
+  /* Main padding com espaço para bottom nav */
+  #mn {
+    padding: var(--mob-pad) var(--mob-pad) calc(var(--mob-nav-h) + 20px) !important;
+    max-width: 100% !important;
+  }
+
+  /* ── SIDEBAR: esconder completamente no mobile (usa bottom nav) ── */
+  #sb, #ov { display: none !important; }
+
+  /* ── BOTTOM NAVIGATION BAR ── */
+  #mob-bottom-nav {
+    display: flex;
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    height: var(--mob-nav-h);
+    background: #1E2A3A;
+    z-index: 300;
+    align-items: center;
+    justify-content: space-around;
+    padding: 0 4px;
+    box-shadow: 0 -2px 16px rgba(0,0,0,.2);
+    border-top: 1px solid rgba(255,255,255,.08);
+  }
+  .mob-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    padding: 8px 10px;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: background .18s;
+    flex: 1;
+    min-height: 44px;
+    justify-content: center;
+    border: none;
+    background: none;
+    font-family: var(--font);
+    color: rgba(255,255,255,.55);
+    text-decoration: none;
+  }
+  .mob-nav-item.on,
+  .mob-nav-item:active {
+    background: rgba(255,255,255,.1);
+    color: #fff;
+  }
+  .mob-nav-item.on .mob-nav-icon { opacity: 1; }
+  .mob-nav-icon {
+    font-size: 18px;
+    line-height: 1;
+    opacity: .7;
+  }
+  .mob-nav-label {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: .3px;
+    text-transform: uppercase;
+    line-height: 1;
+  }
+  .mob-nav-badge {
+    position: absolute;
+    top: 6px;
+    right: calc(50% - 18px);
+    background: var(--err);
+    color: #fff;
+    font-size: 8px;
+    font-weight: 800;
+    padding: 1px 4px;
+    border-radius: 10px;
+    min-width: 14px;
+    text-align: center;
+    line-height: 1.4;
+  }
+  .mob-nav-item { position: relative; }
+
+  /* ── GRID DE KPIs: coluna única em telas pequenas ── */
+  .kg,
+  .ve-grid3,
+  .fin-grid-kpi,
+  .fin-grid-kpi2,
+  .tr-grid-kpi,
+  .tr-grid-kpi2,
+  .ent-kpi-row {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  /* 2 colunas para telas um pouco maiores (480px+) */
+  @media (min-width: 400px) {
+    .kg,
+    .ve-grid3,
+    .fin-grid-kpi,
+    .ent-kpi-row {
+      grid-template-columns: 1fr 1fr !important;
+    }
+  }
+
+  /* ── CARDS: branco com sombra leve ── */
+  .kc, .cc, .tc, .ve-card, .fin-kpi, .fk,
+  .fin-chart, .tr-chart, .ent-kpi, .ent-chart,
+  .qtable-wrap, .fb {
+    background: var(--mob-card) !important;
+    border-radius: var(--mob-radius) !important;
+    box-shadow: var(--mob-shadow) !important;
+  }
+
+  /* ── TIPOGRAFIA MOBILE ── */
+  .ct, .qtitle { font-size: 1.1rem !important; }
+  .cs, .qsub, .kl, .fl, .ano-label,
+  .fk .fkl, .ve-card .vc-lbl { font-size: 0.75rem !important; }
+  .kv { font-size: 22px !important; }
+  .kv.sm { font-size: 16px !important; }
+  .gv { font-size: 26px !important; }
+  .ve-card .vc-val { font-size: 20px !important; }
+  .fk .fkv { font-size: 13px !important; }
+  .gdv { font-size: 14px !important; }
+
+  /* ── PADDING DOS CARDS ── */
+  .kc { padding: var(--mob-pad) !important; }
+  .cc, .tc { padding: var(--mob-pad) var(--mob-pad) !important; }
+  .ve-card { padding: 14px var(--mob-pad) !important; }
+  .fk { padding: var(--mob-pad) !important; }
+  .ent-kpi { padding: var(--mob-pad) !important; }
+
+  /* ── BARRAS DE PROGRESSO NOS KPI CARDS ── */
+  .kc-progress, .ve-progress, .fk-progress {
+    margin-top: 8px;
+    height: 4px;
+    background: var(--mob-bg);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .kc-progress-fill, .ve-progress-fill, .fk-progress-fill {
+    height: 100%;
+    border-radius: 2px;
+    transition: width .7s cubic-bezier(.4,0,.2,1);
+    background: var(--ac);
+  }
+
+  /* ── FILTROS (ano-bar, filter-bar) ── */
+  .ano-bar {
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+  .ano-btn {
+    padding: 5px 12px !important;
+    font-size: 11px !important;
+    min-height: 36px;
+  }
+  .fb {
+    padding: 10px var(--mob-pad) !important;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  select {
+    min-width: 0 !important;
+    font-size: 11px !important;
+    flex: 1;
+    min-height: 44px;
+  }
+  .bc {
+    min-height: 44px;
+    font-size: 11px !important;
+    padding: 6px 10px !important;
+  }
+  .fd { display: none; }
+
+  /* ── GRID 2 COLUNAS → 1 COLUNA ── */
+  .cg,
+  .fin-charts2,
+  .tr-charts2,
+  .ent-charts {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  /* ── TABELAS: scroll horizontal suave ── */
+  .tw, .qtable-wrap {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    border-radius: var(--mob-radius) !important;
+  }
+  table, .qtable, .fin-table, .tr-table {
+    font-size: 11px !important;
+    white-space: nowrap;
+    min-width: 520px;
+  }
+  thead th {
+    padding: 8px 10px !important;
+    font-size: 9px !important;
+    white-space: nowrap;
+  }
+  tbody td {
+    padding: 8px 10px !important;
+  }
+  .qtable thead th {
+    font-size: 9px !important;
+    padding: 8px 10px !important;
+  }
+
+  /* Remoção de bordas pesadas */
+  thead th { border-bottom: 1.5px solid var(--gl2) !important; }
+  tbody tr { border-bottom: 1px solid rgba(0,0,0,.05) !important; }
+
+  /* ── TABS INTERNAS ── */
+  .itab-bar {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    gap: 3px;
+    padding: 3px;
+  }
+  .itab {
+    white-space: nowrap;
+    padding: 6px 12px !important;
+    font-size: 11px !important;
+    min-height: 36px;
+  }
+
+  /* ── HBAR CHARTS ── */
+  .hbar-row {
+    grid-template-columns: 80px 1fr 90px !important;
+    gap: 6px;
+  }
+  .hbar-label { font-size: 10px !important; }
+
+  /* ── LEGENDA EXECUTIVA ── */
+  [style*="gap:16px"][style*="flex-wrap:wrap"] {
+    gap: 8px !important;
+  }
+
+  /* ── BOTÕES DE AÇÃO: touch target 44px ── */
+  button, .wb, .ano-btn, .bc, .itab, .mob-nav-item {
+    min-height: 44px;
+  }
+  .wb {
+    justify-content: center;
+    flex: 1;
+    font-size: 12px !important;
+    padding: 10px 14px !important;
+  }
+  .wbtns { flex-direction: column; width: 90%; margin: 0 auto; gap: 8px; }
+
+  /* ── CHIP DE ABA ATIVA ── */
+  #aba-ativa {
+    font-size: 10px !important;
+    padding: 2px 7px !important;
+  }
+
+  /* ── WELCOME SCREEN ── */
+  .wlogos img { height: 32px; }
+  .wtitle { font-size: 16px !important; }
+  .wsub { font-size: 12px !important; }
+  .wtruck { max-width: 260px; }
+
+  /* ── SEÇÃO ACOMPANHAMENTO ── */
+  .qtable { min-width: 780px !important; }
+
+  /* ── BARRAS HORIZONTAIS DE TRANSPORTADORAS ── */
+  .hbar-wrap { gap: 6px !important; }
+
+  /* ── CARDS DE ALERTA / VE ── */
+  .ve-alerta { padding: 12px var(--mob-pad) !important; }
+  .ve-alerta-item { font-size: 11px !important; }
+
+  /* ── ESPAÇAMENTO ENTRE SEÇÕES ── */
+  [style*="margin-bottom:14px"],
+  .kg, .ve-grid3, .fin-grid-kpi, .fin-grid-kpi2,
+  .tr-grid-kpi, .tr-grid-kpi2, .ent-kpi-row,
+  .cg, .fin-charts2, .tr-charts2, .ent-charts {
+    margin-bottom: 10px !important;
+  }
+
+  /* ── SECTION HEADERS (labels de seção) ── */
+  [style*="text-transform:uppercase"][style*="letter-spacing"] {
+    font-size: 9px !important;
+    margin-bottom: 6px !important;
+  }
+
+  /* ── BARRA DE GLOSSÁRIO ── */
+  [style*="gap:16px"][style*="font-size:10px"] {
+    font-size: 9px !important;
+    gap: 6px !important;
+    flex-wrap: wrap;
+    padding: 8px var(--mob-pad) !important;
+  }
+}
+</style>
 </head>
 <body>
 
@@ -747,6 +840,30 @@ tbody td{padding:9px 11px;font-weight:500}
     <button class="wb wa" onclick="entrar('TODAS')">🏢 Ver Todas</button>
   </div>
 </div>
+
+<!-- BOTTOM NAVIGATION BAR (mobile) -->
+<nav id="mob-bottom-nav" role="navigation" aria-label="Navegação principal">
+  <button class="mob-nav-item on" id="mob-nav-visao" onclick="navPage('visao-executiva');mobNavActive('mob-nav-visao')">
+    <span class="mob-nav-icon">📊</span>
+    <span class="mob-nav-label">Início</span>
+  </button>
+  <button class="mob-nav-item" id="mob-nav-fin" onclick="navPage('financeiro');mobNavActive('mob-nav-fin')">
+    <span class="mob-nav-icon">💰</span>
+    <span class="mob-nav-label">Financeiro</span>
+  </button>
+  <button class="mob-nav-item" id="mob-nav-tr" onclick="navPage('transportadoras');mobNavActive('mob-nav-tr')">
+    <span class="mob-nav-icon">🚛</span>
+    <span class="mob-nav-label">Frota</span>
+  </button>
+  <button class="mob-nav-item" id="mob-nav-acomp" onclick="navPage('acompanhamento');mobNavActive('mob-nav-acomp')">
+    <span class="mob-nav-icon">📋</span>
+    <span class="mob-nav-label">Alertas</span>
+  </button>
+  <button class="mob-nav-item" id="mob-nav-estoque" onclick="abrirEstoque()">
+    <span class="mob-nav-icon">📦</span>
+    <span class="mob-nav-label">Estoque</span>
+  </button>
+</nav>
 
 <div id="ov" onclick="fMenu()"></div>
 <nav id="sb">
@@ -2380,6 +2497,46 @@ function trRenderUF(rows) {
       '<td style="color:'+(r.fsf<=2?'var(--ok)':r.fsf<=4?'var(--alert)':'var(--err)')+'">'+trFmtD(r.fsf)+'%</td></tr>';
   }).join('');
 }
+
+// ── BOTTOM NAV MOBILE ──
+function mobNavActive(id) {
+  document.querySelectorAll('.mob-nav-item').forEach(el => el.classList.remove('on'));
+  const el = document.getElementById(id);
+  if (el) el.classList.add('on');
+}
+
+// ── PROGRESS BARS NOS KPI CARDS (mobile) ──
+function injectMobileProgressBars() {
+  if (window.innerWidth > 767) return;
+  // Adiciona progress bar em cada .kc que tenha .kd com número percentual
+  document.querySelectorAll('.kc, .ve-card, .fk').forEach(card => {
+    if (card.querySelector('.mob-pb-injected')) return;
+    const kdEl = card.querySelector('.kd, .vc-badge, .fkd');
+    const val = card.querySelector('.kv, .vc-val, .fkv');
+    if (!kdEl || !val) return;
+    const text = kdEl.textContent || '';
+    const pctMatch = text.match(/(\d+(?:[,.]\d+)?)\s*%/);
+    if (!pctMatch) return;
+    const pct = Math.min(parseFloat(pctMatch[1].replace(',','.')), 100);
+    const colorVar = pct >= 90 ? 'var(--ok)' : pct >= 70 ? 'var(--alert)' : 'var(--err)';
+    const pb = document.createElement('div');
+    pb.className = 'mob-pb-injected';
+    pb.style.cssText = 'margin-top:8px;height:4px;background:var(--gl2);border-radius:2px;overflow:hidden';
+    const fill = document.createElement('div');
+    fill.style.cssText = 'height:100%;border-radius:2px;width:0;transition:width .7s ease;background:'+colorVar;
+    pb.appendChild(fill);
+    card.appendChild(pb);
+    setTimeout(() => { fill.style.width = pct + '%'; }, 80);
+  });
+}
+
+// Observar mudanças no DOM para injetar progress bars dinamicamente
+const _mobObserver = new MutationObserver(() => {
+  if (window.innerWidth <= 767) injectMobileProgressBars();
+});
+_mobObserver.observe(document.getElementById('mn') || document.body, {childList:true, subtree:true});
+window.addEventListener('resize', injectMobileProgressBars);
+setTimeout(injectMobileProgressBars, 500);
 function scrollAcomp() {
   setTimeout(() => {
     const el = document.querySelector('#page-transportadoras [style*="margin-top:20px"]');
@@ -2437,29 +2594,5 @@ fAno('TODOS');
 _updateAbaNome(PAGINA);
 setTimeout(renderVE, 150);
 </script>
-
-<!-- BOTTOM NAV MOBILE -->
-<nav id="mobile-bottom-nav">
-  <div class="mbn-item active" id="mbn-ve" onclick="navPage('visao-executiva');mbnActive('mbn-ve')">
-    <span class="icon">📊</span><span>Executivo</span>
-  </div>
-  <div class="mbn-item" id="mbn-fin" onclick="navPage('financeiro');mbnActive('mbn-fin')">
-    <span class="icon">💰</span><span>Financeiro</span>
-  </div>
-  <div class="mbn-item" id="mbn-tr" onclick="navPage('transportadoras');mbnActive('mbn-tr')">
-    <span class="icon">🚛</span><span>Transportad.</span>
-  </div>
-  <div class="mbn-item" id="mbn-est" onclick="abrirEstoque();mbnActive('mbn-est')">
-    <span class="icon">📦</span><span>Estoque</span>
-  </div>
-</nav>
-<script>
-function mbnActive(id) {
-  document.querySelectorAll('.mbn-item').forEach(el => el.classList.remove('active'));
-  var el = document.getElementById(id);
-  if(el) el.classList.add('active');
-}
-</script>
-
 </body>
 </html>
