@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Dashboard Logístico — IAB & Verbum (08/07 13:58)</title>
+<title>Dashboard Logístico — IAB & Verbum (08/07 14:43)</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -177,16 +177,14 @@ tbody td{padding:9px 11px;font-weight:500}
 .da-warn{color:#E65100;font-weight:700}
 .da-err{color:#7B0000;font-weight:700}
 @media(max-width:768px){
-  .ent-charts{grid-template-columns:1fr!important}
-  .ent-kpi-row{grid-template-columns:1fr!important}
+  .ent-charts{grid-template-columns:1fr}
+  .ent-kpi-row{grid-template-columns:1fr 1fr}
 }
 @media(max-width:768px){
-  #mn{padding:10px 10px 80px}
-  .kg{grid-template-columns:1fr!important}
+  #mn{padding:10px 10px 32px}
+  .kg{grid-template-columns:1fr 1fr}
   .kv{font-size:20px}.kv.sm{font-size:15px}
-  .cg{grid-template-columns:1fr!important}
-  .ent-charts{grid-template-columns:1fr!important}
-  .ent-kpi-row{grid-template-columns:1fr!important}
+  .cg{grid-template-columns:1fr}
   select{min-width:128px;font-size:11px}
   .eb img{height:19px}
   .cw img{height:32px}
@@ -196,50 +194,6 @@ tbody td{padding:9px 11px;font-weight:500}
   .wbtns{flex-direction:column;width:90%;align-items:stretch}
   .wb{justify-content:center}
 }
-
-/* ═══ BOTTOM NAVIGATION BAR — Mobile ═══ */
-#mob-bottom-nav{display:none}
-@media(max-width:768px){
-  #mob-bottom-nav{
-    display:flex;
-    position:fixed;
-    bottom:0;left:0;right:0;
-    height:64px;
-    background:#1E2A3A;
-    z-index:1000;
-    border-top:1px solid rgba(255,255,255,.08);
-    box-shadow:0 -2px 16px rgba(0,0,0,.25);
-  }
-  .mob-nav-item{
-    flex:1;
-    display:flex;flex-direction:column;
-    align-items:center;justify-content:center;
-    gap:3px;
-    background:transparent;border:none;
-    color:rgba(255,255,255,.5);
-    font-size:9px;font-weight:600;
-    font-family:var(--font);
-    cursor:pointer;min-height:44px;
-    transition:all .15s;
-    padding:4px 2px;
-    text-transform:uppercase;letter-spacing:.4px;
-    border-top:2px solid transparent;
-    white-space:nowrap;
-  }
-  .mob-nav-item .mob-nav-icon{font-size:18px;line-height:1}
-  .mob-nav-item.on{
-    color:#fff;
-    border-top-color:#0056A8;
-    background:rgba(0,86,168,.18);
-  }
-  .mob-nav-item:active{background:rgba(255,255,255,.07)}
-  body{background:#f1f5f9!important}
-  .kc,.cc,.tc{background:#ffffff!important;border-radius:12px!important;box-shadow:0 1px 8px rgba(0,0,0,.07)!important}
-  body{padding-bottom:64px!important}
-}
-/* Progress Bars mobile */
-.mob-prog-wrap{height:4px;background:rgba(0,0,0,.07);border-radius:2px;margin-top:5px;overflow:hidden}
-.mob-prog-fill{height:100%;border-radius:2px;transition:width .6s cubic-bezier(.4,0,.2,1)}
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -533,9 +487,9 @@ tbody td{padding:9px 11px;font-weight:500}
 .ve-card.ok{border-color:var(--ok)}.ve-card.warn{border-color:var(--alert)}.ve-card.bad{border-color:var(--err)}.ve-card.neu{border-color:var(--ac)}
 .ve-card .vc-ico{font-size:16px;margin-bottom:4px}
 .ve-card .vc-lbl{font-size:10px;font-weight:700;color:var(--gl);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px}
-.ve-card .vc-val{font-size:26px;font-weight:800;color:var(--gd);line-height:1;margin-bottom:8px}
-.ve-card .vc-badge{display:inline-block;padding:2px 9px;border-radius:10px;font-size:10px;font-weight:700;margin-bottom:6px}
-.ve-card .vc-yoy{font-size:11px;font-weight:700;margin-bottom:6px;min-height:18px}
+.ve-card .vc-val{font-size:18px;font-weight:800;color:var(--gd);line-height:1.2;margin-bottom:4px}
+.ve-card .vc-badge{display:inline-block;padding:1px 7px;border-radius:10px;font-size:9px;font-weight:700;margin-bottom:2px}
+.ve-card .vc-yoy{font-size:10px;font-weight:700;margin-bottom:2px}
 .ve-card .vc-drill{font-size:9px;color:var(--gl);cursor:pointer;margin-top:auto}
 .ve-alerta{border-radius:var(--r);padding:14px 16px}
 .ve-alerta.crit{background:#FFF5F5;border:1.5px solid #FFCDD2}
@@ -549,28 +503,6 @@ tbody td{padding:9px 11px;font-weight:500}
 </head>
 <body>
 
-<nav id="mob-bottom-nav">
-  <button class="mob-nav-item on" id="mob-nav-visao"
-    onclick="navPage('visao-executiva');mobNavActive('mob-nav-visao')">
-    <span class="mob-nav-icon">📊</span>Início
-  </button>
-  <button class="mob-nav-item" id="mob-nav-fin"
-    onclick="navPage('financeiro');mobNavActive('mob-nav-fin')">
-    <span class="mob-nav-icon">💰</span>Financeiro
-  </button>
-  <button class="mob-nav-item" id="mob-nav-tr"
-    onclick="navPage('transportadoras');mobNavActive('mob-nav-tr')">
-    <span class="mob-nav-icon">🚛</span>Frota
-  </button>
-  <button class="mob-nav-item" id="mob-nav-acomp"
-    onclick="navPage('acompanhamento');mobNavActive('mob-nav-acomp')">
-    <span class="mob-nav-icon">📋</span>Alertas
-  </button>
-  <button class="mob-nav-item" id="mob-nav-estoque"
-    onclick="abrirEstoque();mobNavActive('mob-nav-estoque')">
-    <span class="mob-nav-icon">📦</span>Estoque
-  </button>
-</nav>
 
 <div id="wl">
   <div class="wlogos">
@@ -634,7 +566,7 @@ tbody td{padding:9px 11px;font-weight:500}
     <button class="ano-btn"   id="veab2025"  onclick="veAno('2025')">2025</button>
     <button class="ano-btn"   id="veab2026"  onclick="veAno('2026')">2026</button>
   </div>
-  <div style="font-size:10px;color:var(--gl);margin-bottom:12px;padding:8px 12px;background:var(--white);border-radius:8px;box-shadow:var(--shadow);display:flex;gap:16px;flex-wrap:wrap">
+  <div style="font-size:10px;color:var(--gl);margin-bottom:12px;padding:8px 12px;background:var(--white);border-radius:8px;box-shadow:var(--shadow);display:flex;gap:16px;flex-wrap:wrap" class="ve-legenda">
     <span><b>NS%</b> = Nível de Serviço</span><span><b>FSF%</b> = Frete ÷ Fat. Líquido</span>
     <span><b>LT</b> = Lead Time médio (dias)</span><span><b>▲▼</b> = Variação vs Ano Ref anterior</span>
     <span>🔍 = Clique para ver detalhes</span>
@@ -645,7 +577,7 @@ tbody td{padding:9px 11px;font-weight:500}
   <div id="ve-kpi2" class="ve-grid3"></div>
   <div style="font-size:10px;font-weight:700;color:var(--err);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px;margin-top:4px">🚨 Alertas de Exceção</div>
   <div id="ve-alertas" class="ve-grid3" style="margin-bottom:14px"></div>
-  <div style="display:grid;grid-template-columns:2fr 1fr;gap:13px;margin-bottom:14px">
+  <div style="display:grid;grid-template-columns:2fr 1fr;gap:13px;margin-bottom:14px" class="ve-charts-grid">
     <div class="tc"><div class="ct">Evolução — NS% e Faturamento Líquido</div><div class="cs" id="ve-ctx-evol">—</div><div id="ve-chart-evol"></div></div>
     <div class="tc"><div class="ct">Resultado por Região</div><div class="cs">NS% · FSF% · Entregas</div><div id="ve-chart-reg"></div></div>
   </div>
@@ -1452,45 +1384,6 @@ function renderAcompanhamento() {
       }).join('')
     : '<tr><td colspan="9" style="text-align:center;color:var(--gl);padding:24px">Sem atrasos registrados.</td></tr>';
 }
-
-// ── MOBILE: Bottom Nav Active ──
-function mobNavActive(id) {
-  document.querySelectorAll('.mob-nav-item').forEach(b => b.classList.remove('on'));
-  const el = document.getElementById(id);
-  if (el) el.classList.add('on');
-}
-
-// ── MOBILE: Progress Bars ──
-function injectMobileProgressBars() {
-  if (window.innerWidth > 768) return;
-  document.querySelectorAll('.kc, .kk, .ve-card, .ent-kpi, .fin-kpi').forEach(function(card) {
-    if (card.querySelector('.mob-prog-wrap')) return;
-    const kv = card.querySelector('.kv, .vc-val, .fkv');
-    if (!kv) return;
-    const txt = kv.textContent.trim();
-    const m = txt.match(/(\d+(?:[,\.]\d+)?)\s*%/);
-    if (!m) return;
-    const pct = parseFloat(m[1].replace(',', '.'));
-    if (isNaN(pct) || pct < 0 || pct > 100) return;
-    const color = pct >= 90 ? '#107C41' : pct >= 70 ? '#F39200' : '#D13438';
-    const wrap = document.createElement('div');
-    wrap.className = 'mob-prog-wrap';
-    const fill = document.createElement('div');
-    fill.className = 'mob-prog-fill';
-    fill.style.width = '0%';
-    fill.style.background = color;
-    wrap.appendChild(fill);
-    kv.parentNode.insertBefore(wrap, kv.nextSibling);
-    setTimeout(function(){ fill.style.width = Math.min(pct, 100) + '%'; }, 80);
-  });
-}
-
-window.addEventListener('resize', function() {
-  if (window.innerWidth > 768)
-    document.querySelectorAll('.mob-prog-wrap').forEach(function(el){ el.remove(); });
-});
-
-setTimeout(injectMobileProgressBars, 700);
 function abrirEstoque() {
   window.open('dashboard_estoque.html', '_blank');
 }
@@ -1545,9 +1438,12 @@ function veCard(cor, ico, lbl, val, badge, yoy, page) {
   const click = page ? 'onclick="navPage(\''+page+'\')"' : '';
   return '<div class="ve-card '+cor+'" '+click+'>'+
     '<div class="fki">'+ico+'</div>'+
-    '<div style="flex:1;min-width:0"><div class="vc-lbl">'+lbl+'</div>'+
+    '<div style="flex:1;min-width:0">'+
+    '<div style="display:flex;align-items:center;gap:6px;margin-bottom:3px">'+
+    '<span class="vc-lbl" style="margin-bottom:0">'+lbl+'</span>'+
+    '<span class="vc-badge" style="background:'+badgeBg+';color:'+badgeCor+'">'+badge+'</span>'+
+    '</div>'+
     '<div class="vc-val">'+val+'</div>'+
-    '<div><span class="vc-badge" style="background:'+badgeBg+';color:'+badgeCor+'">'+badge+'</span></div>'+
     '<div class="vc-yoy">'+yoy+'</div>'+
     drill+'</div></div>';
 }
