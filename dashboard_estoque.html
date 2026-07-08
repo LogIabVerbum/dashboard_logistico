@@ -36,7 +36,7 @@ body{background:var(--bg);color:var(--gd);display:flex;flex-direction:column;min
 /* CARDS */
 .kg{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:10px;margin-bottom:14px}
 .kg3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
-.kk{background:var(--wh);border-radius:var(--r);padding:14px 16px;box-shadow:var(--sh);border-left:4px solid transparent;transition:transform .2s,box-shadow .2s;display:flex;flex-direction:column;justify-content:space-between}
+.kk{background:var(--wh);border-radius:var(--r);padding:14px 16px;box-shadow:var(--sh);border-left:4px solid transparent;transition:transform .2s,box-shadow .2s;display:flex;flex-direction:row;align-items:flex-start;gap:10px}
 .kk:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.12)}
 .kk.bl{border-color:var(--ac)}.kk.gr{border-color:var(--ok)}.kk.or{border-color:var(--al)}.kk.rd{border-color:var(--err)}.kk.gy{border-color:#607D8B}
 .kk .ki{font-size:18px;margin-bottom:4px}
@@ -2413,19 +2413,28 @@ function renderSaldoKpi() {
   var totalVal   = _saldoCache.reduce(function(s,r){ return s+(r.val||0); }, 0);
   kpi.innerHTML =
     '<div class="kk" style="border-left-color:var(--ac)">' +
-      '<div class="kl">Total de Itens</div>' +
-      '<div class="kv">' + total.toLocaleString('pt-BR') + '</div>' +
-      '<div class="ks">Itens distintos em estoque</div>' +
+      '<div class="ki">📦</div>' +
+      '<div style="flex:1;min-width:0">' +
+        '<div class="kl">Total de Itens</div>' +
+        '<div class="kv">' + total.toLocaleString('pt-BR') + '</div>' +
+        '<div class="ks">Itens distintos em estoque</div>' +
+      '</div>' +
     '</div>' +
     '<div class="kk" style="border-left-color:var(--ok)">' +
-      '<div class="kl">Saldo Total (un.)</div>' +
-      '<div class="kv">' + totalSaldo.toLocaleString('pt-BR') + '</div>' +
-      '<div class="ks">Soma dos saldos finais</div>' +
+      '<div class="ki">📊</div>' +
+      '<div style="flex:1;min-width:0">' +
+        '<div class="kl">Saldo Total (un.)</div>' +
+        '<div class="kv">' + totalSaldo.toLocaleString('pt-BR') + '</div>' +
+        '<div class="ks">Soma dos saldos finais</div>' +
+      '</div>' +
     '</div>' +
     '<div class="kk" style="border-left-color:var(--al)">' +
-      '<div class="kl">Valor Total</div>' +
-      '<div class="kv">R$ ' + (totalVal/1e6).toFixed(2).replace('.',',') + 'M</div>' +
-      '<div class="ks">Saldo × Valor Unitário</div>' +
+      '<div class="ki">💰</div>' +
+      '<div style="flex:1;min-width:0">' +
+        '<div class="kl">Valor Total</div>' +
+        '<div class="kv">R$ ' + (totalVal/1e6).toFixed(2).replace('.',',') + 'M</div>' +
+        '<div class="ks">Saldo × Valor Unitário</div>' +
+      '</div>' +
     '</div>';
 }
 
