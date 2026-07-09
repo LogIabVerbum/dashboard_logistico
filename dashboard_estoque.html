@@ -13,7 +13,7 @@ body{background:var(--bg);color:var(--gd);display:flex;flex-direction:column;min
 /* HEADER */
 .eh{background:var(--acd);color:#fff;height:54px;padding:0 20px;display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:300;box-shadow:0 2px 8px rgba(0,0,0,.2)}
 .eh .logo{height:30px;object-fit:contain}
-.eh .et{font-size:12px;font-weight:600}
+.eh .et{font-size:11px;font-weight:500}
 .eh .es{font-size:10px;color:rgba(255,255,255,.7);margin-top:1px}
 .eh .sp{flex:1}
 .bv{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.15);color:#fff;text-decoration:none;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:700;border:1px solid rgba(255,255,255,.25);white-space:nowrap}
@@ -39,11 +39,11 @@ body{background:var(--bg);color:var(--gd);display:flex;flex-direction:column;min
 .kk{background:var(--wh);border-radius:var(--r);padding:12px 14px;box-shadow:var(--sh);border-left:4px solid transparent;transition:transform .2s,box-shadow .2s;display:flex;flex-direction:row;align-items:flex-start;gap:10px}
 .kk:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.12)}
 .kk.bl{border-color:var(--ac)}.kk.gr{border-color:var(--ok)}.kk.or{border-color:var(--al)}.kk.rd{border-color:var(--err)}.kk.gy{border-color:#607D8B}
-.kk .ki{font-size:18px;margin-bottom:4px}
-.kk .kl{font-size:9px;font-weight:700;color:var(--gl);text-transform:uppercase;letter-spacing:.7px;margin-bottom:3px;white-space:nowrap}
-.kk .kv{font-size:18px;font-weight:800;color:var(--gd);line-height:1;margin-bottom:4px}
-.kk .ks{font-size:11px;color:var(--gm);margin-top:4px}
-.kk .kf{font-size:10px;color:var(--gl);margin-top:2px}
+.kk .ki{font-size:22px;margin-top:2px;flex-shrink:0}
+.kk .kl{font-size:9px;font-weight:700;color:var(--gl);text-transform:uppercase;margin-bottom:2px;letter-spacing:.7px;margin-bottom:3px;white-space:nowrap}
+.kk .kv{font-size:18px;font-weight:800;color:var(--gd);line-height:1.1;margin-bottom:2px}
+.kk .ks{font-size:10px;color:var(--gm);margin-top:0}
+.kk .kf{font-size:10px;color:var(--gl);margin-top:1px;margin-bottom:2px}
 .pill{display:inline-block;padding:1px 7px;border-radius:10px;font-size:10px;font-weight:700}
 .pr{background:#FFEBEE;color:#7B0000}.py{background:#FFF3E0;color:#E65100}.pg{background:#E8F5E9;color:#2E7D32}
 /* CHARTS */
@@ -370,70 +370,7 @@ td.valor{font-weight:600}
   --mob-radius: 12px;
   --mob-nav-h: 64px;
 }
-#mob-bottom-nav { display: none; }
-@media (max-width: 767px) {
-  #mob-bottom-nav {
-    display: flex;
-    position: fixed;
-    bottom: 0; left: 0; right: 0;
-    height: var(--mob-nav-h);
-    background: #1E2A3A;
-    z-index: 1000;
-    border-top: 1px solid rgba(255,255,255,.08);
-    box-shadow: 0 -2px 16px rgba(0,0,0,.25);
-  }
-  .mob-nav-item {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 3px;
-    background: transparent;
-    border: none;
-    color: rgba(255,255,255,.5);
-    font-size: 9px;
-    font-weight: 600;
-    font-family: var(--font);
-    cursor: pointer;
-    min-height: 44px;
-    transition: all .15s;
-    padding: 4px 2px;
-    text-transform: uppercase;
-    letter-spacing: .4px;
-    border-top: 2px solid transparent;
-    white-space: nowrap;
-  }
-  .mob-nav-item .mob-nav-icon { font-size: 18px; line-height: 1; }
-  .mob-nav-item.on { color: #fff; border-top-color: #0056A8; background: rgba(0,86,168,.18); }
-  .mob-nav-item:active { background: rgba(255,255,255,.07); }
-  body { background: var(--mob-bg) !important; padding-bottom: var(--mob-nav-h); }
-  .kk, .ech, .ech2 > div {
-    background: var(--mob-card) !important;
-    border-radius: var(--mob-radius) !important;
-    box-shadow: 0 1px 8px rgba(0,0,0,.07) !important;
-  }
-  .esb { display: none !important; }
-  .elay { flex-direction: column !important; }
-  .emain { padding: var(--mob-pad) !important; }
-  .kg  { grid-template-columns: 1fr 1fr !important; gap: 8px !important; }
-  .kg3 { grid-template-columns: 1fr 1fr !important; gap: 8px !important; }
-  .kk { padding: 10px 12px !important; }
-  .kk .kv { font-size: 18px !important; }
-  .kk .kl { font-size: 9px !important; }
-  .kk .ki { font-size: 15px !important; }
-  .ech2 { grid-template-columns: 1fr !important; }
-  .table-wrap, .et-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-  .eh { padding: 0 10px !important; gap: 6px !important; height: 50px !important; }
-  .etabs { gap: 2px !important; }
-  .emp-btn { padding: 3px 7px !important; font-size: 10px !important; min-height: 40px !important; }
-  .bv { display: none !important; }
-  .toolbar { flex-wrap: wrap !important; gap: 6px !important; padding: 8px 10px !important; background: var(--mob-card) !important; border-radius: var(--mob-radius) !important; }
-  .search-box { min-width: 120px !important; }
-  .btn-periodo { min-height: 40px !important; }
-  .ct { font-size: 12px !important; }
-  .cs { font-size: 10px !important; }
-}
+
 .mob-prog-wrap { height: 4px; background: rgba(0,0,0,.07); border-radius: 2px; margin-top: 5px; overflow: hidden; }
 .mob-prog-fill { height: 100%; border-radius: 2px; transition: width .6s cubic-bezier(.4,0,.2,1); }
 </style>
@@ -441,17 +378,7 @@ td.valor{font-weight:600}
 </head>
 <body>
 
-<nav id="mob-bottom-nav">
-  <button class="mob-nav-item on" id="mob-nav-posicao" onclick="navEst('posicao');mobNavEstActive('mob-nav-posicao')">
-    <span class="mob-nav-icon">📊</span>Posição
-  </button>
-  <button class="mob-nav-item" id="mob-nav-giro" onclick="navEst('giro');mobNavEstActive('mob-nav-giro')">
-    <span class="mob-nav-icon">📈</span>Giro
-  </button>
-  <button class="mob-nav-item" id="mob-nav-kardex" onclick="navEst('kardex');mobNavEstActive('mob-nav-kardex')">
-    <span class="mob-nav-icon">📦</span>Kardex
-  </button>
-</nav>
+
 
 
 <div class="eh"><button class="est-mb" id="est-mb" onclick="toggleEstMenu()" aria-label="Menu"><span></span><span></span><span></span></button>
@@ -1743,6 +1670,96 @@ tr.tr-total td.col-b.valor-total{color:#B8D8F8}
 }
 
 </style>
+
+<style id="sidebar-hamburger">
+/* ── BOTÃO HAMBURGUER ── */
+.est-mb {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 36px; height: 36px;
+  background: rgba(255,255,255,.15);
+  border: none; border-radius: 8px;
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+  transition: background .2s;
+}
+.est-mb:hover { background: rgba(255,255,255,.25); }
+.est-mb span {
+  display: block;
+  width: 20px; height: 2px;
+  background: #fff;
+  border-radius: 2px;
+  transition: all .25s;
+}
+.est-mb.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.est-mb.open span:nth-child(2) { opacity: 0; }
+.est-mb.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* ── OVERLAY ── */
+.est-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.5);
+  z-index: 498;
+}
+.est-overlay.open { display: block; }
+
+/* ── SIDEBAR LATERAL ── */
+@media (max-width: 768px) {
+  .est-mb { display: flex !important; }
+
+  .esb {
+    display: flex !important;
+    flex-direction: column !important;
+    position: fixed !important;
+    left: -270px !important;
+    top: 0 !important;
+    width: 250px !important;
+    height: 100vh !important;
+    z-index: 500 !important;
+    background: #1E2A3A !important;
+    transition: left .28s cubic-bezier(.4,0,.2,1) !important;
+    box-shadow: 4px 0 24px rgba(0,0,0,.3) !important;
+    overflow-y: auto !important;
+    padding: 60px 0 20px !important;
+  }
+  .esb.open { left: 0 !important; }
+
+  /* Fechar com X no topo da sidebar */
+  .esb::before {
+    content: '✕';
+    position: absolute;
+    top: 16px; right: 16px;
+    color: rgba(255,255,255,.6);
+    font-size: 18px;
+    cursor: pointer;
+    font-family: sans-serif;
+  }
+
+  /* Itens do menu maiores para touch */
+  .esb .ni {
+    padding: 14px 22px !important;
+    font-size: 14px !important;
+  }
+  .esb .ss {
+    padding: 16px 22px 6px !important;
+    font-size: 11px !important;
+  }
+
+  /* Emain sem padding-bottom extra (sem bottom nav) */
+  .emain {
+    padding: 10px 10px 20px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
+  }
+}
+</style>
 </head><body>
 <div class="doc-header">
   <div>
@@ -2034,6 +2051,15 @@ function navEst(p) {
   document.querySelectorAll('.ni').forEach(n=>n.classList.remove('on'));
   document.getElementById('page-'+p).classList.add('on');
   document.getElementById('ni-'+p).classList.add('on');
+  // Fechar menu sanduíche ao selecionar aba
+  var sb = document.querySelector('.esb');
+  var ov = document.getElementById('est-overlay');
+  var btn = document.getElementById('est-mb');
+  if (sb && sb.classList.contains('open')) {
+    sb.classList.remove('open');
+    if (ov) ov.classList.remove('open');
+    if (btn) btn.classList.remove('open');
+  }
   if(p==='posicao') renderPos();
   else if(p==='giro') renderGiro();
   else { render(); }
@@ -2079,7 +2105,15 @@ function calcABC(prods,pers){
   return {abc,totS:tot};
 }
 function kk(cls,ico,lbl,val,sub,frm){
-  return '<div class="kk '+cls+'"><div class="ki">'+ico+'</div><div class="kl">'+lbl+'</div><div class="kv">'+val+'</div><div class="ks">'+sub+'</div><div class="kf">'+frm+'</div></div>';
+  return '<div class="kk '+cls+'">'
+    +'<div class="ki">'+ico+'</div>'
+    +'<div style="display:flex;flex-direction:column;flex:1;min-width:0">'
+    +'<div class="kl">'+lbl+'</div>'
+    +'<div class="kv">'+val+'</div>'
+    +'<div class="kf">'+frm+'</div>'
+    +(sub?'<div class="ks">'+sub+'</div>':'')
+    +'</div>'
+    +'</div>';
 }
 
 // ── POSIÇÃO ATUAL ──
@@ -2180,24 +2214,52 @@ function renderGiro(){
     return {lbl,s,e};
   });
   const _mxV=Math.max(..._evolData.map(d=>Math.max(d.s,d.e)),1);
-  const _BAR_H=160;
-  document.getElementById('giro-evol').innerHTML=
-    '<div style="display:flex;align-items:flex-end;gap:6px;height:'+(_BAR_H+36)+'px;padding:0 4px">'+
-    _evolData.map(d=>{
-      const hS=Math.round(d.s/_mxV*_BAR_H),hE=Math.round(d.e/_mxV*_BAR_H);
-      return '<div style="display:flex;flex-direction:column;align-items:center;flex:1;min-width:0">'+
-        '<div style="display:flex;align-items:flex-end;gap:2px;height:'+_BAR_H+'px">'+
-        '<div title="Saídas: '+fN(d.s,0)+'" style="width:44%;background:#F39200;border-radius:3px 3px 0 0;height:'+hS+'px;cursor:pointer"></div>'+
-        '<div title="Entradas: '+fN(d.e,0)+'" style="width:44%;background:#107C41;border-radius:3px 3px 0 0;height:'+hE+'px;cursor:pointer"></div>'+
-        '</div>'+
-        '<div style="font-size:8px;color:var(--gm);margin-top:3px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%">'+d.lbl+'</div>'+
+  const _el_evol=document.getElementById('giro-evol');
+  if(_el_evol){
+    if(_evolData.every(d=>d.s===0&&d.e===0)){
+      _el_evol.innerHTML='<p style="text-align:center;color:var(--gl);padding:40px">Sem dados no período</p>';
+    } else {
+      const n=_evolData.length;
+      const W=Math.max(_el_evol.offsetWidth||0, window.innerWidth>0?Math.min(window.innerWidth-40,600):400);
+      const H=220, PAD={top:30,right:10,bottom:36,left:44};
+      const cW=W-PAD.left-PAD.right, cH=H-PAD.top-PAD.bottom;
+      const bSlot=cW/n, bPair=bSlot*0.7, b=Math.floor(bPair/2)-1;
+      const xL=i=>PAD.left+i*bSlot+bSlot*0.15;
+      // Linhas de grade
+      const nGrid=4;
+      const gridLines=[0,1,2,3,4].map(g=>{
+        const v=Math.round(_mxV*g/nGrid);
+        const y=PAD.top+cH-Math.round(v/_mxV*cH);
+        const lbl=v>=1000?(v/1000).toFixed(0)+'K':v;
+        return '<line x1="'+PAD.left+'" y1="'+y+'" x2="'+(PAD.left+cW)+'" y2="'+y+'" stroke="#eee" stroke-width="1"/>'+
+               '<text x="'+(PAD.left-4)+'" y="'+(y+3)+'" text-anchor="end" font-size="8" fill="#aaa" font-family="Montserrat,sans-serif">'+lbl+'</text>';
+      }).join('');
+      // Barras + rótulos
+      const bars=_evolData.map((d,i)=>{
+        const hS=Math.max(Math.round(d.s/_mxV*cH),d.s>0?3:0);
+        const hE=Math.max(Math.round(d.e/_mxV*cH),d.e>0?3:0);
+        const x=xL(i);
+        const lblS=d.s>=1000?(d.s/1000).toFixed(0)+'K':d.s>0?d.s:'';
+        const lblE=d.e>=1000?(d.e/1000).toFixed(0)+'K':d.e>0?d.e:'';
+        const yS=PAD.top+cH-hS, yE=PAD.top+cH-hE;
+        return '<rect x="'+x+'" y="'+yS+'" width="'+b+'" height="'+hS+'" fill="#F39200" rx="2"/>'+
+               (lblS?'<text x="'+(x+b/2)+'" y="'+(yS-3)+'" text-anchor="middle" font-size="7" font-weight="700" fill="#E07000" font-family="Montserrat,sans-serif">'+lblS+'</text>':'')+
+               '<rect x="'+(x+b+2)+'" y="'+yE+'" width="'+b+'" height="'+hE+'" fill="#107C41" rx="2"/>'+
+               (lblE?'<text x="'+(x+b+2+b/2)+'" y="'+(yE-3)+'" text-anchor="middle" font-size="7" font-weight="700" fill="#107C41" font-family="Montserrat,sans-serif">'+lblE+'</text>':'')+
+               '<text x="'+(x+b)+'" y="'+(H-6)+'" text-anchor="middle" font-size="8" fill="#888" font-family="Montserrat,sans-serif">'+d.lbl+'</text>';
+      }).join('');
+      _el_evol.innerHTML=
+        '<svg viewBox="0 0 '+W+' '+H+'" style="width:100%;height:'+H+'px;display:block;overflow:visible">'+
+          gridLines+bars+
+          '<line x1="'+PAD.left+'" y1="'+PAD.top+'" x2="'+PAD.left+'" y2="'+(PAD.top+cH)+'" stroke="#ddd" stroke-width="1"/>'+
+          '<line x1="'+PAD.left+'" y1="'+(PAD.top+cH)+'" x2="'+(PAD.left+cW)+'" y2="'+(PAD.top+cH)+'" stroke="#ddd" stroke-width="1"/>'+
+        '</svg>'+
+        '<div style="display:flex;gap:14px;justify-content:center;margin-top:6px">'+
+        '<span style="font-size:10px;color:#F39200;display:flex;align-items:center;gap:4px"><span style="width:12px;height:10px;background:#F39200;display:inline-block;border-radius:2px"></span>Saídas</span>'+
+        '<span style="font-size:10px;color:#107C41;display:flex;align-items:center;gap:4px"><span style="width:12px;height:10px;background:#107C41;display:inline-block;border-radius:2px"></span>Entradas</span>'+
         '</div>';
-    }).join('')+
-    '</div>'+
-    '<div style="display:flex;gap:14px;justify-content:center;margin-top:8px">'+
-    '<span style="font-size:10px;color:#F39200;display:flex;align-items:center;gap:4px"><span style="width:14px;height:10px;background:#F39200;display:inline-block;border-radius:2px"></span>Saídas</span>'+
-    '<span style="font-size:10px;color:#107C41;display:flex;align-items:center;gap:4px"><span style="width:14px;height:10px;background:#107C41;display:inline-block;border-radius:2px"></span>Entradas</span>'+
-    '</div>';
+    }
+  }
   const pf=prods.filter(p=>{
     if(bus&&!p.descricao.toLowerCase().includes(bus)&&!String(p.codigo).includes(bus))return false;
     if(fABC&&abc[p.codigo]!==fABC)return false;
@@ -2607,11 +2669,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <script>
 /* ── Mobile Nav Active State ── */
-function mobNavEstActive(id) {
-  document.querySelectorAll('.mob-nav-item').forEach(function(b){ b.classList.remove('on'); });
-  var el = document.getElementById(id);
-  if (el) el.classList.add('on');
-}
+
 
 /* Sync sidebar nav clicks with bottom nav */
 (function(){
@@ -2702,6 +2760,121 @@ setTimeout(function() {
   .et tbody td {
     font-size: 11px !important;
     padding: 5px 6px !important;
+  }
+}
+</style>
+
+<style id="mobile-fix-final">
+@media (max-width: 768px) {
+
+  /* ── 1. Cards em coluna única ── */
+  .kg, .kg3 {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  .kk {
+    width: 100% !important;
+    box-sizing: border-box !important;
+    min-width: 0 !important;
+  }
+
+  /* ── 2. Seções duplas em coluna ── */
+  .ech2 {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  .ech2 > * {
+    width: 100% !important;
+    box-sizing: border-box !important;
+    margin-bottom: 14px !important;
+  }
+
+  /* ── 3. Texto tabela saldo menor ── */
+  #pos-saldo-table td {
+    font-size: 11px !important;
+    white-space: nowrap !important;
+    padding: 5px 7px !important;
+  }
+  #pos-saldo-table th {
+    font-size: 9px !important;
+    padding: 5px 7px !important;
+    white-space: nowrap !important;
+  }
+
+  /* ── 4. Gráfico barras — garantir visibilidade ── */
+  #giro-evol {
+    min-height: 200px;
+    overflow-x: auto !important;
+  }
+  #giro-evol > div {
+    min-width: max-content;
+  }
+
+  /* ── 5. Cards internos com pills (cobertura) ── */
+  .kk .ks {
+    font-size: 10px !important;
+    line-height: 1.4 !important;
+    flex-wrap: wrap !important;
+  }
+  .pill {
+    font-size: 10px !important;
+    padding: 2px 6px !important;
+    margin: 1px !important;
+    display: inline-block !important;
+  }
+
+  /* ── 6. Overflow geral ── */
+  body { overflow-x: hidden !important; }
+  .emain {
+    padding: 10px 10px 90px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
+  }
+  .esb { display: none !important; }
+}
+</style>
+
+<style id="sidebar-mobile">
+/* ── SIDEBAR MOBILE — desliza da esquerda ── */
+@media (max-width: 768px) {
+  /* Remover display:none — sidebar fica fora da tela */
+  .esb {
+    display: flex !important;
+    flex-direction: column !important;
+    position: fixed !important;
+    left: -260px !important;
+    top: 0 !important;
+    width: 240px !important;
+    height: 100vh !important;
+    z-index: 500 !important;
+    transition: left .28s cubic-bezier(.4,0,.2,1) !important;
+    background: #1E2A3A !important;
+    overflow-y: auto !important;
+    box-shadow: 4px 0 24px rgba(0,0,0,.3) !important;
+    padding-top: 16px !important;
+  }
+
+  /* Sidebar aberta */
+  .esb.open {
+    left: 0 !important;
+  }
+
+  /* Overlay escurece o fundo */
+  .est-overlay {
+    display: none;
+    position: fixed !important;
+    inset: 0 !important;
+    background: rgba(0,0,0,.5) !important;
+    z-index: 499 !important;
+  }
+  .est-overlay.open {
+    display: block !important;
+  }
+
+  /* Botão sanduíche visível */
+  .est-mb {
+    display: flex !important;
   }
 }
 </style>
