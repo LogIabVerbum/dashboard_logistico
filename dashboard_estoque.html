@@ -69,7 +69,7 @@ body{background:var(--bg);color:var(--gd);display:flex;flex-direction:column;min
 .slbl{font-size:10px;font-weight:700;color:var(--gl);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px;margin-top:4px}
 
 @media(max-width:768px){
-  .esb{display:none}
+  .esb{/*display:none*/}
   .elay{flex-direction:column}
   .emain{padding:10px;padding-bottom:80px!important}
   .kg{grid-template-columns:1fr!important}
@@ -232,7 +232,7 @@ header, .eh {
    MOBILE — Responsivo completo
    ═══════════════════════════════════════════════ */
 @media(max-width:768px) {
-  .esb { display: none !important; }
+  .esb { /*display: none removed*/ }
   .elay { flex-direction: column !important; }
   .emain { padding: 10px !important; }
   .kg3 { grid-template-columns: 1fr 1fr !important; }
@@ -1209,7 +1209,7 @@ tr.tr-total td.col-b.valor-total{color:#B8D8F8}
    ═══════════════════════════════════════════════════ */
 @media(max-width:768px){
   /* Sidebar some */
-  .esb { display: none !important; }
+  .esb { /*display: none removed*/ }
   .elay { flex-direction: column !important; }
   .emain { padding: 10px !important; }
 
@@ -1671,95 +1671,7 @@ tr.tr-total td.col-b.valor-total{color:#B8D8F8}
 
 </style>
 
-<style id="sidebar-hamburger">
-/* ── BOTÃO HAMBURGUER ── */
-.est-mb {
-  display: none;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 5px;
-  width: 36px; height: 36px;
-  background: rgba(255,255,255,.15);
-  border: none; border-radius: 8px;
-  cursor: pointer;
-  padding: 0;
-  flex-shrink: 0;
-  transition: background .2s;
-}
-.est-mb:hover { background: rgba(255,255,255,.25); }
-.est-mb span {
-  display: block;
-  width: 20px; height: 2px;
-  background: #fff;
-  border-radius: 2px;
-  transition: all .25s;
-}
-.est-mb.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-.est-mb.open span:nth-child(2) { opacity: 0; }
-.est-mb.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-/* ── OVERLAY ── */
-.est-overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,.5);
-  z-index: 498;
-}
-.est-overlay.open { display: block; }
-
-/* ── SIDEBAR LATERAL ── */
-@media (max-width: 768px) {
-  .est-mb { display: flex !important; }
-
-  .esb {
-    display: flex !important;
-    flex-direction: column !important;
-    position: fixed !important;
-    left: -270px !important;
-    top: 0 !important;
-    width: 250px !important;
-    height: 100vh !important;
-    z-index: 500 !important;
-    background: #1E2A3A !important;
-    transition: left .28s cubic-bezier(.4,0,.2,1) !important;
-    box-shadow: 4px 0 24px rgba(0,0,0,.3) !important;
-    overflow-y: auto !important;
-    padding: 60px 0 20px !important;
-  }
-  .esb.open { left: 0 !important; }
-
-  /* Fechar com X no topo da sidebar */
-  .esb::before {
-    content: '✕';
-    position: absolute;
-    top: 16px; right: 16px;
-    color: rgba(255,255,255,.6);
-    font-size: 18px;
-    cursor: pointer;
-    font-family: sans-serif;
-  }
-
-  /* Itens do menu maiores para touch */
-  .esb .ni {
-    padding: 14px 22px !important;
-    font-size: 14px !important;
-  }
-  .esb .ss {
-    padding: 16px 22px 6px !important;
-    font-size: 11px !important;
-  }
-
-  /* Emain sem padding-bottom extra (sem bottom nav) */
-  .emain {
-    padding: 10px 10px 20px !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-    overflow-x: hidden !important;
-  }
-}
-</style>
 </head><body>
 <div class="doc-header">
   <div>
@@ -2512,7 +2424,7 @@ function renderSaldoTabela() {
     var vu  = r.vu  != null ? 'R$ ' + r.vu.toLocaleString('pt-BR', {minimumFractionDigits:2,maximumFractionDigits:2}) : '—';
     var val = r.val != null ? 'R$ ' + r.val.toLocaleString('pt-BR', {minimumFractionDigits:2,maximumFractionDigits:2}) : '—';
     return '<tr>' +
-      '<td style="text-align:left;font-size:11px">' + r.desc + '</td>' +
+      '<td style="text-align:left;font-size:8px">' + r.desc + '</td>' +
       '<td style="text-align:center">' + r.emp + '</td>' +
       '<td>' + sf + '</td>' +
       '<td>' + vu + '</td>' +
@@ -2671,15 +2583,7 @@ document.addEventListener('DOMContentLoaded', function() {
 /* ── Mobile Nav Active State ── */
 
 
-/* Sync sidebar nav clicks with bottom nav */
-(function(){
-  var origNavEst = window.navEst;
-  window.navEst = function(p) {
-    if (origNavEst) origNavEst(p);
-    var map = { posicao:'mob-nav-posicao', giro:'mob-nav-giro', kardex:'mob-nav-kardex' };
-    if (map[p]) mobNavEstActive(map[p]);
-  };
-})();
+
 
 /* ── Mobile Progress Bars on KPI cards ── */
 function injectEstProgressBars() {
@@ -2746,136 +2650,116 @@ setTimeout(function() {
 }, 800);
 </script>
 
-<style id="mobile-definitivo">
-/* ═══ MOBILE DEFINITIVO — última regra, maior prioridade ═══ */
+
+
+
+
+
+
+
+
+<style id="MOBILE-FINAL">
+/* ════════════════════════════════════════════════════
+   MOBILE DEFINITIVO — Dashboard Estoque
+   Única fonte de verdade para mobile ≤ 768px
+   ════════════════════════════════════════════════════ */
+
+/* ── Botão hamburguer ── */
+.est-mb {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 36px;
+  height: 36px;
+  background: rgba(255,255,255,.15);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.est-mb span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: #fff;
+  border-radius: 2px;
+  transition: all .25s;
+}
+.est-mb.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.est-mb.open span:nth-child(2) { opacity: 0; }
+.est-mb.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* ── Overlay ── */
+.est-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.55);
+  z-index: 8999;
+}
+.est-overlay.open { display: block; }
+
 @media (max-width: 768px) {
+
+  /* ── Geral ── */
   body { overflow-x: hidden !important; }
 
-  /* Grid inline override */
-  [style*="grid-template-columns"] {
-    grid-template-columns: 1fr !important;
-  }
+  /* ── Botão hamburguer visível ── */
+  .est-mb { display: flex !important; }
 
-  /* Tabela td fonte menor */
-  .et tbody td {
-    font-size: 11px !important;
-    padding: 5px 6px !important;
-  }
-}
-</style>
-
-<style id="mobile-fix-final">
-@media (max-width: 768px) {
-
-  /* ── 1. Cards em coluna única ── */
-  .kg, .kg3 {
-    display: flex !important;
-    flex-direction: column !important;
-  }
-  .kk {
-    width: 100% !important;
-    box-sizing: border-box !important;
-    min-width: 0 !important;
-  }
-
-  /* ── 2. Seções duplas em coluna ── */
-  .ech2 {
-    display: flex !important;
-    flex-direction: column !important;
-  }
-  .ech2 > * {
-    width: 100% !important;
-    box-sizing: border-box !important;
-    margin-bottom: 14px !important;
-  }
-
-  /* ── 3. Texto tabela saldo menor ── */
-  #pos-saldo-table td {
-    font-size: 11px !important;
-    white-space: nowrap !important;
-    padding: 5px 7px !important;
-  }
-  #pos-saldo-table th {
-    font-size: 9px !important;
-    padding: 5px 7px !important;
-    white-space: nowrap !important;
-  }
-
-  /* ── 4. Gráfico barras — garantir visibilidade ── */
-  #giro-evol {
-    min-height: 200px;
-    overflow-x: auto !important;
-  }
-  #giro-evol > div {
-    min-width: max-content;
-  }
-
-  /* ── 5. Cards internos com pills (cobertura) ── */
-  .kk .ks {
-    font-size: 10px !important;
-    line-height: 1.4 !important;
-    flex-wrap: wrap !important;
-  }
-  .pill {
-    font-size: 10px !important;
-    padding: 2px 6px !important;
-    margin: 1px !important;
-    display: inline-block !important;
-  }
-
-  /* ── 6. Overflow geral ── */
-  body { overflow-x: hidden !important; }
-  .emain {
-    padding: 10px 10px 90px !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-    overflow-x: hidden !important;
-  }
-  .esb { display: none !important; }
-}
-</style>
-
-<style id="sidebar-mobile">
-/* ── SIDEBAR MOBILE — desliza da esquerda ── */
-@media (max-width: 768px) {
-  /* Remover display:none — sidebar fica fora da tela */
+  /* ── Sidebar lateral deslizante ── */
   .esb {
     display: flex !important;
     flex-direction: column !important;
     position: fixed !important;
-    left: -260px !important;
+    left: -270px !important;
     top: 0 !important;
-    width: 240px !important;
+    width: 250px !important;
+    min-width: 250px !important;
     height: 100vh !important;
-    z-index: 500 !important;
-    transition: left .28s cubic-bezier(.4,0,.2,1) !important;
+    z-index: 9000 !important;
     background: #1E2A3A !important;
-    overflow-y: auto !important;
+    transition: left .28s cubic-bezier(.4,0,.2,1) !important;
     box-shadow: 4px 0 24px rgba(0,0,0,.3) !important;
-    padding-top: 16px !important;
+    overflow-y: auto !important;
+    padding: 56px 0 20px !important;
+    box-sizing: border-box !important;
+  }
+  .esb.open { left: 0 !important; }
+
+  /* ── Layout ── */
+  .elay { flex-direction: column !important; }
+  .emain {
+    padding: 12px 12px 24px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
   }
 
-  /* Sidebar aberta */
-  .esb.open {
-    left: 0 !important;
-  }
+  /* ── Cards 1 coluna ── */
+  .kg  { grid-template-columns: 1fr !important; }
+  .kg3 { grid-template-columns: 1fr !important; }
+  .kk  { width: 100% !important; box-sizing: border-box !important; }
+  .kv  { font-size: 18px !important; }
 
-  /* Overlay escurece o fundo */
-  .est-overlay {
-    display: none;
-    position: fixed !important;
-    inset: 0 !important;
-    background: rgba(0,0,0,.5) !important;
-    z-index: 499 !important;
-  }
-  .est-overlay.open {
-    display: block !important;
-  }
+  /* ── Gráficos 1 coluna ── */
+  .ech2 { display: flex !important; flex-direction: column !important; }
+  .ech2 > * { width: 100% !important; box-sizing: border-box !important; margin-bottom: 14px !important; }
 
-  /* Botão sanduíche visível */
-  .est-mb {
-    display: flex !important;
-  }
+  /* ── Tabela saldo ── */
+  #pos-saldo-table td { font-size: 8px !important; padding: 4px 5px !important; }
+  #pos-saldo-table th { font-size: 8px !important; padding: 4px 5px !important; white-space: nowrap !important; }
+  .et-wrap { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; }
+
+  /* ── Header ── */
+  .eh { padding: 0 12px !important; height: 50px !important; gap: 8px !important; }
+  .etabs { gap: 2px !important; }
+  .emp-btn { padding: 3px 8px !important; font-size: 10px !important; }
+
+  /* ── SVG gráficos responsivos ── */
+  svg { max-width: 100% !important; }
 }
 </style>
 </body>
