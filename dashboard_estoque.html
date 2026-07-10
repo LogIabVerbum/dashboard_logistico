@@ -2424,7 +2424,7 @@ function renderSaldoTabela() {
     var vu  = r.vu  != null ? 'R$ ' + r.vu.toLocaleString('pt-BR', {minimumFractionDigits:2,maximumFractionDigits:2}) : '—';
     var val = r.val != null ? 'R$ ' + r.val.toLocaleString('pt-BR', {minimumFractionDigits:2,maximumFractionDigits:2}) : '—';
     return '<tr>' +
-      '<td style="text-align:left;font-size:11px;color:var(--ac);font-weight:600;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="' + r.desc + '">' + (r.desc.length>35?r.desc.slice(0,35)+'…':r.desc) + '</td>' +
+      '<td style="text-align:left;font-size:10px;color:var(--gm);font-weight:400;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="' + r.desc + '">' + (r.desc.length>35?r.desc.slice(0,35)+'…':r.desc) + '</td>' +
       '<td style="font-size:10px;text-align:center;color:var(--gm)">' + r.emp + '</td>' +
       '<td style="font-size:10px;text-align:right">' + sf + '</td>' +
       '<td style="font-size:10px;text-align:right">' + vu + '</td>' +
