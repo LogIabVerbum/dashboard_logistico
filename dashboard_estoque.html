@@ -27,6 +27,8 @@ body{background:var(--bg);color:var(--gd);display:flex;flex-direction:column;min
 /* SIDEBAR */
 .esb{width:196px;min-width:196px;background:#1E2A3A;padding:14px 0;position:sticky;top:54px;height:calc(100vh - 54px);overflow-y:auto}
 .esb .ss{font-size:9px;font-weight:700;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:1px;padding:12px 16px 6px}
+.esb .sec-transp{background:rgba(0,86,168,.18)}
+.esb .sec-estoque{background:rgba(16,124,65,.15)}
 .esb .ni{display:flex;align-items:center;gap:9px;padding:10px 16px;color:rgba(255,255,255,.6);font-size:13px;font-weight:500;cursor:pointer;border-left:3px solid transparent;transition:all .15s;user-select:none}
 .esb .ni:hover{background:rgba(255,255,255,.07);color:#fff}
 .esb .ni.on{background:rgba(0,86,168,.3);color:#fff;border-left-color:var(--ac);font-weight:700}
@@ -395,12 +397,15 @@ td.valor{font-weight:600}
 <div class="est-overlay" id="est-overlay" onclick="toggleEstMenu()"></div>
 <div class="elay">
   <nav class="esb">
-    <div class="ss">Painéis</div>
-    <div class="ni on" id="ni-posicao" onclick="navEst('posicao')">📊 Posição Atual</div>
-    <div class="ni"    id="ni-giro"    onclick="navEst('giro')">📈 Análise de Giro</div>
-    <div class="ni"    id="ni-kardex"  onclick="navEst('kardex')">📦 Kardex</div>
-    <div class="ss" style="margin-top:16px">Navegação</div>
-    <a href="dashboard.html" class="ni" style="color:rgba(255,255,255,.6);text-decoration:none;border-left-color:transparent">🚚 Dashboard Logístico</a>
+    <div class="ss sec-transp">Dashboard Transportes</div>
+    <div class="ni sec-transp" onclick="abrirTransportes('visao-executiva')">📊 Visão Executiva</div>
+    <div class="ni sec-transp" onclick="abrirTransportes('financeiro')">💰 Financeiro</div>
+    <div class="ni sec-transp" onclick="abrirTransportes('transportadoras')">🚛 Transportadoras</div>
+    <div class="ni sec-transp" onclick="abrirTransportes('acompanhamento')" style="padding-left:28px;font-size:12px">↳ Acompanhamento</div>
+    <div class="ss sec-estoque">Dashboard Estoque</div>
+    <div class="ni sec-estoque on" id="ni-posicao" onclick="navEst('posicao')">📊 Posição Atual</div>
+    <div class="ni sec-estoque"   id="ni-giro"    onclick="navEst('giro')">📈 Análise de Giro</div>
+    <div class="ni sec-estoque"   id="ni-kardex"  onclick="navEst('kardex')">📦 Kardex</div>
   </nav>
 
   <main class="emain">
@@ -1958,6 +1963,12 @@ function renderKpi() {
 <script>
 let fABC = '';
 
+function abrirTransportes(panel) {
+  var url = 'dashboard.html';
+  if (panel) url += '?panel=' + panel;
+  window.open(url, '_blank');
+}
+
 function navEst(p) {
   document.querySelectorAll('.epage').forEach(e=>e.classList.remove('on'));
   document.querySelectorAll('.ni').forEach(n=>n.classList.remove('on'));
@@ -2648,119 +2659,14 @@ setTimeout(function() {
   buildTipoFiltro('tipo-filtro-crit');
   buildTipoFiltro('tipo-filtro-giro');
 }, 800);
+// Auto-selecionar painel via URL ?panel=xxx
+(function(){
+  var p = new URLSearchParams(window.location.search).get('panel');
+  if(p && ['posicao','giro','kardex'].indexOf(p) !== -1) {
+    setTimeout(function(){ navEst(p); }, 600);
+  }
+})();
 </script>
 
 
 
-
-
-
-
-
-
-<style id="MOBILE-FINAL">
-/* ════════════════════════════════════════════════════
-   MOBILE DEFINITIVO — Dashboard Estoque
-   Única fonte de verdade para mobile ≤ 768px
-   ════════════════════════════════════════════════════ */
-
-/* ── Botão hamburguer ── */
-.est-mb {
-  display: none;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 5px;
-  width: 36px;
-  height: 36px;
-  background: rgba(255,255,255,.15);
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  flex-shrink: 0;
-}
-.est-mb span {
-  display: block;
-  width: 20px;
-  height: 2px;
-  background: #fff;
-  border-radius: 2px;
-  transition: all .25s;
-}
-.est-mb.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-.est-mb.open span:nth-child(2) { opacity: 0; }
-.est-mb.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-
-/* ── Overlay ── */
-.est-overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,.55);
-  z-index: 8999;
-}
-.est-overlay.open { display: block; }
-
-@media (max-width: 768px) {
-
-  /* ── Geral ── */
-  body { overflow-x: hidden !important; }
-
-  /* ── Botão hamburguer visível ── */
-  .est-mb { display: flex !important; }
-
-  /* ── Sidebar lateral deslizante ── */
-  .esb {
-    display: flex !important;
-    flex-direction: column !important;
-    position: fixed !important;
-    left: -270px !important;
-    top: 0 !important;
-    width: 250px !important;
-    min-width: 250px !important;
-    height: 100vh !important;
-    z-index: 9000 !important;
-    background: #1E2A3A !important;
-    transition: left .28s cubic-bezier(.4,0,.2,1) !important;
-    box-shadow: 4px 0 24px rgba(0,0,0,.3) !important;
-    overflow-y: auto !important;
-    padding: 56px 0 20px !important;
-    box-sizing: border-box !important;
-  }
-  .esb.open { left: 0 !important; }
-
-  /* ── Layout ── */
-  .elay { flex-direction: column !important; }
-  .emain {
-    padding: 12px 12px 24px !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-    overflow-x: hidden !important;
-  }
-
-  /* ── Cards 1 coluna ── */
-  .kg  { grid-template-columns: 1fr !important; }
-  .kg3 { grid-template-columns: 1fr !important; }
-  .kk  { width: 100% !important; box-sizing: border-box !important; }
-  .kv  { font-size: 18px !important; }
-
-  /* ── Gráficos 1 coluna ── */
-  .ech2 { display: flex !important; flex-direction: column !important; }
-  .ech2 > * { width: 100% !important; box-sizing: border-box !important; margin-bottom: 14px !important; }
-
-  /* ── Tabela saldo ── */
-  #pos-saldo-table td { font-size: 8px !important; padding: 4px 5px !important; }
-  #pos-saldo-table th { font-size: 8px !important; padding: 4px 5px !important; white-space: nowrap !important; }
-  .et-wrap { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; }
-
-  /* ── Header ── */
-  .eh { padding: 0 12px !important; height: 50px !important; gap: 8px !important; }
-  .etabs { gap: 2px !important; }
-  .emp-btn { padding: 3px 8px !important; font-size: 10px !important; }
-
-  /* ── SVG gráficos responsivos ── */
-  svg { max-width: 100% !important; }
-}
-</style>
-</body>
-</html>
