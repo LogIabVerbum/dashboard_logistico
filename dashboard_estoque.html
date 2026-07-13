@@ -72,8 +72,8 @@ body{background:var(--bg);color:var(--gd);display:flex;flex-direction:column;min
 
 @media(max-width:768px){
   .esb{/*display:none*/}
-  .elay{flex-direction:column}
-  .emain{padding:10px;padding-bottom:80px!important}
+  .elay{flex-direction:row}
+  .emain{padding:10px;padding-bottom:80px!important;width:100%}
   .kg{grid-template-columns:1fr!important}
   .kg3{grid-template-columns:1fr!important}
   .ech2{display:flex!important;flex-direction:column!important}
@@ -235,8 +235,8 @@ header, .eh {
    ═══════════════════════════════════════════════ */
 @media(max-width:768px) {
   .esb { /*display: none removed*/ }
-  .elay { flex-direction: column !important; }
-  .emain { padding: 10px !important; }
+  .elay { flex-direction: row !important; }
+  .emain { padding: 10px !important; width: 100% !important; }
   .kg3 { grid-template-columns: 1fr 1fr !important; }
   .kg  { grid-template-columns: 1fr 1fr !important; }
   .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
@@ -1215,8 +1215,8 @@ tr.tr-total td.col-b.valor-total{color:#B8D8F8}
 @media(max-width:768px){
   /* Sidebar some */
   .esb { /*display: none removed*/ }
-  .elay { flex-direction: column !important; }
-  .emain { padding: 10px !important; }
+  .elay { flex-direction: row !important; }
+  .emain { padding: 10px !important; width: 100% !important; }
 
   /* Cards KPI — 1 coluna */
   .kg  { grid-template-columns: 1fr !important; }
@@ -1303,9 +1303,12 @@ tr.tr-total td.col-b.valor-total{color:#B8D8F8}
   .et { display: block !important; overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; }
   .et-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain; }
 
-  /* Layout */
-  .elay { flex-direction: column !important; }
-  .emain { padding: 10px !important; }
+  /* Layout — sidebar é fixed, então elay não precisa de column */
+  .elay { flex-direction: row !important; }
+  .emain { padding: 10px !important; width: 100% !important; }
+  /* Garante que o esb fixo não reserve espaço no fluxo */
+  .esb { width: 0 !important; min-width: 0 !important; overflow: hidden !important; }
+  .esb.open { width: 200px !important; min-width: 200px !important; overflow: visible !important; }
 }
 /* ═══════════════════════════════════════════════
    DESIGN SYSTEM — Elevação Visual
@@ -1692,6 +1695,41 @@ tr.tr-total td.col-b.valor-total{color:#B8D8F8}
 </div>
 ${tbl}
 <script>window.onload=()=>{ setTimeout(()=>window.print(),300); }<\/script>
+
+<style id="header-mobile-fix">
+@media (max-width: 768px) {
+  /* Header — não quebrar linha, altura fixa */
+  .eh {
+    height: 50px !important;
+    padding: 0 10px !important;
+    gap: 8px !important;
+    flex-wrap: nowrap !important;
+    overflow: hidden !important;
+    align-items: center !important;
+  }
+
+  /* Esconder texto do título no mobile — economizar espaço */
+  .eh > div:not(.etabs):not(.sp) {
+    display: none !important;
+  }
+
+  /* Logo menor */
+  .eh .logo { height: 24px !important; }
+
+  /* Botões de empresa — compactos */
+  .emp-btn {
+    padding: 4px 8px !important;
+    font-size: 10px !important;
+    min-height: unset !important;
+    height: 30px !important;
+    gap: 4px !important;
+  }
+  .emp-btn img { height: 14px !important; }
+
+  /* Spacer ocupa o restante */
+  .eh .sp { flex: 1 !important; }
+}
+</style>
 </body></html>`;
 
       w.document.write(doc);
