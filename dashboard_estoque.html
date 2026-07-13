@@ -71,18 +71,10 @@ body{background:var(--bg);color:var(--gd);display:flex;flex-direction:column;min
 .slbl{font-size:10px;font-weight:700;color:var(--gl);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px;margin-top:4px}
 
 @media(max-width:768px){
-  .esb{/*display:none*/}
-  .elay{flex-direction:row}
-  .emain{padding:10px;padding-bottom:80px!important;width:100%}
-  .kg{grid-template-columns:1fr!important}
-  .kg3{grid-template-columns:1fr!important}
-  .ech2{display:flex!important;flex-direction:column!important}
-  .ech2>div{width:100%!important}
   .eh{padding:0 12px;gap:8px}
   .eh .et{font-size:13px}
   .etabs{gap:2px}
   .emp-btn{padding:3px 8px;font-size:10px}
-  .kk{min-width:0!important;width:100%!important;box-sizing:border-box!important}
 }
 @media(max-width:480px){
   .kg{grid-template-columns:1fr!important}
@@ -234,18 +226,12 @@ header, .eh {
    MOBILE — Responsivo completo
    ═══════════════════════════════════════════════ */
 @media(max-width:768px) {
-  .esb { /*display: none removed*/ }
-  .elay { flex-direction: row !important; }
-  .emain { padding: 10px !important; width: 100% !important; }
-  .kg3 { grid-template-columns: 1fr 1fr !important; }
-  .kg  { grid-template-columns: 1fr 1fr !important; }
   .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-  .et { min-width: 600px; }
   .emp-btn { padding: 6px 10px !important; font-size: 11px !important; }
 }
 @media(max-width:480px) {
   .kg3 { grid-template-columns: 1fr !important; }
-  .kg  { grid-template-columns: 1fr 1fr !important; }
+  .kg  { grid-template-columns: 1fr !important; }
   .kk  { padding: 10px 12px !important; }
   .kv  { font-size: 14px !important; }
   .emain { padding: 8px !important; }
@@ -1213,22 +1199,7 @@ tr.tr-total td.col-b.valor-total{color:#B8D8F8}
    MOBILE DEFINITIVO — Estoque ≤768px
    ═══════════════════════════════════════════════════ */
 @media(max-width:768px){
-  /* Sidebar some */
-  .esb { /*display: none removed*/ }
-  .elay { flex-direction: row !important; }
-  .emain { padding: 10px !important; width: 100% !important; }
-
-  /* Cards KPI — 1 coluna */
-  .kg  { grid-template-columns: 1fr !important; }
-  .kg3 { grid-template-columns: 1fr !important; }
-
-  /* Gráficos — 1 coluna */
-  .ech2 { grid-template-columns: 1fr !important; }
-
-  /* Tabelas — scroll horizontal */
-  .et { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-
-  /* Botões maiores */
+  /* Botões maiores para toque */
   .emp-btn { min-height: 40px !important; padding: 8px 12px !important; }
   .bv { min-height: 40px !important; }
 }
@@ -1277,7 +1248,7 @@ tr.tr-total td.col-b.valor-total{color:#B8D8F8}
 @media(max-width:768px) {
   .est-mb { display: flex !important; }
 
-  /* Sidebar deslizante */
+  /* Sidebar deslizante — fora do fluxo, não empurra conteúdo */
   .esb {
     position: fixed !important;
     left: -220px !important;
@@ -1289,26 +1260,30 @@ tr.tr-total td.col-b.valor-total{color:#B8D8F8}
     flex-direction: column;
     width: 200px !important;
     min-width: 200px !important;
+    overflow: hidden !important;
   }
-  .esb.open { left: 0 !important; }
+  .esb.open {
+    left: 0 !important;
+    overflow: visible !important;
+  }
+
+  /* Layout — sidebar é fixed, elay fica em row */
+  .elay { flex-direction: row !important; }
+  .emain { padding: 10px !important; width: 100% !important; min-width: 0 !important; }
 
   /* Cards KPI — 1 coluna */
   .kg  { grid-template-columns: 1fr !important; }
   .kg3 { grid-template-columns: 1fr !important; }
+  .kk  { width: 100% !important; min-width: 0 !important; box-sizing: border-box !important; }
 
   /* Gráficos — 1 coluna */
-  .ech2 { grid-template-columns: 1fr !important; }
+  .ech2 { display: flex !important; flex-direction: column !important; gap: 10px !important; }
+  .ech2 > * { width: 100% !important; }
+  .ech  { margin-bottom: 10px !important; }
 
-  /* Tabela críticos scroll */
-  .et { display: block !important; overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; }
-  .et-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain; }
-
-  /* Layout — sidebar é fixed, então elay não precisa de column */
-  .elay { flex-direction: row !important; }
-  .emain { padding: 10px !important; width: 100% !important; }
-  /* Garante que o esb fixo não reserve espaço no fluxo */
-  .esb { width: 0 !important; min-width: 0 !important; overflow: hidden !important; }
-  .esb.open { width: 200px !important; min-width: 200px !important; overflow: visible !important; }
+  /* Tabelas — scroll horizontal */
+  .et-wrap { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; overscroll-behavior-x: contain !important; }
+  .et { min-width: 480px !important; }
 }
 /* ═══════════════════════════════════════════════
    DESIGN SYSTEM — Elevação Visual
@@ -1510,8 +1485,7 @@ tr.tr-total td.col-b.valor-total{color:#B8D8F8}
   .fin-grid-kpi2 { grid-template-columns: 1fr 1fr !important; }
   .ve-grid3      { grid-template-columns: 1fr !important; }
   .ve-charts-grid { grid-template-columns: 1fr !important; }
-  .kg            { grid-template-columns: 1fr 1fr !important; }
-  .fin-charts    { grid-template-columns: 1fr !important; }
+  .kg            { grid-template-columns: 1fr !important; }
   .fin-charts2   { grid-template-columns: 1fr !important; }
   .ent-charts    { grid-template-columns: 1fr !important; }
   /* Tabelas */
@@ -1527,8 +1501,7 @@ tr.tr-total td.col-b.valor-total{color:#B8D8F8}
   /* Grids 1 coluna */
   .fin-grid-kpi  { grid-template-columns: 1fr !important; }
   .fin-grid-kpi2 { grid-template-columns: 1fr !important; }
-  .kg            { grid-template-columns: 1fr 1fr !important; }
-  /* Cards internos */
+  .kg            { grid-template-columns: 1fr !important; }
   .fk { flex-direction: row !important; }
   .fkv  { font-size: 12px !important; }
   .fkl  { font-size: 8px !important; }
@@ -2012,15 +1985,13 @@ function navEst(p) {
   document.querySelectorAll('.ni').forEach(n=>n.classList.remove('on'));
   document.getElementById('page-'+p).classList.add('on');
   document.getElementById('ni-'+p).classList.add('on');
-  // Fechar menu sanduíche ao selecionar aba
+  // Fechar menu sanduíche ao selecionar aba (sempre)
   var sb = document.querySelector('.esb');
   var ov = document.getElementById('est-overlay');
   var btn = document.getElementById('est-mb');
-  if (sb && sb.classList.contains('open')) {
-    sb.classList.remove('open');
-    if (ov) ov.classList.remove('open');
-    if (btn) btn.classList.remove('open');
-  }
+  if (sb)  sb.classList.remove('open');
+  if (ov)  ov.classList.remove('open');
+  if (btn) btn.classList.remove('open');
   if(p==='posicao') renderPos();
   else if(p==='giro') renderGiro();
   else { render(); }
