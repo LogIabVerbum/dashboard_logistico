@@ -25,7 +25,7 @@ body{background:var(--bg);color:var(--gd);display:flex;flex-direction:column;min
 /* LAYOUT */
 .elay{display:flex;flex:1}
 /* SIDEBAR */
-.esb{width:196px;min-width:196px;background:#1E2A3A;padding:14px 0;position:sticky;top:54px;height:calc(100vh - 54px);overflow-y:auto}
+.esb{width:196px;min-width:196px;background:#1E2A3A;padding:14px 0;position:sticky;top:54px;height:calc(100vh - 54px);overflow-y:auto;transition:transform .3s cubic-bezier(.4,0,.2,1),visibility 0s .3s}
 .esb .ss{font-size:9px;font-weight:700;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:1px;padding:12px 16px 6px}
 .esb .sec-transp{background:rgba(0,86,168,.18)}
 .esb .sec-estoque{background:rgba(16,124,65,.15)}
@@ -1248,7 +1248,7 @@ tr.tr-total td.col-b.valor-total{color:#B8D8F8}
 @media(max-width:768px) {
   .est-mb { display: flex !important; }
 
-  /* Sidebar deslizante — transform evita conflito com position:sticky */
+  /* Sidebar deslizante */
   .esb {
     position: fixed !important;
     left: 0 !important;
@@ -1260,10 +1260,10 @@ tr.tr-total td.col-b.valor-total{color:#B8D8F8}
     display: flex !important;
     flex-direction: column !important;
     transform: translateX(-220px) !important;
+    visibility: hidden !important;
     transition: transform .3s cubic-bezier(.4,0,.2,1), visibility 0s .3s !important;
     overflow-y: auto !important;
     overflow-x: hidden !important;
-    visibility: hidden !important;
   }
   .esb.open {
     transform: translateX(0) !important;
@@ -2296,7 +2296,7 @@ function toggleEstMenu() {
   if (ov)  ov.classList.toggle('open', open);
 }
 
-/* Menu fechado via navEst direto — wrapper removido para evitar conflito */
+
 
 /* Ordenação de tabelas */
 (function() {
