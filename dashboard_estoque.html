@@ -7,9 +7,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 
-:root{--font:'Montserrat',sans-serif;--ac:#0056A8;--acd:#003d7a;--ok:#107C41;--err:#D13438;--al:#F39200;--bg:#F5F5F5;--wh:#fff;--gd:#333;--gm:#666;--gl:#999;--gl2:#E0E0E0;--sh:0 2px 12px rgba(0,0,0,.08);--r:12px}
+:root{--font:'Montserrat',sans-serif;--ac:#0056A8;--acd:#003d7a;--ok:#107C41;--err:#D13438;--al:#F39200;--bg:#E8EBF0;--wh:#fff;--gd:#333;--gm:#666;--gl:#999;--gl2:#E0E0E0;--sh:0 2px 14px rgba(0,0,0,.09);--sh-hover:0 6px 24px rgba(0,0,0,.14);--r:12px;--tr:all .22s cubic-bezier(.4,0,.2,1)}
 *{box-sizing:border-box;margin:0;padding:0;font-family:var(--font)}
-body{background:var(--bg);color:var(--gd);display:flex;flex-direction:column;min-height:100vh}
+body{background:var(--bg);color:var(--gd);display:flex;flex-direction:column;min-height:100vh;scroll-behavior:smooth}
 /* HEADER */
 .eh{background:#BDBDBD;color:#333;height:54px;padding:0 20px;display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:300;box-shadow:0 2px 8px rgba(0,0,0,.2)}
 .eh .logo{height:30px;object-fit:contain}
@@ -24,22 +24,32 @@ body{background:var(--bg);color:var(--gd);display:flex;flex-direction:column;min
 .emp-btn.active{background:rgba(255,255,255,.9);color:var(--acd)}
 /* LAYOUT */
 .elay{display:flex;flex:1}
-/* SIDEBAR */
-.esb{width:196px;min-width:196px;background:#1E2A3A;padding:14px 0;position:sticky;top:54px;height:calc(100vh - 54px);overflow-y:auto}
-.esb .ss{font-size:9px;font-weight:700;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:1px;padding:12px 16px 6px}
-.esb .sec-transp{background:rgba(0,86,168,.18)}
-.esb .sec-estoque{background:rgba(16,124,65,.15)}
-.esb .ni{display:flex;align-items:center;gap:9px;padding:10px 16px;color:rgba(255,255,255,.6);font-size:13px;font-weight:500;cursor:pointer;border-left:3px solid transparent;transition:all .15s;user-select:none}
-.esb .ni:hover{background:rgba(255,255,255,.07);color:#fff}
-.esb .ni.on{background:rgba(0,86,168,.3);color:#fff;border-left-color:var(--ac);font-weight:700}
+/* SIDEBAR — padrão idêntico ao dashboard.html */
+#ov{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;opacity:0;pointer-events:none;transition:opacity .3s}
+#ov.open{opacity:1;pointer-events:all}
+#sb{position:fixed;left:-280px;top:0;bottom:0;width:280px;background:#1E2A3A;z-index:201;transition:left .3s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column}
+#sb.open{left:0}
+.sbh{padding:20px;border-bottom:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:space-between}
+.sbh img{height:30px;object-fit:contain}
+.sbx{background:none;border:none;cursor:pointer;font-size:20px;color:rgba(255,255,255,.6);padding:4px;line-height:1}
+.sbn{flex:1;padding:8px 0;overflow-y:auto}
+.ns{padding:14px 22px 4px;font-size:10px;font-weight:700;color:rgba(255,255,255,.35);letter-spacing:1.5px;text-transform:uppercase}
+.ni{display:flex;align-items:center;gap:11px;padding:12px 22px;cursor:pointer;color:rgba(255,255,255,.75);font-size:13px;font-weight:500;transition:all .18s;border-left:3px solid transparent;text-decoration:none;user-select:none}
+.ni:hover,.ni.on{background:rgba(255,255,255,.08);color:#fff;border-left-color:var(--ac);font-weight:600}
+.ni-transp:hover,.ni-transp.on{border-left-color:var(--ac)}
+.ni-est:hover,.ni-est.on{border-left-color:var(--ok)}
 /* MAIN */
 .emain{flex:1;padding:16px;overflow-x:hidden;min-width:0}
+/* HAMBURGUER — padrão dashboard.html */
+.mb{background:none;border:none;cursor:pointer;padding:7px;border-radius:7px;display:flex;flex-direction:column;gap:5px;transition:background .2s}
+.mb:hover{background:rgba(255,255,255,.15)}
+.mb span{display:block;width:20px;height:2px;background:#fff;border-radius:2px}
 .epage{display:none}.epage.on{display:block}
 /* CARDS */
 .kg{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:10px;margin-bottom:14px}
 .kg3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
-.kk{background:var(--wh);border-radius:var(--r);padding:12px 14px;box-shadow:var(--sh);border-left:4px solid transparent;transition:transform .2s,box-shadow .2s;display:flex;flex-direction:row;align-items:flex-start;gap:10px}
-.kk:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.12)}
+.kk{background:var(--wh);border-radius:var(--r);padding:12px 14px;box-shadow:var(--sh);border-left:4px solid transparent;transition:var(--tr);display:flex;flex-direction:row;align-items:flex-start;gap:10px;animation:fadeUp .4s ease both}
+.kk:hover{transform:translateY(-3px);box-shadow:var(--sh-hover)}
 .kk.bl{border-color:var(--ac)}.kk.gr{border-color:var(--ok)}.kk.or{border-color:var(--al)}.kk.rd{border-color:var(--err)}.kk.gy{border-color:#607D8B}
 .kk .ki{font-size:22px;margin-top:2px;flex-shrink:0}
 .kk .kl{font-size:9px;font-weight:700;color:var(--gl);text-transform:uppercase;margin-bottom:2px;letter-spacing:.7px;margin-bottom:3px;white-space:nowrap}
@@ -50,7 +60,8 @@ body{background:var(--bg);color:var(--gd);display:flex;flex-direction:column;min
 .pr{background:#FFEBEE;color:#7B0000}.py{background:#FFF3E0;color:#E65100}.pg{background:#E8F5E9;color:#2E7D32}
 /* CHARTS */
 .ech2{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-bottom:14px}
-.ech{background:var(--wh);border-radius:var(--r);padding:16px;box-shadow:var(--sh);margin-bottom:14px}
+.ech{background:var(--wh);border-radius:var(--r);padding:16px;box-shadow:var(--sh);margin-bottom:14px;transition:var(--tr);animation:fadeIn .5s ease both}
+.ech:hover{box-shadow:var(--sh-hover)}
 .ct{font-size:13px;font-weight:700;color:var(--gd);margin-bottom:3px}
 .cs{font-size:11px;color:var(--gl);margin-bottom:12px}
 .abc-badge{display:inline-block;padding:1px 7px;border-radius:10px;font-size:10px;font-weight:700}
@@ -60,7 +71,7 @@ body{background:var(--bg);color:var(--gd);display:flex;flex-direction:column;min
 .hbf{height:100%;border-radius:5px;transition:width .6s}
 /* TABELA */
 .et{width:100%;border-collapse:collapse;font-size:11px}
-.et thead th{padding:7px 9px;text-align:right;font-size:9px;font-weight:700;color:var(--gl);text-transform:uppercase;letter-spacing:.6px;border-bottom:2px solid var(--gl2);white-space:nowrap}
+.et thead th{background:#2d3a4a;color:#fff;border-bottom:2px solid #1a2330;padding:7px 9px;text-align:right;font-size:9px;font-weight:700;color:var(--gl);text-transform:uppercase;letter-spacing:.6px;border-bottom:2px solid var(--gl2);white-space:nowrap}
 .et thead th:first-child,.et thead th:nth-child(2){text-align:left}
 .et tbody tr{border-bottom:1px solid var(--gl2)}.et tbody tr:hover{background:#F9F9F9}
 .et tbody td{padding:6px 9px;text-align:right;white-space:nowrap}
@@ -83,6 +94,12 @@ body{background:var(--bg);color:var(--gd);display:flex;flex-direction:column;min
   .etabs{gap:2px}
   .emp-btn{padding:3px 8px;font-size:10px}
   .kk{min-width:0!important;width:100%!important;box-sizing:border-box!important}
+  /* Active state mobile — feedback tátil */
+  .kk:active,.ech:active{transform:scale(0.98)!important;box-shadow:var(--sh)!important}
+  /* Animações mais rápidas em mobile */
+  .kk,.ech{animation-duration:.2s}
+  /* Scroll horizontal em tabelas */
+  .ech{overflow-x:auto}
 }
 @media(max-width:480px){
   .kg{grid-template-columns:1fr!important}
@@ -256,7 +273,7 @@ header, .eh {
 /* ── MOBILE EXTRA ── */
 @media(max-width:768px){
   body{overflow-x:hidden!important}
-  .et thead th{font-size:8px!important;padding:5px 6px!important}
+  .et thead th{background:#2d3a4a;color:#fff;border-bottom:2px solid #1a2330;font-size:8px!important;padding:5px 6px!important}
   .et tbody td{font-size:11px!important;padding:5px 6px!important}
   .et-wrap{border-radius:8px!important}
 }
@@ -314,7 +331,7 @@ header, .eh {
 .table-wrap{overflow:auto;padding:0 8px 24px;-webkit-overflow-scrolling:touch;height:calc(100vh - var(--bar-height, 120px))}
 @media(min-width:600px){.table-wrap{padding:0 16px 24px}}
 table{width:100%;border-collapse:collapse;margin-top:10px;font-size:12px}
-thead th{position:sticky;top:0;background:#2D2B27;color:#fff;padding:7px 9px;text-align:right;white-space:nowrap;font-weight:600;font-size:11px;z-index:10}
+thead th{background:#2d3a4a;color:#fff;border-bottom:2px solid #1a2330;position:sticky;top:0;background:#2D2B27;color:#fff;padding:7px 9px;text-align:right;white-space:nowrap;font-weight:600;font-size:11px;z-index:10}
 thead tr:nth-child(2) th{top:var(--th-row2,33px)}
 thead tr:nth-child(3) th{top:var(--th-row3,59px)}
 thead th.th-per-group,thead th.th-per-total,thead th.th-per-sub{z-index:9}
@@ -922,15 +939,27 @@ tr.tr-total td.col-b.valor-total{color:#B8D8F8}
   .elay{flex-direction:column}
   .emain{padding:10px!important;padding-bottom:80px!important}
 }
+
+/* ── ANIMAÇÕES ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.kg .kk:nth-child(1){animation-delay:.04s}
+.kg .kk:nth-child(2){animation-delay:.08s}
+.kg .kk:nth-child(3){animation-delay:.12s}
+.kg .kk:nth-child(4){animation-delay:.16s}
+tbody tr{transition:background .15s}
+tbody tr:hover{background:rgba(0,86,168,.04)}
+
+@media(hover:none){
+  .kk:hover,.ech:hover{transform:none!important;box-shadow:var(--sh)!important}
+}
 </style>
 </head>
 <body>
 
 <!-- HEADER -->
 <div class="eh">
-  <button class="est-mb" id="est-mb" onclick="toggleEstMenu()" aria-label="Menu">
-    <span></span><span></span><span></span>
-  </button>
+  <button class="mb" onclick="fMenu()"><span></span><span></span><span></span></button>
   <img id="logo-emp" class="logo" src="" alt="">
   <div>
     <div class="et_">Dashboard de Estoque</div>
@@ -953,18 +982,27 @@ tr.tr-total td.col-b.valor-total{color:#B8D8F8}
 <!-- LAYOUT -->
 <div class="elay">
 
-  <!-- SIDEBAR — conversa com dashboard.html -->
-  <nav class="esb" id="esb">
-    <div class="ss sec-transp">🚛 Dashboard Transportes</div>
-    <div class="ni sec-transp" onclick="abrirTransportes('ve')">📊 Visão Executiva</div>
-    <div class="ni sec-transp" onclick="abrirTransportes('fin')">💰 Financeiro</div>
-    <div class="ni sec-transp" onclick="abrirTransportes('tr')">🚛 Transportadoras</div>
-    <div class="ni sec-transp" onclick="abrirTransportes('acomp')" style="padding-left:28px;font-size:12px">↳ Acompanhamento</div>
-    <div class="ss sec-estoque">📦 Dashboard Estoque</div>
-    <div class="ni sec-estoque on" id="ni-posicao" onclick="navEst('posicao')">📊 Posição Atual</div>
-    <div class="ni sec-estoque"   id="ni-giro"    onclick="navEst('giro')">📈 Análise de Giro</div>
-    <div class="ni sec-estoque"   id="ni-kardex"  onclick="navEst('kardex')">📦 Kardex</div>
+<!-- OVERLAY -->
+<div id="ov" onclick="fMenu()"></div>
+
+<!-- SIDEBAR — padrão idêntico ao dashboard.html -->
+<div id="sb">
+  <div class="sbh">
+    <img id="sb-logo" src="" alt="">
+    <button class="sbx" onclick="fMenu()">✕</button>
+  </div>
+  <nav class="sbn">
+    <div class="ns">Transportes</div>
+    <a class="ni ni-transp" onclick="abrirTransportes('ve');fMenu()">📊 Visão Executiva</a>
+    <a class="ni ni-transp" onclick="abrirTransportes('fin');fMenu()">💰 Financeiro</a>
+    <a class="ni ni-transp" onclick="abrirTransportes('tr');fMenu()">🚛 Transportadoras</a>
+    <a class="ni ni-transp" onclick="abrirTransportes('acomp');fMenu()" style="padding-left:36px;font-size:12px">↳ Acompanhamento</a>
+    <div class="ns">Estoque</div>
+    <a class="ni ni-est on" id="ni-posicao" onclick="navEst('posicao');fMenu()">📊 Posição Atual</a>
+    <a class="ni ni-est"    id="ni-giro"    onclick="navEst('giro');fMenu()">📈 Análise de Giro</a>
+    <a class="ni ni-est"    id="ni-kardex"  onclick="navEst('kardex');fMenu()">📦 Kardex</a>
   </nav>
+</div>
 
   <!-- MAIN CONTENT -->
   <main class="emain">
@@ -2987,6 +3025,7 @@ function doSetEmp(emp, btn) {
   document.getElementById('logo-emp').src     = emp === 'IAB' ? LOGOS.iab : LOGOS.verbum;
   document.getElementById('logo-iab-btn').src = LOGOS.iab;
   document.getElementById('logo-vbm-btn').src = LOGOS.verbum;
+  document.getElementById('sb-logo').src      = emp === 'IAB' ? LOGOS.iab : LOGOS.verbum;
   document.getElementById('header-sub').textContent = emp === 'IAB' ? 'Instituto Alfa e Beto' : 'Verbum Educação';
   const d = DADOS[emp]; if (!d) return;
   periodosSel = new Set();
@@ -3003,14 +3042,10 @@ function doSetEmp(emp, btn) {
 }
 
 // Toggle menu hamburguer
-function toggleEstMenu() {
-  const sb = document.getElementById('esb');
-  const ov = document.getElementById('est-overlay');
-  const mb = document.getElementById('est-mb');
-  if (!sb) return;
-  const open = sb.classList.toggle('open');
-  if (ov) ov.classList.toggle('open', open);
-  if (mb) mb.classList.toggle('open', open);
+// fMenu — padrão idêntico ao dashboard.html
+function fMenu() {
+  document.getElementById('sb').classList.toggle('open');
+  document.getElementById('ov').classList.toggle('open');
 }
 
 // Helpers
@@ -3152,12 +3187,14 @@ function renderGiro() {
 }
 
 // ── INIT ──
-let empAtual = 'IAB';
-let periodosSel = new Set();
+// empAtual e periodosSel já declarados no script de dados
+empAtual = 'IAB';
+periodosSel = new Set();
 
 document.getElementById('logo-emp').src     = LOGOS.iab;
 document.getElementById('logo-iab-btn').src = LOGOS.iab;
 document.getElementById('logo-vbm-btn').src = LOGOS.verbum;
+document.getElementById('sb-logo').src      = LOGOS.iab;
 
 if (DADOS['IAB']) {
   initPeriodos(DADOS['IAB'].periodos);
