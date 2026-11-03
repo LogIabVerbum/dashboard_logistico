@@ -1,59 +1,59 @@
 {
-  "gerado_em": "2026-07-04T13:13:57.960936",
-  "total_linhas_df": 3689,
+  "gerado_em": "2026-11-03T08:50:30.882025",
+  "total_linhas_df": 4126,
   "global": {
-    "total_entregas": 3365,
-    "entregas_no_prazo": 3335,
-    "entregas_em_atraso": 30,
+    "total_entregas": 3762,
+    "entregas_no_prazo": 3731,
+    "entregas_em_atraso": 31,
     "pct_prazo": 99,
-    "faturamento_total": 61423539.19,
-    "frete_total": 963316.78,
-    "peso_total_kg": 547444.972,
-    "volumes_total": 42438,
-    "total_impostos": 840427.02,
-    "custo_embalagem_total": 157163.74,
-    "custo_total_envio": 1120480.53
+    "faturamento_total": 63136106.01,
+    "frete_total": 1008862.6,
+    "peso_total_kg": 459306.17,
+    "volumes_total": 44033,
+    "total_impostos": 896875.89,
+    "custo_embalagem_total": 157227.97,
+    "custo_total_envio": 1166090.57
   },
   "iab": {
-    "total_entregas": 3076,
-    "entregas_no_prazo": 3050,
+    "total_entregas": 3385,
+    "entregas_no_prazo": 3359,
     "entregas_em_atraso": 26,
     "pct_prazo": 99,
-    "faturamento_total": 60310974.06,
-    "frete_total": 922583.36,
-    "peso_total_kg": 539780.027,
-    "volumes_total": 39550,
-    "total_impostos": 838347.07,
-    "custo_embalagem_total": 149640.97,
-    "custo_total_envio": 1072224.33
+    "faturamento_total": 61838198.57,
+    "frete_total": 959624.44,
+    "peso_total_kg": 449444.686,
+    "volumes_total": 40716,
+    "total_impostos": 892807.85,
+    "custo_embalagem_total": 149711.52,
+    "custo_total_envio": 1109335.96
   },
   "verbum": {
-    "total_entregas": 289,
-    "entregas_no_prazo": 285,
-    "entregas_em_atraso": 4,
+    "total_entregas": 377,
+    "entregas_no_prazo": 372,
+    "entregas_em_atraso": 5,
     "pct_prazo": 99,
-    "faturamento_total": 1112565.13,
-    "frete_total": 40733.42,
-    "peso_total_kg": 7664.945,
-    "volumes_total": 2888,
-    "total_impostos": 2079.95,
-    "custo_embalagem_total": 7522.78,
-    "custo_total_envio": 48256.2
+    "faturamento_total": 1297907.44,
+    "frete_total": 49238.16,
+    "peso_total_kg": 9861.484,
+    "volumes_total": 3317,
+    "total_impostos": 4068.04,
+    "custo_embalagem_total": 7516.45,
+    "custo_total_envio": 56754.61
   },
   "por_mes": [
     {
       "ano_ref": "2025",
       "ano": 2024,
       "mes": 10,
-      "total_entregas": 139,
-      "no_prazo": 139,
+      "total_entregas": 137,
+      "no_prazo": 137,
       "em_atraso": 0,
-      "faturamento": 145812.31,
-      "frete": 4411.369954374746,
-      "peso_kg": 1114.384,
-      "volumes": 199,
+      "faturamento": 145136.01,
+      "frete": 4385.169954374747,
+      "peso_kg": 1110.56,
+      "volumes": 197,
       "total_impostos": 3114.3050000000003,
-      "custo_envio": 4864.119954374746,
+      "custo_envio": 4835.269954374747,
       "pct_prazo": 100
     },
     {
@@ -63,27 +63,27 @@
       "total_entregas": 94,
       "no_prazo": 92,
       "em_atraso": 2,
-      "faturamento": 1478013.25,
-      "frete": 22441.606465406458,
-      "peso_kg": 9292.781,
-      "volumes": 812,
-      "total_impostos": 2302.759,
-      "custo_envio": 25562.906465406457,
+      "faturamento": 1446894.25,
+      "frete": 21917.862388492347,
+      "peso_kg": 9098.681,
+      "volumes": 774,
+      "total_impostos": 2329.359,
+      "custo_envio": 24882.41238849235,
       "pct_prazo": 98
     },
     {
       "ano_ref": "2025",
       "ano": 2024,
       "mes": 12,
-      "total_entregas": 196,
-      "no_prazo": 193,
+      "total_entregas": 187,
+      "no_prazo": 184,
       "em_atraso": 3,
-      "faturamento": 749244.12,
-      "frete": 16864.935823854856,
-      "peso_kg": 5561.621,
-      "volumes": 515,
+      "faturamento": 742513.94,
+      "frete": 16577.907929118013,
+      "peso_kg": 5530.383,
+      "volumes": 505,
       "total_impostos": 7375.3099999999995,
-      "custo_envio": 18484.785823854858,
+      "custo_envio": 18178.732929118014,
       "pct_prazo": 98
     },
     {
@@ -124,7 +124,7 @@
       "no_prazo": 116,
       "em_atraso": 0,
       "faturamento": 1279386.81,
-      "frete": 27029.809124266143,
+      "frete": 27029.809124266147,
       "peso_kg": 8961.217,
       "volumes": 1927,
       "total_impostos": 45015.215,
@@ -139,7 +139,7 @@
       "no_prazo": 110,
       "em_atraso": 0,
       "faturamento": 5337942.2,
-      "frete": 34045.106877712686,
+      "frete": 34045.10687771269,
       "peso_kg": 41007.644,
       "volumes": 3631,
       "total_impostos": 81264.99799999999,
@@ -154,11 +154,11 @@
       "no_prazo": 83,
       "em_atraso": 2,
       "faturamento": 1811219.77,
-      "frete": 25340.606605213496,
+      "frete": 25340.606605213492,
       "peso_kg": 14681.469,
       "volumes": 1098,
       "total_impostos": 29215.8,
-      "custo_envio": 29671.581605213494,
+      "custo_envio": 29671.58160521349,
       "pct_prazo": 98
     },
     {
@@ -169,11 +169,11 @@
       "no_prazo": 93,
       "em_atraso": 0,
       "faturamento": 399000.61,
-      "frete": 10665.221452721444,
+      "frete": 10665.22145272145,
       "peso_kg": 3335.016,
       "volumes": 221,
       "total_impostos": 5652.53295,
-      "custo_envio": 11367.021452721443,
+      "custo_envio": 11367.021452721448,
       "pct_prazo": 100
     },
     {
@@ -214,26 +214,41 @@
       "no_prazo": 57,
       "em_atraso": 2,
       "faturamento": 1290200.52,
-      "frete": 14645.045679908033,
+      "frete": 14645.04567990803,
       "peso_kg": 9319.443,
       "volumes": 712,
       "total_impostos": 47720.590000000004,
-      "custo_envio": 17450.445679908033,
+      "custo_envio": 17450.44567990803,
       "pct_prazo": 97
+    },
+    {
+      "ano_ref": "2025",
+      "ano": 2025,
+      "mes": 10,
+      "total_entregas": 6,
+      "no_prazo": 6,
+      "em_atraso": 0,
+      "faturamento": 73444.4,
+      "frete": 1465.12,
+      "peso_kg": 85.51100000000001,
+      "volumes": 11,
+      "total_impostos": 0.0,
+      "custo_envio": 1506.645,
+      "pct_prazo": 100
     },
     {
       "ano_ref": "2026",
       "ano": 2025,
       "mes": 10,
-      "total_entregas": 87,
-      "no_prazo": 87,
+      "total_entregas": 80,
+      "no_prazo": 80,
       "em_atraso": 0,
-      "faturamento": 184845.62,
-      "frete": 5251.97,
-      "peso_kg": 898.009,
-      "volumes": 106,
+      "faturamento": 109123.22,
+      "frete": 3761.85,
+      "peso_kg": 796.878,
+      "volumes": 94,
       "total_impostos": 3112.5728,
-      "custo_envio": 5486.22,
+      "custo_envio": 3950.45,
       "pct_prazo": 100
     },
     {
@@ -244,41 +259,41 @@
       "no_prazo": 99,
       "em_atraso": 0,
       "faturamento": 173544.86000000002,
-      "frete": 6146.95,
+      "frete": 6234.49,
       "peso_kg": 1520.847,
       "volumes": 388,
       "total_impostos": 12432.09,
-      "custo_envio": 7525.625,
+      "custo_envio": 7613.165,
       "pct_prazo": 100
     },
     {
       "ano_ref": "2026",
       "ano": 2025,
       "mes": 12,
-      "total_entregas": 126,
-      "no_prazo": 124,
-      "em_atraso": 2,
-      "faturamento": 270884.12,
-      "frete": 7797.281890582204,
-      "peso_kg": 1983.5006551724139,
-      "volumes": 346,
-      "total_impostos": 3706.8300000000004,
-      "custo_envio": 8892.901890582205,
-      "pct_prazo": 98
+      "total_entregas": 124,
+      "no_prazo": 123,
+      "em_atraso": 1,
+      "faturamento": 259891.12,
+      "frete": 8052.1618905822,
+      "peso_kg": 1899.5606551724138,
+      "volumes": 337,
+      "total_impostos": 3654.55,
+      "custo_envio": 9110.6568905822,
+      "pct_prazo": 99
     },
     {
       "ano_ref": "2026",
       "ano": 2026,
       "mes": 1,
-      "total_entregas": 518,
-      "no_prazo": 512,
+      "total_entregas": 516,
+      "no_prazo": 510,
       "em_atraso": 6,
-      "faturamento": 5334895.24,
-      "frete": 106071.52645115613,
-      "peso_kg": 37988.067517241376,
-      "volumes": 5020,
+      "faturamento": 5478792.0600000005,
+      "frete": 105339.3364511561,
+      "peso_kg": 37966.25751724138,
+      "volumes": 5014,
       "total_impostos": 38400.94,
-      "custo_envio": 125381.95145115613,
+      "custo_envio": 124622.8114511561,
       "pct_prazo": 99
     },
     {
@@ -289,57 +304,57 @@
       "no_prazo": 232,
       "em_atraso": 4,
       "faturamento": 7895568.36,
-      "frete": 113067.41167611098,
-      "peso_kg": 55973.138,
-      "volumes": 4991,
-      "total_impostos": 211342.28999999998,
-      "custo_envio": 133049.51167611097,
+      "frete": 113606.72167611097,
+      "peso_kg": 55970.098,
+      "volumes": 4999,
+      "total_impostos": 210899.47999999998,
+      "custo_envio": 133588.82167611097,
       "pct_prazo": 98
     },
     {
       "ano_ref": "2026",
       "ano": 2026,
       "mes": 3,
-      "total_entregas": 240,
-      "no_prazo": 240,
+      "total_entregas": 241,
+      "no_prazo": 241,
       "em_atraso": 0,
-      "faturamento": 10792933.36,
-      "frete": 144291.07599685917,
-      "peso_kg": 76191.658,
-      "volumes": 6083,
+      "faturamento": 10797494.36,
+      "frete": 144536.27599685919,
+      "peso_kg": 76205.61,
+      "volumes": 6084,
       "total_impostos": 142244.79,
-      "custo_envio": 168885.00099685916,
+      "custo_envio": 169130.20099685917,
       "pct_prazo": 100
     },
     {
       "ano_ref": "2026",
       "ano": 2026,
       "mes": 4,
-      "total_entregas": 109,
-      "no_prazo": 106,
-      "em_atraso": 3,
-      "faturamento": 5845641.89,
-      "frete": 85261.26151201258,
-      "peso_kg": 142280.65000000002,
-      "volumes": 3282,
-      "total_impostos": 63840.24,
-      "custo_envio": 98076.83151201258,
-      "pct_prazo": 97
+      "total_entregas": 112,
+      "no_prazo": 110,
+      "em_atraso": 2,
+      "faturamento": 6111660.279999999,
+      "frete": 87629.01151201258,
+      "peso_kg": 42553.814,
+      "volumes": 3373,
+      "total_impostos": 82532.03,
+      "custo_envio": 100807.58151201258,
+      "pct_prazo": 98
     },
     {
       "ano_ref": "2026",
       "ano": 2026,
       "mes": 5,
-      "total_entregas": 187,
-      "no_prazo": 186,
-      "em_atraso": 1,
-      "faturamento": 1913769.68,
-      "frete": 38551.4,
-      "peso_kg": 15894.864599999999,
-      "volumes": 2028,
-      "total_impostos": 16123.869999999999,
-      "custo_envio": 39688.15,
-      "pct_prazo": 99
+      "total_entregas": 182,
+      "no_prazo": 182,
+      "em_atraso": 0,
+      "faturamento": 1720132.28,
+      "frete": 36630.16,
+      "peso_kg": 14428.060599999999,
+      "volumes": 1913,
+      "total_impostos": 15983.109600000002,
+      "custo_envio": 37712.19,
+      "pct_prazo": 100
     },
     {
       "ano_ref": "2026",
@@ -348,85 +363,130 @@
       "total_entregas": 66,
       "no_prazo": 65,
       "em_atraso": 1,
-      "faturamento": 1817435.6700000002,
-      "frete": 29951.29,
-      "peso_kg": 10108.604000000001,
-      "volumes": 1326,
-      "total_impostos": 16337.772500000001,
-      "custo_envio": 32979.11,
+      "faturamento": 1827705.6700000002,
+      "frete": 31326.04228900576,
+      "peso_kg": 10163.054,
+      "volumes": 1133,
+      "total_impostos": 16177.022500000001,
+      "custo_envio": 34349.49228900576,
       "pct_prazo": 98
     },
     {
       "ano_ref": "2026",
       "ano": 2026,
       "mes": 7,
-      "total_entregas": 5,
-      "no_prazo": 5,
+      "total_entregas": 75,
+      "no_prazo": 75,
       "em_atraso": 0,
-      "faturamento": 1672.15,
-      "frete": 241.79,
-      "peso_kg": 68.65,
-      "volumes": 7,
-      "total_impostos": 178.2,
-      "custo_envio": 253.89999999999998,
+      "faturamento": 521777.38,
+      "frete": 13951.367174941131,
+      "peso_kg": 4166.224,
+      "volumes": 510,
+      "total_impostos": 3113.58975,
+      "custo_envio": 13970.417174941133,
+      "pct_prazo": 100
+    },
+    {
+      "ano_ref": "2026",
+      "ano": 2026,
+      "mes": 8,
+      "total_entregas": 92,
+      "no_prazo": 88,
+      "em_atraso": 4,
+      "faturamento": 356028.47,
+      "frete": 8404.74,
+      "peso_kg": 3533.839,
+      "volumes": 659,
+      "total_impostos": 4567.36,
+      "custo_envio": 8404.74,
+      "pct_prazo": 96
+    },
+    {
+      "ano_ref": "2026",
+      "ano": 2026,
+      "mes": 9,
+      "total_entregas": 201,
+      "no_prazo": 201,
+      "em_atraso": 0,
+      "faturamento": 139371.65,
+      "frete": 13989.43,
+      "peso_kg": 2101.805,
+      "volumes": 392,
+      "total_impostos": 19053.53,
+      "custo_envio": 13989.43,
+      "pct_prazo": 100
+    },
+    {
+      "ano_ref": "2027",
+      "ano": 2026,
+      "mes": 10,
+      "total_entregas": 51,
+      "no_prazo": 51,
+      "em_atraso": 0,
+      "faturamento": 517749.14,
+      "frete": 8088.04,
+      "peso_kg": 3606.79,
+      "volumes": 315,
+      "total_impostos": 11970.8,
+      "custo_envio": 8088.04,
       "pct_prazo": 100
     }
   ],
   "por_transportadora": [
     {
       "transportadora_norm": "JADLOG",
-      "total_entregas": 1608,
-      "no_prazo": 1601,
+      "total_entregas": 1708,
+      "no_prazo": 1701,
       "em_atraso": 7,
-      "frete_total": 27881.456069161202,
+      "frete_total": 29605.666069161205,
       "pct_prazo": 100
     },
     {
       "transportadora_norm": "CORREIOS",
-      "total_entregas": 972,
-      "no_prazo": 969,
-      "em_atraso": 3,
-      "frete_total": 27995.342,
+      "total_entregas": 989,
+      "no_prazo": 987,
+      "em_atraso": 2,
+      "frete_total": 28166.732,
       "pct_prazo": 100
     },
     {
       "transportadora_norm": "BRASPRESS",
-      "total_entregas": 331,
-      "no_prazo": 323,
-      "em_atraso": 8,
-      "frete_total": 88780.21081349245,
+      "total_entregas": 358,
+      "no_prazo": 351,
+      "em_atraso": 7,
+      "frete_total": 95612.14072727344,
       "pct_prazo": 98
     },
     {
       "transportadora_norm": "ATIVA",
-      "total_entregas": 147,
-      "no_prazo": 147,
-      "em_atraso": 0,
-      "frete_total": 24935.728467002977,
-      "pct_prazo": 100
+      "total_entregas": 325,
+      "no_prazo": 323,
+      "em_atraso": 2,
+      "frete_total": 38911.66331974717,
+      "pct_prazo": 99
     },
     {
       "transportadora_norm": "AZUL CARGO",
-      "total_entregas": 101,
-      "no_prazo": 99,
-      "em_atraso": 2,
-      "frete_total": 60709.48058897947,
+      "total_entregas": 146,
+      "no_prazo": 143,
+      "em_atraso": 3,
+      "frete_total": 66947.88362318378,
       "pct_prazo": 98
     },
     {
       "transportadora_norm": "CLARA",
-      "total_entregas": 93,
-      "no_prazo": 85,
+      "total_entregas": 99,
+      "no_prazo": 91,
       "em_atraso": 8,
-      "frete_total": 647657.6785896843,
-      "pct_prazo": 91
+      "frete_total": 661991.6785896843,
+      "pct_prazo": 92
     },
     {
       "transportadora_norm": "TG",
-      "total_entregas": 28,
-      "no_prazo": 28,
+      "total_entregas": 37,
+      "no_prazo": 37,
       "em_atraso": 0,
-      "frete_total": 14585.902394686796,
+      "frete_total": 16137.829980990093,
       "pct_prazo": 100
     },
     {
@@ -434,31 +494,31 @@
       "total_entregas": 24,
       "no_prazo": 23,
       "em_atraso": 1,
-      "frete_total": 19905.286109476318,
+      "frete_total": 19905.286109476325,
       "pct_prazo": 96
     },
     {
-      "transportadora_norm": "UBERLOG",
-      "total_entregas": 17,
-      "no_prazo": 17,
+      "transportadora_norm": "PRÓPRIO",
+      "total_entregas": 24,
+      "no_prazo": 24,
       "em_atraso": 0,
-      "frete_total": 2882.2799999999997,
+      "frete_total": 8652.72,
       "pct_prazo": 100
     },
     {
-      "transportadora_norm": "PRÓPRIO",
-      "total_entregas": 14,
-      "no_prazo": 14,
+      "transportadora_norm": "UBERLOG",
+      "total_entregas": 23,
+      "no_prazo": 23,
       "em_atraso": 0,
-      "frete_total": 7898.6900000000005,
+      "frete_total": 3423.41,
       "pct_prazo": 100
     },
     {
       "transportadora_norm": "JAMEF",
-      "total_entregas": 12,
-      "no_prazo": 12,
+      "total_entregas": 11,
+      "no_prazo": 11,
       "em_atraso": 0,
-      "frete_total": 24406.15051477775,
+      "frete_total": 23781.600514777747,
       "pct_prazo": 100
     },
     {
@@ -470,14 +530,6 @@
       "pct_prazo": 100
     },
     {
-      "transportadora_norm": "CW3",
-      "total_entregas": 3,
-      "no_prazo": 3,
-      "em_atraso": 0,
-      "frete_total": 1238.8501533846738,
-      "pct_prazo": 100
-    },
-    {
       "transportadora_norm": "PANSERVICE",
       "total_entregas": 2,
       "no_prazo": 2,
@@ -486,19 +538,35 @@
       "pct_prazo": 100
     },
     {
-      "transportadora_norm": "ALLI",
-      "total_entregas": 1,
-      "no_prazo": 1,
+      "transportadora_norm": "CW3",
+      "total_entregas": 2,
+      "no_prazo": 2,
       "em_atraso": 0,
-      "frete_total": 5863.005679908034,
+      "frete_total": 1170.692258647832,
       "pct_prazo": 100
     },
     {
       "transportadora_norm": "GOL CARGO",
+      "total_entregas": 2,
+      "no_prazo": 2,
+      "em_atraso": 0,
+      "frete_total": 234.6,
+      "pct_prazo": 100
+    },
+    {
+      "transportadora_norm": "ALLI",
       "total_entregas": 1,
       "no_prazo": 1,
       "em_atraso": 0,
-      "frete_total": 119.03,
+      "frete_total": 5863.00567990803,
+      "pct_prazo": 100
+    },
+    {
+      "transportadora_norm": "CANTELLE",
+      "total_entregas": 1,
+      "no_prazo": 1,
+      "em_atraso": 0,
+      "frete_total": 181.87,
       "pct_prazo": 100
     },
     {
@@ -508,14 +576,6 @@
       "em_atraso": 1,
       "frete_total": 4271.89,
       "pct_prazo": 0
-    },
-    {
-      "transportadora_norm": "CANTELLE",
-      "total_entregas": 1,
-      "no_prazo": 1,
-      "em_atraso": 0,
-      "frete_total": 181.87,
-      "pct_prazo": 100
     },
     {
       "transportadora_norm": "PASSARO",
@@ -529,143 +589,143 @@
   "por_uf": [
     {
       "uf": "SP",
-      "total_entregas": 840,
-      "no_prazo": 837,
-      "em_atraso": 3,
-      "faturamento": 1469046.04
+      "total_entregas": 941,
+      "no_prazo": 937,
+      "em_atraso": 4,
+      "faturamento": 2012909.67
     },
     {
       "uf": "MG",
-      "total_entregas": 447,
-      "no_prazo": 444,
+      "total_entregas": 504,
+      "no_prazo": 501,
       "em_atraso": 3,
-      "faturamento": 7460621.71
-    },
-    {
-      "uf": "GO",
-      "total_entregas": 307,
-      "no_prazo": 305,
-      "em_atraso": 2,
-      "faturamento": 106927.85
+      "faturamento": 7567346.95
     },
     {
       "uf": "RJ",
-      "total_entregas": 282,
-      "no_prazo": 279,
-      "em_atraso": 3,
-      "faturamento": 952070.83
+      "total_entregas": 372,
+      "no_prazo": 370,
+      "em_atraso": 2,
+      "faturamento": 1048262.4
+    },
+    {
+      "uf": "GO",
+      "total_entregas": 312,
+      "no_prazo": 310,
+      "em_atraso": 2,
+      "faturamento": 108007.12
     },
     {
       "uf": "PI",
-      "total_entregas": 223,
-      "no_prazo": 214,
-      "em_atraso": 9,
-      "faturamento": 31097919.22
-    },
-    {
-      "uf": "PR",
-      "total_entregas": 168,
-      "no_prazo": 167,
-      "em_atraso": 1,
-      "faturamento": 612656.9
+      "total_entregas": 249,
+      "no_prazo": 238,
+      "em_atraso": 11,
+      "faturamento": 31814917.38
     },
     {
       "uf": "DF",
-      "total_entregas": 163,
-      "no_prazo": 162,
+      "total_entregas": 187,
+      "no_prazo": 186,
       "em_atraso": 1,
-      "faturamento": 319595.12
+      "faturamento": 356037.11
+    },
+    {
+      "uf": "PR",
+      "total_entregas": 181,
+      "no_prazo": 179,
+      "em_atraso": 2,
+      "faturamento": 654007.4199999999
     },
     {
       "uf": "RS",
-      "total_entregas": 153,
-      "no_prazo": 153,
+      "total_entregas": 163,
+      "no_prazo": 163,
       "em_atraso": 0,
-      "faturamento": 1230863.07
+      "faturamento": 1234632.67
     },
     {
       "uf": "PB",
-      "total_entregas": 133,
-      "no_prazo": 132,
+      "total_entregas": 149,
+      "no_prazo": 148,
       "em_atraso": 1,
-      "faturamento": 191570.42
+      "faturamento": 197451.54
     },
     {
       "uf": "BA",
-      "total_entregas": 103,
-      "no_prazo": 103,
+      "total_entregas": 114,
+      "no_prazo": 114,
       "em_atraso": 0,
-      "faturamento": 36621.04
+      "faturamento": 39622.27
     },
     {
       "uf": "SC",
-      "total_entregas": 82,
-      "no_prazo": 82,
+      "total_entregas": 83,
+      "no_prazo": 83,
       "em_atraso": 0,
-      "faturamento": 568748.87
+      "faturamento": 568601.88
     },
     {
       "uf": "RN",
-      "total_entregas": 62,
-      "no_prazo": 62,
+      "total_entregas": 66,
+      "no_prazo": 66,
       "em_atraso": 0,
-      "faturamento": 51277.4
-    },
-    {
-      "uf": "MA",
-      "total_entregas": 54,
-      "no_prazo": 53,
-      "em_atraso": 1,
-      "faturamento": 1942361.6300000001
+      "faturamento": 53907.05
     },
     {
       "uf": "ES",
-      "total_entregas": 51,
-      "no_prazo": 51,
+      "total_entregas": 58,
+      "no_prazo": 58,
       "em_atraso": 0,
-      "faturamento": 8399.41
-    },
-    {
-      "uf": "CE",
-      "total_entregas": 49,
-      "no_prazo": 49,
-      "em_atraso": 0,
-      "faturamento": 1289157.69
+      "faturamento": 10266.73
     },
     {
       "uf": "PE",
-      "total_entregas": 49,
-      "no_prazo": 46,
-      "em_atraso": 3,
-      "faturamento": 83435.3
+      "total_entregas": 58,
+      "no_prazo": 57,
+      "em_atraso": 1,
+      "faturamento": 93876.1
+    },
+    {
+      "uf": "MA",
+      "total_entregas": 57,
+      "no_prazo": 56,
+      "em_atraso": 1,
+      "faturamento": 1943345.6300000001
+    },
+    {
+      "uf": "CE",
+      "total_entregas": 54,
+      "no_prazo": 54,
+      "em_atraso": 0,
+      "faturamento": 1290842.28
     },
     {
       "uf": "AL",
       "total_entregas": 40,
       "no_prazo": 40,
       "em_atraso": 0,
-      "faturamento": 6068899.26
+      "faturamento": 6212704.26
     },
     {
       "uf": "MT",
-      "total_entregas": 25,
-      "no_prazo": 24,
+      "total_entregas": 28,
+      "no_prazo": 27,
       "em_atraso": 1,
-      "faturamento": 390986.13
-    },
-    {
-      "uf": "SE",
-      "total_entregas": 23,
-      "no_prazo": 23,
-      "em_atraso": 0,
-      "faturamento": 1771926.05
+      "faturamento": 363530.88
     },
     {
       "uf": "RR",
-      "total_entregas": 23,
-      "no_prazo": 23,
+      "total_entregas": 27,
+      "no_prazo": 27,
       "em_atraso": 0,
-      "faturamento": 4698414.59
+      "faturamento": 4702575.47
+    },
+    {
+      "uf": "SE",
+      "total_entregas": 26,
+      "no_prazo": 26,
+      "em_atraso": 0,
+      "faturamento": 1779627.3599999999
     },
     {
       "uf": "AM",
@@ -676,17 +736,17 @@
     },
     {
       "uf": "MS",
-      "total_entregas": 19,
-      "no_prazo": 19,
+      "total_entregas": 20,
+      "no_prazo": 20,
       "em_atraso": 0,
-      "faturamento": 68583.18000000001
+      "faturamento": 68688.78
     },
     {
       "uf": "PA",
-      "total_entregas": 15,
-      "no_prazo": 14,
+      "total_entregas": 17,
+      "no_prazo": 16,
       "em_atraso": 1,
-      "faturamento": 166129.53
+      "faturamento": 176632.31
     },
     {
       "uf": "TO",
@@ -696,6 +756,13 @@
       "faturamento": 4121.07
     },
     {
+      "uf": "RO",
+      "total_entregas": 5,
+      "no_prazo": 5,
+      "em_atraso": 0,
+      "faturamento": 1458.5700000000002
+    },
+    {
       "uf": "Pi",
       "total_entregas": 5,
       "no_prazo": 5,
@@ -703,18 +770,11 @@
       "faturamento": 9039.22
     },
     {
-      "uf": "RO",
-      "total_entregas": 4,
-      "no_prazo": 4,
-      "em_atraso": 0,
-      "faturamento": 1013.77
-    },
-    {
       "uf": "AC",
-      "total_entregas": 4,
-      "no_prazo": 4,
+      "total_entregas": 5,
+      "no_prazo": 5,
       "em_atraso": 0,
-      "faturamento": 809447.42
+      "faturamento": 809987.42
     },
     {
       "uf": "Mg",
@@ -755,72 +815,113 @@
   "por_ano_ref": {
     "2025": {
       "iab": {
-        "total_entregas": 1692,
-        "entregas_no_prazo": 1679,
+        "total_entregas": 1687,
+        "entregas_no_prazo": 1674,
         "entregas_em_atraso": 13,
         "pct_prazo": 99,
-        "faturamento_total": 27192348.24,
-        "frete_total": 426684.82,
-        "peso_total_kg": 204536.983,
-        "volumes_total": 18861,
-        "total_impostos": 332707.42,
-        "custo_embalagem_total": 73576.5,
-        "custo_total_envio": 500261.32
+        "faturamento_total": 27227267.16,
+        "frete_total": 427312.97,
+        "peso_total_kg": 204393.332,
+        "volumes_total": 18822,
+        "total_impostos": 332734.02,
+        "custo_embalagem_total": 73439.6,
+        "custo_total_envio": 500752.57
       },
       "verbum": {},
       "global": {
-        "total_entregas": 1692,
-        "entregas_no_prazo": 1679,
+        "total_entregas": 1687,
+        "entregas_no_prazo": 1674,
         "entregas_em_atraso": 13,
         "pct_prazo": 99,
-        "faturamento_total": 27192348.24,
-        "frete_total": 426684.82,
-        "peso_total_kg": 204536.983,
-        "volumes_total": 18861,
-        "total_impostos": 332707.42,
-        "custo_embalagem_total": 73576.5,
-        "custo_total_envio": 500261.32
+        "faturamento_total": 27227267.16,
+        "frete_total": 427312.97,
+        "peso_total_kg": 204393.332,
+        "volumes_total": 18822,
+        "total_impostos": 332734.02,
+        "custo_embalagem_total": 73439.6,
+        "custo_total_envio": 500752.57
       }
     },
     "2026": {
       "iab": {
-        "total_entregas": 1384,
-        "entregas_no_prazo": 1371,
+        "total_entregas": 1657,
+        "entregas_no_prazo": 1644,
         "entregas_em_atraso": 13,
         "pct_prazo": 99,
-        "faturamento_total": 33118625.82,
-        "frete_total": 495898.54,
-        "peso_total_kg": 335243.044,
-        "volumes_total": 20689,
-        "total_impostos": 505639.65,
-        "custo_embalagem_total": 76064.46,
-        "custo_total_envio": 571963.0
+        "faturamento_total": 34096756.03,
+        "frete_total": 524874.92,
+        "peso_total_kg": 241677.994,
+        "volumes_total": 21593,
+        "total_impostos": 548468.87,
+        "custo_embalagem_total": 76271.92,
+        "custo_total_envio": 601146.84
       },
       "verbum": {
-        "total_entregas": 289,
-        "entregas_no_prazo": 285,
-        "entregas_em_atraso": 4,
+        "total_entregas": 367,
+        "entregas_no_prazo": 362,
+        "entregas_em_atraso": 5,
         "pct_prazo": 99,
-        "faturamento_total": 1112565.13,
-        "frete_total": 40733.42,
-        "peso_total_kg": 7664.945,
-        "volumes_total": 2888,
-        "total_impostos": 2079.95,
-        "custo_embalagem_total": 7522.78,
-        "custo_total_envio": 48256.2
+        "faturamento_total": 1294333.68,
+        "frete_total": 48586.67,
+        "peso_total_kg": 9628.054,
+        "volumes_total": 3303,
+        "total_impostos": 3702.2,
+        "custo_embalagem_total": 7516.45,
+        "custo_total_envio": 56103.12
       },
       "global": {
-        "total_entregas": 1673,
-        "entregas_no_prazo": 1656,
-        "entregas_em_atraso": 17,
+        "total_entregas": 2024,
+        "entregas_no_prazo": 2006,
+        "entregas_em_atraso": 18,
         "pct_prazo": 99,
-        "faturamento_total": 34231190.95,
-        "frete_total": 536631.96,
-        "peso_total_kg": 342907.989,
-        "volumes_total": 23577,
-        "total_impostos": 507719.6,
-        "custo_embalagem_total": 83587.24,
-        "custo_total_envio": 620219.2
+        "faturamento_total": 35391089.71,
+        "frete_total": 573461.59,
+        "peso_total_kg": 251306.048,
+        "volumes_total": 24896,
+        "total_impostos": 552171.06,
+        "custo_embalagem_total": 83788.37,
+        "custo_total_envio": 657249.96
+      }
+    },
+    "2027": {
+      "iab": {
+        "total_entregas": 41,
+        "entregas_no_prazo": 41,
+        "entregas_em_atraso": 0,
+        "pct_prazo": 100,
+        "faturamento_total": 514175.38,
+        "frete_total": 7436.55,
+        "peso_total_kg": 3373.36,
+        "volumes_total": 301,
+        "total_impostos": 11604.96,
+        "custo_embalagem_total": 0.0,
+        "custo_total_envio": 7436.55
+      },
+      "verbum": {
+        "total_entregas": 10,
+        "entregas_no_prazo": 10,
+        "entregas_em_atraso": 0,
+        "pct_prazo": 100,
+        "faturamento_total": 3573.76,
+        "frete_total": 651.49,
+        "peso_total_kg": 233.43,
+        "volumes_total": 14,
+        "total_impostos": 365.84,
+        "custo_embalagem_total": 0.0,
+        "custo_total_envio": 651.49
+      },
+      "global": {
+        "total_entregas": 51,
+        "entregas_no_prazo": 51,
+        "entregas_em_atraso": 0,
+        "pct_prazo": 100,
+        "faturamento_total": 517749.14,
+        "frete_total": 8088.04,
+        "peso_total_kg": 3606.79,
+        "volumes_total": 315,
+        "total_impostos": 11970.8,
+        "custo_embalagem_total": 0.0,
+        "custo_total_envio": 8088.04
       }
     }
   }

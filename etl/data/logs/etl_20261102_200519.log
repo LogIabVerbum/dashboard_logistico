@@ -1,0 +1,42 @@
+2026-11-02 20:05:19 | INFO     | etl_runner — =================================================================
+2026-11-02 20:05:19 | INFO     | etl_runner —   INÍCIO DO ETL — Dashboard Logístico IAB & Verbum
+2026-11-02 20:05:19 | INFO     | etl_runner —   Arquivo fonte: C:\Users\a2p2t\OneDrive - Instituto Alfa e Beto\Logística-IAB\10 - DASHIBOARDs\Quadro de Envios.xlsx
+2026-11-02 20:05:19 | INFO     | etl_runner — =================================================================
+2026-11-02 20:05:19 | INFO     | etl_runner — [ ETAPA 1 ] Leitura do arquivo...
+2026-11-02 20:05:19 | INFO     | modules.reader — Lendo arquivo: C:\Users\a2p2t\OneDrive - Instituto Alfa e Beto\Logística-IAB\10 - DASHIBOARDs\Quadro de Envios.xlsx
+2026-11-02 20:05:20 | INFO     | modules.reader — Linhas lidas (raw): 4866
+2026-11-02 20:05:20 | INFO     | modules.reader — Linhas após remoção de vazias: 4866
+2026-11-02 20:05:20 | INFO     | etl_runner — [ ETAPA 2 ] Limpeza e normalização...
+2026-11-02 20:05:20 | INFO     | modules.cleaner — Filtro Cons Analise: 747 linhas removidas | Restam: 4119
+2026-11-02 20:05:20 | INFO     | modules.cleaner — Filtro Empresa (Serena/Koala): 0 linhas removidas | Restam: 4119
+2026-11-02 20:05:20 | WARNING  | modules.cleaner — Transportadora sem mapeamento: '127 - FERNANDES E GARCIA AGENCIA DE SERVICOS POSTAIS LTDA' (limpo: 'FERNANDES E GARCIA AGENCIA DE SERVICOS POSTAIS LTDA'). Adicione ao config.py → TRANSPORTADORA_MAP.
+2026-11-02 20:05:20 | WARNING  | modules.cleaner — Transportadora sem mapeamento: '521 - CLARA TRANSPORTES E OPERACOES LOGISTICA LTDA.' (limpo: 'CLARA TRANSPORTES E OPERACOES LOGISTICA LTDA.'). Adicione ao config.py → TRANSPORTADORA_MAP.
+2026-11-02 20:05:20 | WARNING  | modules.cleaner — Transportadora sem mapeamento: '521 - CLARA TRANSPORTES E OPERACOES LOGISTICA LTDA.' (limpo: 'CLARA TRANSPORTES E OPERACOES LOGISTICA LTDA.'). Adicione ao config.py → TRANSPORTADORA_MAP.
+2026-11-02 20:05:20 | WARNING  | modules.cleaner — Transportadora sem mapeamento: '521 - CLARA TRANSPORTES E OPERACOES LOGISTICA LTDA.' (limpo: 'CLARA TRANSPORTES E OPERACOES LOGISTICA LTDA.'). Adicione ao config.py → TRANSPORTADORA_MAP.
+2026-11-02 20:05:20 | WARNING  | modules.cleaner — Transportadora sem mapeamento: '521 - CLARA TRANSPORTES E OPERACOES LOGISTICA LTDA.' (limpo: 'CLARA TRANSPORTES E OPERACOES LOGISTICA LTDA.'). Adicione ao config.py → TRANSPORTADORA_MAP.
+2026-11-02 20:05:20 | WARNING  | modules.cleaner — Transportadora sem mapeamento: '521 - CLARA TRANSPORTES E OPERACOES LOGISTICA LTDA.' (limpo: 'CLARA TRANSPORTES E OPERACOES LOGISTICA LTDA.'). Adicione ao config.py → TRANSPORTADORA_MAP.
+2026-11-02 20:05:20 | INFO     | modules.cleaner — Normalização concluída. Shape final: (4119, 55)
+2026-11-02 20:05:20 | INFO     | etl_runner — [ ETAPA 3 ] Cálculo de KPIs...
+2026-11-02 20:05:20 | INFO     | modules.calculator — Status prazo calculado — NO PRAZO: 4119 | ATRASO: 0
+2026-11-02 20:05:20 | INFO     | modules.calculator — Entregas únicas identificadas: 487
+2026-11-02 20:05:20 | INFO     | modules.calculator — Cálculo de KPIs concluído.
+2026-11-02 20:05:20 | INFO     | etl_runner — [ ETAPA 4 ] Comparação com snapshot anterior...
+2026-11-02 20:05:21 | INFO     | modules.snapshot — Snapshot anterior carregado: 4113 linhas
+2026-11-02 20:05:22 | INFO     | modules.snapshot — Log de mudanças atualizado: 19409 registros → C:\Users\a2p2t\OneDrive - Instituto Alfa e Beto\Logística-IAB\10 - DASHIBOARDs\dashboard_logistico\etl\data\logs\change_log.csv
+2026-11-02 20:05:22 | INFO     | modules.snapshot — Snapshot salvo: C:\Users\a2p2t\OneDrive - Instituto Alfa e Beto\Logística-IAB\10 - DASHIBOARDs\dashboard_logistico\etl\data\snapshots\snapshot_20261102_200520.parquet
+2026-11-02 20:05:22 | INFO     | modules.snapshot — Comparação concluída — Inseridos: 6 | Alterados: 4004 | Removidos: 0 | Sem mudança: 0
+2026-11-02 20:05:22 | INFO     | etl_runner — [ ETAPA 5 ] Exportando dados processados...
+2026-11-02 20:05:22 | INFO     | modules.exporter — Parquet salvo: C:\Users\a2p2t\OneDrive - Instituto Alfa e Beto\Logística-IAB\10 - DASHIBOARDs\dashboard_logistico\etl\data\processed\lancamentos.parquet (433.8 KB)
+2026-11-02 20:05:22 | INFO     | modules.exporter — JSON salvo: C:\Users\a2p2t\OneDrive - Instituto Alfa e Beto\Logística-IAB\10 - DASHIBOARDs\dashboard_logistico\etl\data\processed\lancamentos.json (6095.3 KB)
+2026-11-02 20:05:22 | INFO     | modules.exporter — Métricas agregadas salvas: C:\Users\a2p2t\OneDrive - Instituto Alfa e Beto\Logística-IAB\10 - DASHIBOARDs\dashboard_logistico\etl\data\processed\metricas.json (14.6 KB)
+2026-11-02 20:05:22 | INFO     | etl_runner — =================================================================
+2026-11-02 20:05:22 | INFO     | etl_runner —   ETL CONCLUÍDO COM SUCESSO
+2026-11-02 20:05:22 | INFO     | etl_runner —   Duração total:      3.9s
+2026-11-02 20:05:22 | INFO     | etl_runner —   Linhas processadas: 4119
+2026-11-02 20:05:22 | INFO     | etl_runner —   Inserções:          6
+2026-11-02 20:05:22 | INFO     | etl_runner —   Atualizações:       4004
+2026-11-02 20:05:22 | INFO     | etl_runner —   Remoções:           0
+2026-11-02 20:05:22 | INFO     | etl_runner —   Sem mudança:        0
+2026-11-02 20:05:22 | INFO     | etl_runner —   Log de mudanças:    C:\Users\a2p2t\OneDrive - Instituto Alfa e Beto\Logística-IAB\10 - DASHIBOARDs\dashboard_logistico\etl\data\logs\change_log.csv
+2026-11-02 20:05:22 | INFO     | etl_runner —   Log de execução:    C:\Users\a2p2t\OneDrive - Instituto Alfa e Beto\Logística-IAB\10 - DASHIBOARDs\dashboard_logistico\etl\data\logs\etl_20261102_200519.log
+2026-11-02 20:05:22 | INFO     | etl_runner — =================================================================

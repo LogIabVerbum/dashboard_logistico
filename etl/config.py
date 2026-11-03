@@ -97,6 +97,7 @@ TRANSPORTADORA_MAP = {
     "EMPRESA BRASILEIRA DE CORREIOS E TELEGRAFOS":       "CORREIOS",
     "FERNANDES E GARCIA AGENCIA DE SERVICOS POSTAIS LTDA -": "CORREIOS",
     "FERNANDES E GARCIA AGENCIA DE SERVI":               "CORREIOS",
+    "FERNANDES E GARCIA AGENCIA DE SERVICOS POSTAIS LTDA": "CORREIOS",
 
     # --- TNT ---
     "TNT":                                               "TNT",
@@ -113,6 +114,7 @@ TRANSPORTADORA_MAP = {
     "UBER FRANQUIA":                                     "UBERLOG",
     "UBERFRANQUIA":                                      "UBERLOG",
     "UBER FRAQUIA RODOVIARIA":                           "UBERLOG",
+    "UBERLOG LOGISTICA":                                 "UBERLOG",
 
     # --- Gollog / VRG ---
     "GOLLOG":                                            "GOLLOG",
@@ -131,6 +133,7 @@ TRANSPORTADORA_MAP = {
     "CLARA TRANSPORTES E OPERACOES LOGISTICA LTDA ME":   "CLARA",
     "CLARA TRANSPORTES E OPERACOES LOGISTICA LTDA. UDI": "CLARA",
     "CLARA TRANSPORTES E OPERACOES LOGIS":               "CLARA",
+    "CLARA TRANSPORTES E OPERACOES LOGISTICA LTDA.":     "CLARA",
 
     # --- AMS ---
     "AMS TRANSPORTES":                                   "AMS",
@@ -164,6 +167,7 @@ TRANSPORTADORA_MAP = {
     # --- TG ---
     "TG TRANSPORTES GERAIS E DISTRIBUICAO LTDA":         "TG",
     "TG TRANSPORTES GERAIS E DIST LTDA":                 "TG",
+    "TG TRANSPORTES GERAIS E DISTRIBUICAO DF":           "TG",
 
     # --- Jamef ---
     "JAMEF TRANSPORTES LTDA":                            "JAMEF",
