@@ -420,6 +420,13 @@ def gerar():
     # 3. PRÉ-PROCESSAMENTO
     print("[ 3 ] Pré-processando...")
     df["regiao"] = df["regiao"].fillna("").str.strip().str.upper()
+    # Padroniza maiúsculas/minúsculas e espaços (ex.: "Mg"="MG", "Pessoa Física"="PESSOA FÍSICA",
+    # "Devolução"="DEVOLUÇÃO", "São Paulo"="SÃO PAULO") para não separar o mesmo item em dois.
+    for _c in ["uf", "regiao", "natureza_operacao", "tipo_cliente", "municipio", "cliente",
+               "origem_venda", "modalidade"]:
+        if _c in df.columns:
+            df[_c] = df[_c].where(df[_c].isna(),
+                                  df[_c].astype(str).str.strip().str.replace(r"\s+", " ", regex=True).str.upper())
     # Garantir coluna distancia_km — busca robusta por variações de nome
     if "distancia_km" not in df.columns:
         import unicodedata as _ud
@@ -529,6 +536,7 @@ def gerar():
             "dv":   int(dv) if (dv is not None and not (isinstance(dv, float) and math.isnan(dv))) else None,
             "obs":  sf(row["obs"]),
             "st":   sf(row["status_prazo"]),
+            "ano":  sf(row["ano_ref"]),
         }
         if c2:
             d["ef"] = fmt_d(row["data_efetiva_entrega"])
@@ -537,7 +545,7 @@ def gerar():
     df_at = df_pri[df_pri["ano_ref"] == ANO_ATUAL].copy()
     df_pend = df_pri[df_pri["ano_ref"].isin([ANO_ATUAL, ANO_ANT])]   # pendência do ano anterior continua aparecendo
     q1   = df_pend[df_pend["data_efetiva_entrega"].isna()].sort_values("prev_entrega_cliente")
-    q2   = df_pend[df_pend["entrega_em_atraso"] == 1].sort_values("data_efetiva_entrega", ascending=False)  # atrasos do ano atual e do anterior
+    q2   = df_pri[df_pri["entrega_em_atraso"] == 1].sort_values("data_efetiva_entrega", ascending=False)  # atrasos de todos os Anos Ref (filtro na tela)
 
     def agg(d):
         def g(col):
@@ -805,9 +813,190 @@ def gerar():
 
     PAYLOAD_TR = _jdump(_TR)
 
-    # 9-EST. PAYLOAD ESTOQUE (Movimentação de Estoque.xlsx)
-    print("[ 9-EST ] Processando dados de estoque...")
-    PAYLOAD_EST = _processar_estoque(ESTOQUE_XLSX, _jdump)
+    # 8b. PAYLOAD T2 — nova estrutura do Transporte (Visão Geral, Regiões, Transportadoras)
+    #     Definições:
+    #       Faturamento Total (transporte) = soma do valor de TODAS as NFs transportadas
+    #       Vendas = NFs de VENDA · Fat. Líquido = Vendas − Bonificações − Devoluções
+    #       Resultado = Vendas − Bonif. − Devol. − Impostos − Frete − Embalagem
+    print("[ 8b ] Payload T2 (Visão Geral / Regiões / Transportadoras)...")
+    _nat_up = df["natureza_operacao"].fillna("").astype(str).str.upper().str.strip()
+    df["_nat"] = _nat_up
+    df["regiao"] = df["regiao"].fillna("").astype(str).str.strip().str.upper()
+    df_p2 = df[df["is_primeira_linha_entrega"] == 1].copy()
+    df_p2["_lt"] = (df_p2["data_efetiva_entrega"] - df_p2["data_coleta"]).dt.days.clip(lower=0)
+    df_p2["_atr_d"] = (df_p2["data_efetiva_entrega"] - df_p2["prev_entrega_cliente"]).dt.days
+    # mês do ciclo do Ano Ref: Out=1 ... Set=12
+    df["_mc"] = ((df["data_coleta"].dt.month - 10) % 12 + 1).astype("Int64")
+    df_p2["_mc"] = ((df_p2["data_coleta"].dt.month - 10) % 12 + 1).astype("Int64")
+
+    def _r(v, n=0):
+        try:
+            v = float(v)
+            return None if (math.isnan(v) or math.isinf(v)) else round(v, n)
+        except Exception:
+            return None
+
+    def _k2(dp, dx, leve=False):
+        ent = len(dp)
+        if ent == 0 and len(dx) == 0:
+            return None
+        prazo = int(dp["entrega_no_prazo"].sum()); atraso = int(dp["entrega_em_atraso"].sum())
+        conc = prazo + atraso
+        venda = float(dx.loc[dx["_nat"] == "VENDA", "vr_nf"].sum())
+        bon   = float(dx.loc[dx["_nat"] == "BONIFICAÇÃO", "vr_nf"].sum())
+        dev   = float(dx.loc[dx["_nat"] == "DEVOLUÇÃO", "vr_nf"].sum())
+        fat_t = float(dx["vr_nf"].sum())
+        frete = float(dx["frete"].sum())
+        emb   = float(dx["custo_embalagem"].sum())
+        imp   = float(dx["total_impostos_calc"].sum())
+        fat_l = venda - bon - dev
+        res   = fat_l - imp - frete - emb
+        lt    = dp["_lt"].dropna()
+        km    = float(dp["distancia_km"].sum()) if "distancia_km" in dp.columns else 0.0
+        k = {
+            "ent": ent, "prazo": prazo, "atraso": atraso,
+            "ns": _r(prazo / conc * 100, 1) if conc else None,
+            "lt": _r(lt.mean(), 1) if len(lt) else None,
+            "fat_t": _r(fat_t), "venda": _r(venda), "bon": _r(bon), "dev": _r(dev), "fat_l": _r(fat_l),
+            "frete": _r(frete), "emb": _r(emb), "imp": _r(imp), "res": _r(res),
+            "fsf_t": _r(frete / fat_t * 100, 2) if fat_t else None,     # Frete ÷ Faturamento Total
+            "fsf":   _r(frete / venda * 100, 2) if venda else None,     # Frete ÷ Vendas
+            "pct_res": _r(res / venda * 100, 1) if venda else None,
+            "c_ent": _r(frete / ent, 2) if ent else None,
+        }
+        if leve:
+            return k
+        nfs  = int(dx["nf"].nunique())
+        vol  = float(dx["volumes"].sum())
+        peso = float(dx["peso_kg"].sum())
+        atr  = dp.loc[dp["entrega_em_atraso"] == 1, "_atr_d"].dropna()
+        k.update({
+            "nfs": nfs, "vol": _r(vol), "peso": _r(peso), "km": _r(km),
+            "c_nf":  _r(frete / nfs, 2) if nfs else None,
+            "c_vol": _r(frete / vol, 2) if vol else None,
+            "c_kg":  _r(frete / peso, 2) if peso else None,
+            "c_km":  _r(frete / km, 2) if km else None,
+            "atr_med": _r(atr.mean(), 1) if len(atr) else None,
+            "pct_dev": _r(dev / venda * 100, 1) if venda else None,
+            "pct_bon": _r(bon / venda * 100, 1) if venda else None,
+        })
+        return k
+
+    _FAIXAS = [(0, 300, "até 300 km"), (300, 800, "300–800 km"), (800, 1500, "800–1.500 km"), (1500, 1e9, "acima de 1.500 km")]
+
+    T2 = {"anos": ANOS, "ano_atual": ANO_ATUAL, "hoje": hoje.strftime("%d/%m/%Y"),
+          "vg": {}, "vg_mes": {}, "reg": {}, "tr": {}}
+    for _emp in ["TODAS", "IAB", "VERBUM"]:
+        _dx_e = df    if _emp == "TODAS" else df[df["empresa"] == _emp]
+        _dp_e = df_p2 if _emp == "TODAS" else df_p2[df_p2["empresa"] == _emp]
+        T2["vg"][_emp] = {}; T2["vg_mes"][_emp] = {}; T2["reg"][_emp] = {}; T2["tr"][_emp] = {}
+        for _ano in ANOS + ["TODOS"]:
+            _dx = _dx_e if _ano == "TODOS" else _dx_e[_dx_e["ano_ref"].astype(str) == _ano]
+            _dp = _dp_e if _ano == "TODOS" else _dp_e[_dp_e["ano_ref"].astype(str) == _ano]
+            if _dx.empty:
+                T2["vg"][_emp][_ano] = None; T2["reg"][_emp][_ano] = None; T2["tr"][_emp][_ano] = None
+                continue
+            T2["vg"][_emp][_ano] = _k2(_dp, _dx)
+            # Evolução por mês do ciclo (Out..Set): valores do mês (o acumulado é feito na tela)
+            if _ano != "TODOS":
+                _mes = []
+                for _m in range(1, 13):
+                    _gx = _dx[_dx["_mc"] == _m]; _gp = _dp[_dp["_mc"] == _m]
+                    _mes.append(_k2(_gp, _gx, leve=True) if len(_gx) else None)
+                T2["vg_mes"][_emp][_ano] = _mes
+            # Regiões: macro (região) → UF → município
+            _macro, _ufs, _muns = [], [], []
+            for _rg, _gx in _dx.groupby("regiao"):
+                if not _rg or _rg == "NAN": continue
+                _k = _k2(_dp[_dp["regiao"] == _rg], _gx, leve=True); _k["k"] = _rg; _macro.append(_k)
+            for (_rg, _uf), _gx in _dx.groupby(["regiao", "uf"]):
+                if not _uf or str(_uf) == "nan": continue
+                _k = _k2(_dp[(_dp["regiao"] == _rg) & (_dp["uf"] == _uf)], _gx, leve=True)
+                _k["k"] = str(_uf); _k["reg"] = _rg; _ufs.append(_k)
+            for (_uf, _mn), _gx in _dx.groupby(["uf", "municipio"]):
+                if not _mn or str(_mn) == "nan": continue
+                _k = _k2(_dp[(_dp["uf"] == _uf) & (_dp["municipio"] == _mn)], _gx, leve=True)
+                _k["k"] = str(_mn); _k["uf"] = str(_uf); _muns.append(_k)
+            T2["reg"][_emp][_ano] = {
+                "macro": sorted(_macro, key=lambda x: -(x["ent"] or 0)),
+                "uf":    sorted(_ufs,   key=lambda x: -(x["ent"] or 0)),
+                "mun":   sorted(_muns,  key=lambda x: -(x["ent"] or 0)),
+            }
+            # Transportadoras (foco no transporte: todas as NFs transportadas)
+            _trs = []
+            for _t, _gx in _dx.groupby("transportadora_norm"):
+                _k = _k2(_dp[_dp["transportadora_norm"] == _t], _gx); _k["k"] = str(_t); _trs.append(_k)
+            _fx = []
+            _kmcol = _dp["distancia_km"] if "distancia_km" in _dp.columns else pd.Series(0.0, index=_dp.index)
+            for _a, _b, _nm in _FAIXAS:
+                _sel = _dp[(_kmcol > _a) & (_kmcol <= _b)] if _a > 0 else _dp[(_kmcol > 0) & (_kmcol <= _b)]
+                if len(_sel):
+                    _k = _k2(_sel, _dx[_dx["id_entrega"].isin(_sel["id_entrega"])], leve=True); _k["k"] = _nm; _fx.append(_k)
+            _semkm = _dp[_kmcol <= 0]
+            if len(_semkm):
+                _k = _k2(_semkm, _dx[_dx["id_entrega"].isin(_semkm["id_entrega"])], leve=True); _k["k"] = "sem km cadastrado"; _fx.append(_k)
+            T2["tr"][_emp][_ano] = {
+                "total":  _k2(_dp, _dx),
+                "transp": sorted(_trs, key=lambda x: -(x["ent"] or 0)),
+                "faixas": _fx,
+            }
+
+    PAYLOAD_T2 = _jdump(T2)
+    print(f"      T2: {len(PAYLOAD_T2)//1024} KB")
+
+    # 9-EST. ESTOQUE — Análise de Estoque + Estimativa de Venda (pasta dashboard_logistico\estoque)
+    #   Saldo sempre calculado pela movimentação (implantação + entradas − saídas), pelas regras do gerar_analise.py.
+    print("[ 9-EST ] Estoque: Análise de Estoque e Estimativa de Venda...")
+    import subprocess, re as _re2
+    PASTA_EST = os.path.join(os.path.dirname(BASE_DIR), "estoque")   # dashboard_logistico\\estoque
+    def _rodar(script, nome):
+        caminho = os.path.join(PASTA_EST, script)
+        if not os.path.isfile(caminho):
+            print(f"      AVISO: {script} não encontrado em {PASTA_EST}")
+            return False
+        print(f"      Gerando {nome}...")
+        try:
+            r = subprocess.run([sys.executable, caminho, "--sem-abrir", "--sem-pausa"], cwd=PASTA_EST, env=dict(os.environ, PYTHONIOENCODING="utf-8", PYTHONUTF8="1"),
+                               capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=1800)
+        except Exception as e:
+            print(f"      AVISO: falha ao gerar {nome}: {e}")
+            return False
+        saida = (r.stdout or "") + (r.stderr or "")
+        for ln in saida.strip().splitlines()[-4:]:
+            print("        " + ln)
+        if r.returncode != 0 or _re2.search(r"^\s*ERRO\b", saida, _re2.M):
+            print(f"      AVISO: {nome} terminou com erro — a aba vai mostrar a última versão gerada (se houver).")
+            return False
+        return True
+    _rodar("gerar_analise.py", "Análise de Estoque")
+    _rodar("gerar_estimativa.py", "Estimativa de Venda")
+
+    def _ler(nome):
+        p = os.path.join(PASTA_EST, nome)
+        return open(p, encoding="utf-8").read() if os.path.isfile(p) else ""
+    try:
+        PAYLOAD_EST2 = _ler("estoque_resumo.json") or "null"
+        json.loads(PAYLOAD_EST2)
+    except Exception:
+        PAYLOAD_EST2 = "null"
+    # CSS aplicado dentro das abas embutidas: fonte Poppins e cores do dashboard
+    _tmpl_txt = open(os.path.join(BASE_DIR, "dashboard_template.html"), encoding="utf-8").read()
+    _fontes = "\n".join(_re2.findall(r'@font-face\{[^}]*\}', _tmpl_txt)[:4])
+    _css_ana = ("<style>" + _fontes + ":root{--serifa:'Poppins',Arial,sans-serif!important;--sans:'Poppins',Arial,sans-serif!important;"
+                "--marinho:#01337C!important;--marinho-2:#0b4aa3!important;--vinho:#FFB522!important;--fundo:#f5f5f7!important;"
+                "--linha:#e4e4ea!important;--faixa:#eef2fa!important}body{font-size:.95rem}.topo h1,h2{font-weight:600!important}</style>")
+    _css_est = ("<style>.sidebar{display:none!important}.app{grid-template-columns:1fr!important}"
+                ".topbar{top:0}</style>")
+    def _embutir(html, css):
+        if not html:
+            return '""'
+        html = html.replace("</head>", css + "</head>", 1)
+        return json.dumps(html, ensure_ascii=False).replace("</", "<\\/")
+    HTML_ANALISE    = _embutir(_ler("Análise de Estoque.html"), _css_ana)
+    HTML_ESTIMATIVA = _embutir(_ler("Estimativa de Vendas.html"), _css_est)
+    print(f"      Análise: {len(HTML_ANALISE)//1024} KB | Estimativa: {len(HTML_ESTIMATIVA)//1024} KB | resumo: {len(PAYLOAD_EST2)//1024} KB")
+    PAYLOAD_EST = "{}"   # abas antigas de estoque (saldo pela coluna do ERP) foram removidas
+
 
     # 10. LER TEMPLATE
     print("[ 9 ] Lendo template...")
@@ -846,6 +1035,8 @@ def gerar():
         "___ANO_BTNS_TR___":  "".join(f'<button class="ano-btn" id="tr-ab{a}" onclick="trAno(\'{a}\')">{a}</button>' for a in ANOS),
         "___GERADO_EM___":    datetime.now().strftime("%d/%m/%Y %H:%M"),
         "___PAYLOAD_EST___":  PAYLOAD_EST,
+        "___PAYLOAD_T2___":   PAYLOAD_T2,
+        "___PAYLOAD_EST2___": PAYLOAD_EST2,
     }
     for ph, val in substitucoes.items():
         html = html.replace(ph, val)
@@ -853,6 +1044,8 @@ def gerar():
     # Zerar qualquer placeholder residual
     import re as _re
     html = _re.sub(r'___[A-Z_]+___', 'null', html)
+    # Abas de estoque embutidas (colocadas depois da limpeza de marcadores para não serem alteradas)
+    html = html.replace('"/*HTML_ANALISE*/"', HTML_ANALISE, 1).replace('"/*HTML_ESTIMATIVA*/"', HTML_ESTIMATIVA, 1)
 
     # 12. SALVAR
     print("[ 11 ] Salvando...")

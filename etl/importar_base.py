@@ -667,6 +667,16 @@ def lancar_nfs_novas(df_base: pd.DataFrame, nfs_existentes: set, historico: dict
     wb.save(QUADRO_ENVIOS)
     wb.close()
     log.info(f"{len(novas)} NF(s) lançada(s) no Quadro de Envios.")
+
+    # O openpyxl apaga os valores calculados das fórmulas ao salvar.
+    # Recalcula pelo Excel (não altera nenhum dado) para o dashboard não sair zerado.
+    try:
+        from modules.recalc_excel import recalcular_excel
+        if not recalcular_excel(QUADRO_ENVIOS):
+            log.warning("ATENÇÃO: abra o Quadro de Envios no Excel e clique em Salvar antes de "
+                        "rodar o ATUALIZAR DASHBOARD.")
+    except Exception as e:
+        log.warning(f"Recálculo automático indisponível ({e}). Abra o Quadro no Excel e salve.")
     return len(novas)
 
 

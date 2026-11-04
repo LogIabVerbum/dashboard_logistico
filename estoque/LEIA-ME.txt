@@ -1,0 +1,14 @@
+PASTA estoque — Análise de Estoque + Estimativa de Venda (dentro do Dashboard Logístico)
+Desde 04/11/2026 estes arquivos vieram das pastas "Analise de Estoque" e "Estimativa de Vendas".
+
+Não precisa rodar nada aqui: o ATUALIZAR DASHBOARD.bat roda os dois scripts e coloca o resultado
+nas abas de Estoque do dashboard.html.
+
+- gerar_analise.py + analise_modelo.html  -> Análise de Estoque (regras de saldo, programas, margem, correções)
+                                             e estoque_resumo.json (Visão Geral do Estoque)
+- gerar_estimativa.py + estimativa_modelo.html -> Estimativa de Venda Próximo Ciclo (propostas do CRM x saldo)
+- cadastro_itens_programas.csv, kits_programa.csv, papeis_programa.csv, correcoes_consignacao.csv: cadastros usados
+  pelas regras (editar com cuidado). cadastro_clientes.csv é gerado automaticamente.
+
+Saldo SEMPRE calculado pela movimentação (implantação + entradas - saídas). A coluna SALDO_APOS_MOVIMENTO do ERP
+não é usada.

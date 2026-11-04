@@ -31,3 +31,10 @@ imagem_navegador_paginainicial.png
 Thumbs.db
 desktop.ini
 *.swp
+
+# Saídas geradas da pasta estoque (o dashboard.html já leva tudo)
+estoque/Análise de Estoque.html
+estoque/Estimativa de Vendas.html
+estoque/estoque_resumo.json
+estoque/cadastro_clientes.csv
+estoque/__pycache__/
