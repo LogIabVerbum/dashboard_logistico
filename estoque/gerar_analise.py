@@ -46,6 +46,29 @@ OPS_DEVOLUCAO_VENDA = {"DEVOLUÇÃO DE VENDA - NF PRÓPRIA", "DEVOLUÇÃO DE VEN
                        "RETORNO MERC CONSIG COMERCIALIZADA"}
 # Naturezas da movimentação que formam o CUSTO da venda (saídas) e as devoluções que voltam ao estoque (entradas)
 NAT_SAIDA_VENDA = {"NOTA DE VENDA DE PRODUTO PRODUZIDO", "REMESSA VENDA ENTREGA FUTURA", "VENDA CONSIGNADA"}
+# Clientes que recebem por "SIMPLES REMESSA (OUTRAS)" mas é VENDA (outra empresa paga por recibo, não há nota de venda).
+# Combinado em 22/10/2026 e 04/11/2026 — vale para Margem, Visão Geral do Estoque e Estimativa. (cidade, UF)
+SIMPLES_REMESSA_E_VENDA = {("PILAR", "AL")}
+NAT_SR = "SIMPLES REMESSA (OUTRAS)"
+NAT_RETORNO_SR = "RETORNO SIMPLES REMESSA"
+NAT_AJUSTE_TERCEIROS = "SAÍDA DE ESTOQUE COM TERCEIROS"   # baixa do material em poder de terceiros que foi ao Pilar:
+# na Visão Geral do Estoque continua como AJUSTE (22/10/2026); só na MARGEM o custo dela entra, para casar com a receita
+# da Simples Remessa (NF 17875 não tem saída própria no estoque).
+
+
+def _cid(v):
+    import unicodedata
+    t = unicodedata.normalize("NFKD", str(v or "")).encode("ascii", "ignore").decode().upper()
+    return "".join(ch for ch in t if ch.isalpha())
+
+
+def remessa_e_venda(cidades, ufs):
+    """True nas linhas cujo destino (cidade + UF) está em SIMPLES_REMESSA_E_VENDA."""
+    alvo = {(_cid(c), u.upper()) for c, u in SIMPLES_REMESSA_E_VENDA}
+    return pd.Series([(_cid(c), str(u or "").strip().upper()[:2]) in alvo for c, u in zip(cidades, ufs)],
+                     index=getattr(cidades, "index", None))
+
+
 NAT_DEVOLUCAO_VENDA = {"DEVOLUÇÃO DE VENDA - NF PRÓPRIA", "DEVOLUÇÃO DE VENDA - NF TERCEIROS", "DEVOLUÇÃO DE REMESSA - ENTREGA FUTURA"}
 ARQ_SAIDA = PASTA / "Análise de Estoque.html"
 ARQ_MODELO = PASTA / "analise_modelo.html"
@@ -347,8 +370,10 @@ def margem_vendas(df, cli):
     f["nf"] = f["NRO_NFE"].map(lambda x: "" if pd.isna(x) else str(int(x)) if isinstance(x, (int, float)) else str(x).strip())
     interno = lambda c: c[:8] in RAIZES_GRUPO
     f = f[f["emp"].notna() & ~f["cli"].map(interno)]
-    rec = f[f["op"].isin(OPS_RECEITA | OPS_DEVOLUCAO_VENDA)].copy()
-    rec.loc[rec["op"].isin(OPS_DEVOLUCAO_VENDA), "valor"] = -rec["valor"].abs()   # devolução sempre reduz a receita
+    pv_f = remessa_e_venda(f["CIDADE_DESTINO"], f["UF_DESTINO"]) if "CIDADE_DESTINO" in f else pd.Series(False, index=f.index)
+    f["dev"] = f["op"].isin(OPS_DEVOLUCAO_VENDA) | (pv_f & f["op"].str.startswith(NAT_RETORNO_SR))
+    rec = f[f["op"].isin(OPS_RECEITA | OPS_DEVOLUCAO_VENDA) | (pv_f & (f["op"].eq(NAT_SR) | f["op"].str.startswith(NAT_RETORNO_SR)))].copy()
+    rec.loc[rec["dev"], "valor"] = -rec["valor"].abs()   # devolução sempre reduz a receita
     # custo no estoque
     m = df.copy()
     m["nat"] = m["natureza"].str.upper().str.strip()
@@ -356,7 +381,9 @@ def margem_vendas(df, cli):
     m = m[~m["cli"].map(interno)]
     m["custo"] = m["qtd"] * pd.to_numeric(m["custo_unit"], errors="coerce").fillna(0)
     sai, ent = m["tipo"].str.startswith("SA"), m["tipo"].eq("ENTRADA")
-    cmv = m[(sai & m["nat"].isin(NAT_SAIDA_VENDA)) | (ent & m["nat"].isin(NAT_DEVOLUCAO_VENDA))].copy()
+    pv_m = remessa_e_venda(m["cidade"], m["uf_estado"])
+    cmv = m[(sai & (m["nat"].isin(NAT_SAIDA_VENDA) | (pv_m & (m["nat"].eq(NAT_SR) | m["nat"].str.contains(NAT_AJUSTE_TERCEIROS)))))
+            | (ent & (m["nat"].isin(NAT_DEVOLUCAO_VENDA) | (pv_m & m["nat"].str.startswith(NAT_RETORNO_SR))))].copy()
     cmv.loc[cmv["tipo"].eq("ENTRADA"), "custo"] *= -1
     bon = m[(sai & m["nat"].str.startswith("REMESSA DE BONIFICA")) | (ent & m["nat"].str.startswith("DEVOLUÇÃO DE REMESSA DE BONIFICA"))].copy()
     bon.loc[bon["tipo"].eq("ENTRADA"), "custo"] *= -1
@@ -392,7 +419,7 @@ def margem_vendas(df, cli):
     cnf = cmv[cmv["tipo"].str.startswith("SA")].assign(nf=lambda x: x["nf"].astype(str).str.replace(r"\.0$", "", regex=True)).groupby(["emp", "nf"])["custo"].sum()
     notas = []
     for r in rec.sort_values("data").itertuples(index=False):
-        if r.op in OPS_DEVOLUCAO_VENDA: continue
+        if r.dev: continue
         c = cnf.get((r.emp, r.nf))
         notas.append({"nf": r.nf, "data": "" if pd.isna(r.data) else r.data.strftime("%d/%m/%Y"), "ord": "" if pd.isna(r.data) else r.data.strftime("%Y%m%d"),
                       "emp": r.emp, "doc": r.cli, "nome": nomes.get(r.cli, ""), "tipo": tipo(r.cli), "op": r.op.title(),
@@ -718,8 +745,14 @@ def resumo_dashboard(df, cad, est, margem):
     d["emp"] = d["empresa_nome"].str.replace(r"\s*\(.*\)", "", regex=True)          # Verbum (Filial/Matriz) -> Verbum
     ent = d["tipo"].eq("ENTRADA"); sai = d["tipo"].str.startswith("SA")
     impl = nat.eq(NATUREZA_IMPLANTACAO)
+    pv = remessa_e_venda(d["cidade"], d["uf_estado"]).to_numpy()   # Pilar/AL: simples remessa = venda
+    # só a Simples Remessa vira venda; o "Ajuste - saída de estoque com terceiros" continua como AJUSTE (combinado em 22/10/2026)
+    sai_pv = sai & pv & nat.eq(NAT_SR)
+    ent_pv = ent & pv & nat.str.startswith(NAT_RETORNO_SR)
     cls = np.select(
         [impl,
+         ent_pv,
+         sai_pv,
          ent & nat.str.contains("CONSIGNA"),
          ent & nat.str.startswith("COMPRA"),
          ent & nat.str.contains("DEVOLU"),
@@ -731,7 +764,7 @@ def resumo_dashboard(df, cad, est, margem):
          sai & nat.str.contains("AJUSTE"),
          sai & nat.str.contains("REQUISI"),
          sai],
-        ["inicial", "consig_ent", "compras", "devolucoes", "ajuste_ent", "outras_ent",
+        ["inicial", "devolucoes", "venda", "consig_ent", "compras", "devolucoes", "ajuste_ent", "outras_ent",
          "venda", "bonif", "transf", "ajuste_sai", "interno", "outras_sai"], default="")
     d["cls"] = cls
     # custo: o da própria linha; se zerado, o último custo positivo do item na empresa

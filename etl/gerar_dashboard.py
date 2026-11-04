@@ -427,6 +427,18 @@ def gerar():
         if _c in df.columns:
             df[_c] = df[_c].where(df[_c].isna(),
                                   df[_c].astype(str).str.strip().str.replace(r"\s+", " ", regex=True).str.upper())
+    # Exceção (04/11/2026): clientes que recebem por SIMPLES REMESSA mas é VENDA (outra empresa paga por recibo,
+    # não há nota de venda). Ex.: Pilar/AL. Mesma lista da Análise de Estoque e da Estimativa.
+    SIMPLES_REMESSA_E_VENDA = {("PILAR", "AL")}
+    if {"municipio", "uf", "natureza_operacao"} <= set(df.columns):
+        import unicodedata as _ud0
+        _cn = lambda v: "".join(ch for ch in _ud0.normalize("NFKD", str(v or "")).encode("ascii", "ignore").decode().upper() if ch.isalpha())
+        _alvo = {(_cn(c), u) for c, u in SIMPLES_REMESSA_E_VENDA}
+        _pv = pd.Series([(_cn(m), str(u or "").strip().upper()) in _alvo for m, u in zip(df["municipio"], df["uf"])], index=df.index)
+        _sr = _pv & df["natureza_operacao"].fillna("").astype(str).str.contains("SIMPLES REMESSA")
+        if _sr.any():
+            df.loc[_sr, "natureza_operacao"] = "VENDA"
+            print(f"      Simples remessa tratada como venda (Pilar/AL...): {int(_sr.sum())} NF(s)")
     # Garantir coluna distancia_km — busca robusta por variações de nome
     if "distancia_km" not in df.columns:
         import unicodedata as _ud
