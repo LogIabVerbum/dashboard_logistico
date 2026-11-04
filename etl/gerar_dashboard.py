@@ -872,7 +872,7 @@ def gerar():
             "fat_t": _r(fat_t), "venda": _r(venda), "bon": _r(bon), "dev": _r(dev), "fat_l": _r(fat_l),
             "frete": _r(frete), "emb": _r(emb), "imp": _r(imp), "res": _r(res),
             "fsf_t": _r(frete / fat_t * 100, 2) if fat_t else None,     # Frete ÷ Faturamento Total
-            "fsf":   _r(frete / venda * 100, 2) if venda else None,     # Frete ÷ Vendas
+            "fsf":   _r(frete / fat_t * 100, 2) if fat_t else None,     # FSF% = Frete ÷ Faturamento total (todas as NFs transportadas) — 04/11/2026
             "pct_res": _r(res / venda * 100, 1) if venda else None,
             "c_ent": _r(frete / ent, 2) if ent else None,
         }

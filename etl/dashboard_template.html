@@ -604,11 +604,11 @@ body.tema-verbum .t2-mx tr.t2-sec td,body.tema-verbum .t2-scroll tfoot td{backgr
     </div>
     <div class="cc">
       <div class="ct">Nível de Serviço × Custo do Frete</div>
-      <div class="cs">NS% (entregas no prazo) e FSF% (frete ÷ vendas) por Ano Ref</div>
+      <div class="cs">NS% (entregas no prazo) e FSF% (frete ÷ faturamento total) por Ano Ref</div>
       <div id="vg-chart-taxas"></div>
     </div>
   </div>
-  <div class="t2-calc"><div class="t2-calc-t">ℹ️ Como os indicadores são calculados</div><ul><li><b>Ano Ref</b> — ciclo de outubro a setembro (ex.: Ano Ref 2026 = out/2025 a set/2026), conforme a coluna "Ano Ref" do Quadro de Envios</li><li><b>Fonte</b> — Quadro de Envios (aba Lançamentos), apenas linhas com "Cons Analise = Sim"; empresa conforme o botão IAB/Verbum do topo</li><li><b>Entregas</b> — entregas físicas únicas (várias NFs no mesmo dia, cliente, transportadora e cidade contam como 1 entrega)</li><li><b>NS % (Nível de Serviço)</b> — entregas no prazo ÷ total de entregas × 100. Atraso = Data Efetiva depois da Previsão de Entrega ao Cliente; entregas ainda em aberto contam como no prazo. Meta: ótimo ≥ 98% · atenção ≥ 97%</li><li><b>Lead Time</b> — média de dias entre a Data de Coleta e a Data Efetiva da Entrega (só entregas concluídas). Meta: ótimo ≤ 7 dias · atenção ≤ 12</li><li><b>Entregas com atraso</b> — entregas concluídas depois da Previsão de Entrega ao Cliente</li><li><b>Vendas</b> — soma do Valor da NF das notas de natureza VENDA. Exceção: Pilar/AL recebe por Simples Remessa (outra empresa paga por recibo) e essas notas contam como VENDA</li><li><b>Bonificações / Devoluções</b> — soma do Valor da NF das notas dessas naturezas</li><li><b>Faturamento Líquido</b> — Vendas − Bonificações − Devoluções (valor das NFs de cada natureza)</li><li><b>Resultado</b> — Vendas − Bonificações − Devoluções − Impostos (ICMS + DIFAL + FCP) − Frete − Embalagem; % Resultado = Resultado ÷ Vendas</li><li><b>Frete total</b> — soma da coluna Frete</li><li><b>FSF %</b> — Frete ÷ Vendas × 100. Meta IAB: ótimo ≤ 2% · atenção ≤ 3% (Verbum: ≤ 3% · ≤ 4%)</li><li><b>Custo por entrega</b> — Frete ÷ número de entregas</li><li><b>Impostos</b> — ICMS + DIFAL + FCP das NFs</li><li><b>Embalagem</b> — soma da coluna Custo Embalagem</li><li><b>▲▼</b> — variação % contra o Ano Ref anterior; verde = melhorou, vermelho = piorou. Totais do ano em andamento não são comparados</li><li><b>Evolução acumulada</b> — soma mês a mês do indicador escolhido, de outubro a setembro</li></ul></div>
+  <div class="t2-calc"><div class="t2-calc-t">ℹ️ Como os indicadores são calculados</div><ul><li><b>Ano Ref</b> — ciclo de outubro a setembro (ex.: Ano Ref 2026 = out/2025 a set/2026), conforme a coluna "Ano Ref" do Quadro de Envios</li><li><b>Fonte</b> — Quadro de Envios (aba Lançamentos), apenas linhas com "Cons Analise = Sim"; empresa conforme o botão IAB/Verbum do topo</li><li><b>Entregas</b> — entregas físicas únicas (várias NFs no mesmo dia, cliente, transportadora e cidade contam como 1 entrega)</li><li><b>NS % (Nível de Serviço)</b> — entregas no prazo ÷ total de entregas × 100. Atraso = Data Efetiva depois da Previsão de Entrega ao Cliente; entregas ainda em aberto contam como no prazo. Meta: ótimo ≥ 98% · atenção ≥ 97%</li><li><b>Lead Time</b> — média de dias entre a Data de Coleta e a Data Efetiva da Entrega (só entregas concluídas). Meta: ótimo ≤ 7 dias · atenção ≤ 12</li><li><b>Entregas com atraso</b> — entregas concluídas depois da Previsão de Entrega ao Cliente</li><li><b>Vendas</b> — soma do Valor da NF das notas de natureza VENDA. Exceção: Pilar/AL recebe por Simples Remessa (outra empresa paga por recibo) e essas notas contam como VENDA</li><li><b>Bonificações / Devoluções</b> — soma do Valor da NF das notas dessas naturezas</li><li><b>Faturamento Líquido</b> — Vendas − Bonificações − Devoluções (valor das NFs de cada natureza)</li><li><b>Resultado</b> — Vendas − Bonificações − Devoluções − Impostos (ICMS + DIFAL + FCP) − Frete − Embalagem; % Resultado = Resultado ÷ Vendas</li><li><b>Frete total</b> — soma da coluna Frete</li><li><b>Faturamento total</b> — soma do Valor da NF de todas as notas transportadas, de qualquer natureza</li><li><b>FSF %</b> — Frete total ÷ Faturamento total × 100. Faturamento total = Valor de TODAS as NFs faturadas e transportadas (venda, bonificação, devolução, remessas) da mesma operação. Meta IAB: ótimo ≤ 2% · atenção ≤ 3% (Verbum: ≤ 3% · ≤ 4%)</li><li><b>Custo por entrega</b> — Frete ÷ número de entregas</li><li><b>Impostos</b> — ICMS + DIFAL + FCP das NFs</li><li><b>Embalagem</b> — soma da coluna Custo Embalagem</li><li><b>▲▼</b> — variação % contra o Ano Ref anterior; verde = melhorou, vermelho = piorou. Totais do ano em andamento não são comparados</li><li><b>Evolução acumulada</b> — soma mês a mês do indicador escolhido, de outubro a setembro</li></ul></div>
   <div class="t2-drill">
     <button onclick="navPage('reg')">📍 Ver por Região →</button>
     <button onclick="navPage('cli')">💰 Ver Custo por Cliente →</button>
@@ -2016,7 +2016,7 @@ function _t2AnoBar(elId, atual, fnName) {
       `<button class="ano-btn${a === atual ? ' on' : ''}" onclick="${fnName}('${a}')">${a === 'TODOS' ? 'Todos' : a}</button>`).join('');
 }
 
-// Status pelas metas: NS%, Lead Time e FSF% (frete ÷ vendas)
+// Status pelas metas: NS%, Lead Time e FSF% (frete ÷ faturamento total)
 function _t2Status(k) {
   if (!k || !k.ent) return {cls:'neu', txt:'—', mot:[]};
   const mot = []; let pior = 0;
@@ -2062,8 +2062,9 @@ function renderVG() {
     ['Resultado (após impostos, frete e embalagem)', 'res', _t2R, false, false],
     ['% Resultado sobre vendas', 'pct_res', _t2Pct, false, true],
     ['🚚 Custo do transporte'],
+    ['Faturamento total (todas as NFs transportadas)', 'fat_t', _t2R, null, false],
     ['Frete total', 'frete', _t2R, null, false],
-    ['FSF % (frete ÷ vendas)', 'fsf', _t2Pct, true, true],
+    ['FSF % (frete ÷ faturamento total)', 'fsf', _t2Pct, true, true],
     ['Custo por entrega', 'c_ent', _t2R2, true, true],
     ['Impostos', 'imp', _t2R, null, false],
     ['Embalagem', 'emb', _t2R, null, false],

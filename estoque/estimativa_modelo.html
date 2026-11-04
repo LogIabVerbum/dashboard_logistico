@@ -840,7 +840,7 @@ const VCOL = [['v','Venda (faturado)'],['e','Entrega futura (enviado)'],['b','Bo
 function linhasVendas(){
   const R=S.vd, ini=R.periodo==='corte'?tsBR(CORTE):0;
   const ag=VD.clientes.map((c,i)=>({i,...c,v:0,e:0,b:0,o:0,nn:new Set(),ult:0}));
-  for(const [ci,ts,col,val,nf] of VD.notas){ if(ts<ini) continue; const a=ag[ci]; a[col]+=val; a.nn.add(nf); if(ts>a.ult) a.ult=ts; }
+  for(const [ci,ts,col,val,nf,cn] of VD.notas){ if(ts<ini && !cn) continue; const a=ag[ci]; a[col]+=val; a.nn.add(nf); if(ts>a.ult) a.ult=ts; }
   // clientes das propostas que ainda não tiveram nota no período
   const ligados=new Set(ag.filter(a=>a.nn.size).map(a=>a.pi));
   const extra=D.props.map((p,pi)=>({p,pi})).filter(({p,pi})=>p.u&&!ligados.has(pi)&&p.tipo!=='Venda - Aditivo')

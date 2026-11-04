@@ -74,6 +74,9 @@ STATUS_FECHADA = {7}
 # Use o código da proposta no CRM. Quando o Comercial abrir a nova proposta, tire daqui.
 REENVIAR = {"P5OC43": "Espírito Santo do Pinhal/SP - reenvio (provavelmente bonificado)",
             "PN00HE": "São Roque/SP - reenvio (provavelmente bonificado)"}
+# Notas emitidas ANTES do corte que pertencem ao ciclo 2026/2027 (combinado em 04/11/2026): contam como "já saiu"
+# da proposta e aparecem no Resumo de vendas "desde o corte". Use o número da NF.
+NOTAS_DO_CICLO = {"19117": "Espírito Santo do Pinhal/SP - reenvio bonificado de 26/10/2026, bate com a proposta P5OC43"}
 
 # ---- Estoque ----
 # O saldo usa O MESMO código da Análise de Estoque (gerar_analise.py), para os dois dashboards baterem.
@@ -292,6 +295,7 @@ def carregar_estoque():
     descartes_erp = iab[sai & (iab["natureza"].str.upper().str.contains("DESCARTE")
                                | iab["parceiro"].fillna("").astype(str).str.upper().str.contains(RE_DESCARTE_PARCEIRO))][["codigo", "data", "qtd"]]
     mov = iab[["codigo", "data", "tipo", "natureza", "parceiro", "cidade", "uf", "qtd", "MOV"]].copy()
+    mov["nf"] = iab["nf"].map(_nf_txt)
     ult_compra = iab[ent & iab["natureza"].str.upper().str.startswith("COMPRA")].groupby("codigo")["data"].max().to_dict()
     return {"saldo": saldo, "consig": consig, "consig_info": consig_info, "desc": desc, "ult": ult,
             "descartes_erp": descartes_erp, "mov": mov, "ult_compra": ult_compra,
@@ -624,6 +628,19 @@ class Casador:
         return None
 
 
+def _nf_txt(v):
+    """Número da NF como texto ("19117.0" -> "19117")."""
+    if v is None or (isinstance(v, float) and pd.isna(v)):
+        return ""
+    t = str(v).strip()
+    return t[:-2] if t.endswith(".0") else t
+
+
+def _do_ciclo(mov):
+    """Linhas de notas anteriores ao corte que contam no ciclo novo (NOTAS_DO_CICLO)."""
+    return mov["nf"].isin(NOTAS_DO_CICLO) if "nf" in mov else pd.Series(False, index=mov.index)
+
+
 def movimento_pos_corte(props, itens, item_id, est):
     """Depois do corte: recebimentos por gráfica (notas de compra) e saídas para os clientes das propostas."""
     corte = pd.Timestamp(CORTE)
@@ -631,7 +648,9 @@ def movimento_pos_corte(props, itens, item_id, est):
     mov = est.get("mov")
     if mov is None:
         return vazio
-    m = mov[mov["data"] >= corte]
+    m = mov[(mov["data"] >= corte) | _do_ciclo(mov)]
+    if _do_ciclo(mov).any():
+        print(f"  Notas antes do corte que contam no ciclo novo: {', '.join(sorted(NOTAS_DO_CICLO))}")
     nat = m["natureza"].astype(str).str.upper()
     # só as compras dos itens da estimativa (e de versões com a mesma descrição): livros, não brindes/embalagens
     chaves = {chave_versao(it["c"], est) for it in itens}
@@ -762,7 +781,7 @@ def projetar_sem_itens(props, linhas, item_id, est):
         return
     corte = pd.Timestamp(CORTE)
     ini = corte - pd.DateOffset(years=1)
-    m = mov[(mov["data"] >= ini) & (mov["data"] < corte)]
+    m = mov[(mov["data"] >= ini) & (mov["data"] < corte) & ~_do_ciclo(mov)]
     nat = m["natureza"].astype(str).str.upper()
     m = m[(m["tipo"].str.startswith("SA") & nat.isin(NAT_SAIDA_CLIENTE))
           | (m["tipo"].eq("ENTRADA") & nat.str.contains(RE_DEVOLUCAO_CLIENTE))]
@@ -943,8 +962,9 @@ def resumo_vendas(props):
         col, sinal = OPS_RESUMO[r.op]
         if col == "o" and "SIMPLES REMESSA" in r.op and (chave_cidade(cid), uf) in {(chave_cidade(c), u) for c, u in SIMPLES_REMESSA_E_VENDA}:
             col = "v"
-        notas.append([idx[k], 0 if pd.isna(r.dt) else int(r.dt.timestamp()), col, round(sinal * float(r.valor), 2),
-                      str(r.NRO_NFE)])
+        nfx = _nf_txt(r.NRO_NFE)
+        notas.append([idx[k], 0 if pd.isna(r.dt) else int(r.dt.timestamp()) + 43200, col, round(sinal * float(r.valor), 2),
+                      nfx, 1 if nfx in NOTAS_DO_CICLO else 0])
     per = [f"{f['dt'].min():%d/%m/%Y}", f"{f['dt'].max():%d/%m/%Y}"] if len(f) else ["", ""]
     print(f"  Resumo de vendas: {len(notas)} notas de {len(clientes)} clientes ({per[0]} a {per[1]}), "
           f"{sum(1 for c in clientes if c['pi'] >= 0)} ligados a uma proposta")
