@@ -398,6 +398,29 @@ select{border:1px solid var(--line)!important;border-radius:980px!important;padd
 .t2-scroll tfoot td{position:sticky;bottom:0;background:#f4f6fb}
 #vg-met,#cli-tc,#cli-ord{height:34px}
 #cli-busca{border:1px solid var(--line);border-radius:980px;padding:7px 14px;font-size:12.5px;min-width:220px;outline:none}
+#page-fi .cg2>.tc{min-width:0;margin-bottom:0}
+#page-fi .cg2{margin-bottom:14px}
+.fi-fil{display:flex;flex-wrap:wrap;gap:10px 22px;align-items:center;margin:-4px 0 12px}
+.fi-fil .ano-lbl{margin-right:6px}
+.fi-seg{display:inline-flex;border:1px solid var(--line);border-radius:99px;overflow:hidden;background:#fff}
+.fi-seg button{border:0;background:#fff;padding:5px 12px;font:inherit;font-size:11.5px;cursor:pointer;color:var(--muted)}
+.fi-seg button.on{background:var(--navy);color:#fff;font-weight:600}
+.fi-sel{font:inherit;font-size:11.5px;padding:5px 10px;border:1px solid var(--line);border-radius:99px;background:#fff}
+.fi-ins{background:#fff8e6;border:1px solid #f3dca4;border-radius:14px;padding:12px 18px;margin-bottom:14px;font-size:12.5px}
+.fi-ins:empty{display:none}
+.fi-ins-t{font-weight:600;color:#8a5a00;margin-bottom:4px}
+.fi-ins li{margin:3px 0 3px 18px;line-height:1.5}
+.fi-t{width:100%;border-collapse:collapse;font-size:12px}
+.fi-t th{font-size:10.5px;color:var(--muted);font-weight:600;text-align:right;padding:7px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
+.fi-t th:first-child,.fi-t td:first-child{text-align:left}
+.fi-t td{padding:7px 8px;border-bottom:1px solid var(--line-2);text-align:right;white-space:nowrap}
+.fi-t td:first-child{font-weight:600}
+.fi-t tr:hover td{background:rgba(var(--ac-rgb),.04)}
+.fi-b{font-weight:700;color:var(--navy-900)}
+.fi-bar{display:inline-block;height:8px;border-radius:4px;background:var(--navy);opacity:.6;vertical-align:middle;margin-left:6px}
+.fi-n{color:var(--gl);font-weight:400;font-size:10px}
+.fi-bus{font:inherit;font-size:11.5px;padding:5px 12px;border:1px solid var(--line);border-radius:99px;width:240px}
+.t2-reg-meta{font-size:10.5px;color:var(--gm);margin-top:8px}
 .t2-calc{margin:18px 0 6px;padding:14px 18px;border:1px dashed var(--line);border-radius:12px;background:#fafbfd;font-size:11.5px;color:var(--gm);line-height:1.6}
 .t2-calc-t{font-weight:600;color:var(--navy-900);margin-bottom:4px;font-size:12px}
 .t2-calc ul{margin:0;padding-left:18px}
@@ -449,6 +472,7 @@ body.tema-verbum .t2-mx tr.t2-sec td,body.tema-verbum .t2-scroll tfoot td{backgr
     <a class="ni"     id="ni-reg"     onclick="navPage('reg');fMenu()">&nbsp;&nbsp;↳ Por Região</a>
     <a class="ni"     id="ni-cli"     onclick="navPage('cli');fMenu()">💰 Custo por Cliente</a>
     <a class="ni"     id="ni-tr"      onclick="navPage('tr');fMenu()">🚛 Transportadoras</a>
+    <a class="ni"     id="ni-fi"      onclick="navPage('fi');fMenu()">🏷️ Frete por Item</a>
     <a class="ni"     id="ni-acomp"   onclick="navPage('acomp');fMenu()">📋 Acompanhamento</a>
     <div class="ns">Análise de Estoque</div>
     <a class="ni ni-est" id="ni-est-vg" onclick="navPage('est-vg');fMenu()">📦 Visão Geral do Estoque</a>
@@ -608,7 +632,7 @@ body.tema-verbum .t2-mx tr.t2-sec td,body.tema-verbum .t2-scroll tfoot td{backgr
       <div id="vg-chart-taxas"></div>
     </div>
   </div>
-  <div class="t2-calc"><div class="t2-calc-t">ℹ️ Como os indicadores são calculados</div><ul><li><b>Ano Ref</b> — ciclo de outubro a setembro (ex.: Ano Ref 2026 = out/2025 a set/2026), conforme a coluna "Ano Ref" do Quadro de Envios</li><li><b>Fonte</b> — Quadro de Envios (aba Lançamentos), apenas linhas com "Cons Analise = Sim"; empresa conforme o botão IAB/Verbum do topo</li><li><b>Entregas</b> — entregas físicas únicas (várias NFs no mesmo dia, cliente, transportadora e cidade contam como 1 entrega)</li><li><b>NS % (Nível de Serviço)</b> — entregas no prazo ÷ total de entregas × 100. Atraso = Data Efetiva depois da Previsão de Entrega ao Cliente; entregas ainda em aberto contam como no prazo. Meta: ótimo ≥ 98% · atenção ≥ 97%</li><li><b>Lead Time</b> — média de dias entre a Data de Coleta e a Data Efetiva da Entrega (só entregas concluídas). Meta: ótimo ≤ 7 dias · atenção ≤ 12</li><li><b>Entregas com atraso</b> — entregas concluídas depois da Previsão de Entrega ao Cliente</li><li><b>Vendas</b> — soma do Valor da NF das notas de natureza VENDA. Exceção: Pilar/AL recebe por Simples Remessa (outra empresa paga por recibo) e essas notas contam como VENDA</li><li><b>Bonificações / Devoluções</b> — soma do Valor da NF das notas dessas naturezas</li><li><b>Faturamento Líquido</b> — Vendas − Bonificações − Devoluções (valor das NFs de cada natureza)</li><li><b>Resultado</b> — Vendas − Bonificações − Devoluções − Impostos (ICMS + DIFAL + FCP) − Frete − Embalagem; % Resultado = Resultado ÷ Vendas</li><li><b>Frete total</b> — soma da coluna Frete</li><li><b>Faturamento total</b> — soma do Valor da NF de todas as notas transportadas, de qualquer natureza</li><li><b>FSF %</b> — Frete total ÷ Faturamento total × 100. Faturamento total = Valor de TODAS as NFs faturadas e transportadas (venda, bonificação, devolução, remessas) da mesma operação. Meta IAB: ótimo ≤ 2% · atenção ≤ 3% (Verbum: ≤ 3% · ≤ 4%)</li><li><b>Custo por entrega</b> — Frete ÷ número de entregas</li><li><b>Impostos</b> — ICMS + DIFAL + FCP das NFs</li><li><b>Embalagem</b> — soma da coluna Custo Embalagem</li><li><b>▲▼</b> — variação % contra o Ano Ref anterior; verde = melhorou, vermelho = piorou. Totais do ano em andamento não são comparados</li><li><b>Evolução acumulada</b> — soma mês a mês do indicador escolhido, de outubro a setembro</li></ul></div>
+  <div class="t2-calc"><div class="t2-calc-t">ℹ️ Como os indicadores são calculados</div><ul><li><b>Ano Ref</b> — ciclo de outubro a setembro (ex.: Ano Ref 2026 = out/2025 a set/2026), conforme a coluna "Ano Ref" do Quadro de Envios</li><li><b>Fonte</b> — Quadro de Envios (aba Lançamentos), apenas linhas com "Cons Analise = Sim"; empresa conforme o botão IAB/Verbum do topo</li><li><b>Entregas</b> — entregas físicas únicas (várias NFs no mesmo dia, cliente, transportadora e cidade contam como 1 entrega)</li><li><b>NS % (Nível de Serviço)</b> — entregas no prazo ÷ total de entregas × 100. Atraso = Data Efetiva depois da Previsão de Entrega ao Cliente; entregas ainda em aberto contam como no prazo. Meta: ótimo ≥ 98% · atenção ≥ 97%</li><li><b>Lead Time</b> — média de dias entre a Data de Coleta e a Data Efetiva da Entrega (só entregas concluídas). Meta geral: ótimo ≤ 7 dias · atenção ≤ 12 (na tela Por Região a meta é de cada região)</li><li><b>Entregas com atraso</b> — entregas concluídas depois da Previsão de Entrega ao Cliente</li><li><b>Vendas</b> — soma do Valor da NF das notas de natureza VENDA. Exceções que contam como VENDA mesmo faturadas como Simples Remessa / Outras Saídas: Pilar/AL (outra empresa paga por recibo) e os colégios da Verbum Centro Educacional Caminho, Elena Guerra, Mar Aberto, Monte Carmelo e Safari Kids</li><li><b>Bonificações / Devoluções</b> — soma do Valor da NF das notas dessas naturezas</li><li><b>Faturamento Líquido</b> — Vendas − Bonificações − Devoluções (valor das NFs de cada natureza)</li><li><b>Resultado</b> — Vendas − Bonificações − Devoluções − Impostos (ICMS + DIFAL + FCP) − Frete − Embalagem; % Resultado = Resultado ÷ Vendas</li><li><b>Frete total</b> — soma da coluna Frete</li><li><b>Faturamento total</b> — soma do Valor da NF de todas as notas transportadas, de qualquer natureza</li><li><b>FSF %</b> — Frete total ÷ Faturamento total × 100. Faturamento total = Valor de TODAS as NFs faturadas e transportadas (venda, bonificação, devolução, remessas) da mesma operação. Meta IAB: ótimo ≤ 2% · atenção ≤ 3% (Verbum: ≤ 3% · ≤ 4%)</li><li><b>Custo por entrega</b> — Frete ÷ número de entregas</li><li><b>Impostos</b> — ICMS + DIFAL + FCP das NFs</li><li><b>Embalagem</b> — soma da coluna Custo Embalagem</li><li><b>▲▼</b> — variação % contra o Ano Ref anterior; verde = melhorou, vermelho = piorou. Totais do ano em andamento não são comparados</li><li><b>Evolução acumulada</b> — soma mês a mês do indicador escolhido, de outubro a setembro</li></ul></div>
   <div class="t2-drill">
     <button onclick="navPage('reg')">📍 Ver por Região →</button>
     <button onclick="navPage('cli')">💰 Ver Custo por Cliente →</button>
@@ -634,7 +658,7 @@ body.tema-verbum .t2-mx tr.t2-sec td,body.tema-verbum .t2-scroll tfoot td{backgr
       <th style="text-align:left">Município</th><th>Entregas</th><th>NS %</th><th>Lead Time</th><th>Frete</th><th>Custo/Ent.</th><th title="Frete ÷ valor de todas as NFs transportadas">Frete/Valor %</th><th>Fat. Líquido</th><th>Resultado</th><th style="text-align:center">Status</th>
     </tr></thead><tbody id="reg-mun-tb"></tbody></table></div>
   </div>
-  <div class="t2-calc"><div class="t2-calc-t">ℹ️ Como os indicadores são calculados</div><ul><li><b>Ano Ref</b> — ciclo de outubro a setembro (ex.: Ano Ref 2026 = out/2025 a set/2026), conforme a coluna "Ano Ref" do Quadro de Envios</li><li><b>Fonte</b> — Quadro de Envios (aba Lançamentos), apenas linhas com "Cons Analise = Sim"; empresa conforme o botão IAB/Verbum do topo</li><li><b>Região / UF / Município</b> — conforme as colunas Região, UF e Município do Quadro de Envios</li><li><b>Entregas</b> — entregas físicas únicas (várias NFs no mesmo dia, cliente, transportadora e cidade contam como 1 entrega)</li><li><b>NS % (Nível de Serviço)</b> — entregas no prazo ÷ total de entregas × 100. Atraso = Data Efetiva depois da Previsão de Entrega ao Cliente; entregas ainda em aberto contam como no prazo. Meta: ótimo ≥ 98% · atenção ≥ 97%</li><li><b>Lead Time</b> — média de dias entre a Data de Coleta e a Data Efetiva da Entrega (só entregas concluídas). Meta: ótimo ≤ 7 dias · atenção ≤ 12</li><li><b>Frete</b> — soma da coluna Frete das NFs do local</li><li><b>Custo por entrega</b> — Frete ÷ número de entregas</li><li><b>Frete/Valor %</b> — Frete ÷ valor de TODAS as NFs transportadas (venda, bonificação, devolução, remessas) × 100 — mesmas metas do FSF</li><li><b>Faturamento Líquido</b> — Vendas − Bonificações − Devoluções (valor das NFs de cada natureza)</li><li><b>Resultado</b> — Vendas − Bonificações − Devoluções − Impostos (ICMS + DIFAL + FCP) − Frete − Embalagem; % Resultado = Resultado ÷ Vendas</li><li><b>Status</b> — ✅ Ótimo = NS, Lead Time e Frete/Valor dentro da meta · ⚠️ Atenção = algum na faixa de atenção · 🔴 Melhorar = algum fora da meta; o motivo aparece ao lado</li></ul></div>
+  <div class="t2-calc"><div class="t2-calc-t">ℹ️ Como os indicadores são calculados</div><ul><li><b>Ano Ref</b> — ciclo de outubro a setembro (ex.: Ano Ref 2026 = out/2025 a set/2026), conforme a coluna "Ano Ref" do Quadro de Envios</li><li><b>Fonte</b> — Quadro de Envios (aba Lançamentos), apenas linhas com "Cons Analise = Sim"; empresa conforme o botão IAB/Verbum do topo</li><li><b>Região / UF / Município</b> — conforme as colunas Região, UF e Município do Quadro de Envios</li><li><b>Entregas</b> — entregas físicas únicas (várias NFs no mesmo dia, cliente, transportadora e cidade contam como 1 entrega)</li><li><b>NS % (Nível de Serviço)</b> — entregas no prazo ÷ total de entregas × 100. Atraso = Data Efetiva depois da Previsão de Entrega ao Cliente; entregas ainda em aberto contam como no prazo. Meta: ótimo ≥ 98% · atenção ≥ 97%</li><li><b>Lead Time</b> — média de dias entre a Data de Coleta e a Data Efetiva da Entrega (só entregas concluídas)</li><li><b>Meta de Lead Time por região</b> (pela distância): Sudeste ~640 km ótimo ≤ 5 d · atenção ≤ 8 · Centro-Oeste ~393 km ≤ 7 · ≤ 10 · Sul ~1.192 km ≤ 7 · ≤ 10 · Nordeste ~1.855 km ≤ 11 · ≤ 16 · Norte ~2.933 km ≤ 12 · ≤ 18. Ótimo = média histórica da região (2025 até 05/11/2026); Atenção = até onde chegam 80% das entregas da região. Estados e municípios usam a meta da sua região</li><li><b>Distância média</b> — km de Uberlândia até o município (aba Base Distâncias do Quadro), média por entrega</li><li><b>Frete</b> — soma da coluna Frete das NFs do local</li><li><b>Custo por entrega</b> — Frete ÷ número de entregas</li><li><b>Frete/Valor %</b> — Frete ÷ valor de TODAS as NFs transportadas (venda, bonificação, devolução, remessas) × 100 — mesmas metas do FSF</li><li><b>Faturamento Líquido</b> — Vendas − Bonificações − Devoluções (valor das NFs de cada natureza)</li><li><b>Resultado</b> — Vendas − Bonificações − Devoluções − Impostos (ICMS + DIFAL + FCP) − Frete − Embalagem; % Resultado = Resultado ÷ Vendas</li><li><b>Status</b> — ✅ Ótimo = NS, Lead Time e Frete/Valor dentro da meta · ⚠️ Atenção = algum na faixa de atenção · 🔴 Melhorar = algum fora da meta; o motivo aparece ao lado</li></ul></div>
 </div>
 
 <!-- ═══════════════ TRANSPORTE ▸ CUSTO POR CLIENTE ═══════════════ -->
@@ -664,7 +688,7 @@ body.tema-verbum .t2-mx tr.t2-sec td,body.tema-verbum .t2-scroll tfoot td{backgr
     </tr></thead><tbody id="cli-tb"></tbody><tfoot id="cli-tf"></tfoot></table></div>
     <div class="cs" id="cli-rodape" style="margin-top:8px"></div>
   </div>
-  <div class="t2-calc"><div class="t2-calc-t">ℹ️ Como os indicadores são calculados</div><ul><li><b>Ano Ref</b> — ciclo de outubro a setembro (ex.: Ano Ref 2026 = out/2025 a set/2026), conforme a coluna "Ano Ref" do Quadro de Envios</li><li><b>Fonte</b> — Quadro de Envios (aba Lançamentos), apenas linhas com "Cons Analise = Sim"; empresa conforme o botão IAB/Verbum do topo</li><li><b>Cliente</b> — agrupado pelo nome do cliente no Quadro de Envios</li><li><b>Vendas</b> — soma do Valor da NF das notas de natureza VENDA. Exceção: Pilar/AL recebe por Simples Remessa (outra empresa paga por recibo) e essas notas contam como VENDA</li><li><b>Bonificações</b> — valor das NFs de natureza BONIFICAÇÃO enviadas ao cliente</li><li><b>Devoluções</b> — valor das NFs de natureza DEVOLUÇÃO do cliente</li><li><b>Impostos</b> — ICMS + DIFAL + FCP</li><li><b>Frete</b> — soma da coluna Frete</li><li><b>Embalagem</b> — soma da coluna Custo Embalagem</li><li><b>Resultado</b> — Vendas − Bonificações − Devoluções − Impostos (ICMS + DIFAL + FCP) − Frete − Embalagem; % Resultado = Resultado ÷ Vendas</li><li><b>Entregas</b> — entregas físicas únicas do cliente no período</li><li><b>Clientes com resultado negativo</b> — clientes cujo Resultado ficou abaixo de zero (custos + bonificações + devoluções maiores que as vendas)</li></ul></div>
+  <div class="t2-calc"><div class="t2-calc-t">ℹ️ Como os indicadores são calculados</div><ul><li><b>Ano Ref</b> — ciclo de outubro a setembro (ex.: Ano Ref 2026 = out/2025 a set/2026), conforme a coluna "Ano Ref" do Quadro de Envios</li><li><b>Fonte</b> — Quadro de Envios (aba Lançamentos), apenas linhas com "Cons Analise = Sim"; empresa conforme o botão IAB/Verbum do topo</li><li><b>Cliente</b> — agrupado pelo nome do cliente no Quadro de Envios</li><li><b>Vendas</b> — soma do Valor da NF das notas de natureza VENDA. Exceções que contam como VENDA mesmo faturadas como Simples Remessa / Outras Saídas: Pilar/AL (outra empresa paga por recibo) e os colégios da Verbum Centro Educacional Caminho, Elena Guerra, Mar Aberto, Monte Carmelo e Safari Kids</li><li><b>Bonificações</b> — valor das NFs de natureza BONIFICAÇÃO enviadas ao cliente</li><li><b>Devoluções</b> — valor das NFs de natureza DEVOLUÇÃO do cliente</li><li><b>Impostos</b> — ICMS + DIFAL + FCP</li><li><b>Frete</b> — soma da coluna Frete</li><li><b>Embalagem</b> — soma da coluna Custo Embalagem</li><li><b>Resultado</b> — Vendas − Bonificações − Devoluções − Impostos (ICMS + DIFAL + FCP) − Frete − Embalagem; % Resultado = Resultado ÷ Vendas</li><li><b>Entregas</b> — entregas físicas únicas do cliente no período</li><li><b>Clientes com resultado negativo</b> — clientes cujo Resultado ficou abaixo de zero (custos + bonificações + devoluções maiores que as vendas)</li></ul></div>
 
 </div>
 
@@ -698,7 +722,39 @@ body.tema-verbum .t2-mx tr.t2-sec td,body.tema-verbum .t2-scroll tfoot td{backgr
       <th>Fat. transportado</th><th>Frete</th><th>FSF %</th><th>Custo/Ent.</th><th>Custo/Vol.</th><th>Custo/kg</th><th>Custo/km</th>
     </tr></thead><tbody id="tr2-tb"></tbody><tfoot id="tr2-tf"></tfoot></table></div>
   </div>
-  <div class="t2-calc"><div class="t2-calc-t">ℹ️ Como os indicadores são calculados</div><ul><li><b>Ano Ref</b> — ciclo de outubro a setembro (ex.: Ano Ref 2026 = out/2025 a set/2026), conforme a coluna "Ano Ref" do Quadro de Envios</li><li><b>Fonte</b> — Quadro de Envios (aba Lançamentos), apenas linhas com "Cons Analise = Sim"; empresa conforme o botão IAB/Verbum do topo</li><li><b>Base</b> — todas as NFs levadas pela transportadora, de qualquer natureza — não desconta bonificação nem devolução (todas têm custo de transporte)</li><li><b>Entregas</b> — entregas físicas únicas (várias NFs no mesmo dia, cliente, transportadora e cidade contam como 1 entrega)</li><li><b>NFs</b> — número de notas fiscais distintas</li><li><b>NS % (Nível de Serviço)</b> — entregas no prazo ÷ total de entregas × 100. Atraso = Data Efetiva depois da Previsão de Entrega ao Cliente; entregas ainda em aberto contam como no prazo. Meta: ótimo ≥ 98% · atenção ≥ 97%</li><li><b>Lead Time</b> — média de dias entre a Data de Coleta e a Data Efetiva da Entrega (só entregas concluídas). Meta: ótimo ≤ 7 dias · atenção ≤ 12</li><li><b>Atraso médio</b> — média de dias entre a Previsão de Entrega ao Cliente e a Data Efetiva, só nas entregas que atrasaram</li><li><b>Faturamento transportado</b> — soma do Valor da NF de todas as notas transportadas</li><li><b>Frete</b> — soma da coluna Frete</li><li><b>FSF % (fat. transportado)</b> — Frete ÷ Faturamento transportado × 100 — mesmas metas do FSF</li><li><b>Custo por entrega</b> — Frete ÷ número de entregas</li><li><b>Custo por NF</b> — Frete ÷ número de NFs</li><li><b>Custo por volume</b> — Frete ÷ soma de Volumes</li><li><b>Custo por kg</b> — Frete ÷ soma do Peso (kg)</li><li><b>Custo por km</b> — Frete ÷ km rodados; km = distância de Uberlândia até o município (aba Base Distâncias do Quadro), contada 1× por entrega</li><li><b>Faixa de distância</b> — entregas agrupadas pelo km até o destino</li><li><b>Gráficos</b> — mostram só transportadoras com 3 ou mais entregas no período; a tabela mostra todas</li></ul></div>
+  <div class="t2-calc"><div class="t2-calc-t">ℹ️ Como os indicadores são calculados</div><ul><li><b>Ano Ref</b> — ciclo de outubro a setembro (ex.: Ano Ref 2026 = out/2025 a set/2026), conforme a coluna "Ano Ref" do Quadro de Envios</li><li><b>Fonte</b> — Quadro de Envios (aba Lançamentos), apenas linhas com "Cons Analise = Sim"; empresa conforme o botão IAB/Verbum do topo</li><li><b>Base</b> — todas as NFs levadas pela transportadora, de qualquer natureza — não desconta bonificação nem devolução (todas têm custo de transporte)</li><li><b>Entregas</b> — entregas físicas únicas (várias NFs no mesmo dia, cliente, transportadora e cidade contam como 1 entrega)</li><li><b>NFs</b> — número de notas fiscais distintas</li><li><b>NS % (Nível de Serviço)</b> — entregas no prazo ÷ total de entregas × 100. Atraso = Data Efetiva depois da Previsão de Entrega ao Cliente; entregas ainda em aberto contam como no prazo. Meta: ótimo ≥ 98% · atenção ≥ 97%</li><li><b>Lead Time</b> — média de dias entre a Data de Coleta e a Data Efetiva da Entrega (só entregas concluídas). Meta geral: ótimo ≤ 7 dias · atenção ≤ 12 (na tela Por Região a meta é de cada região)</li><li><b>Atraso médio</b> — média de dias entre a Previsão de Entrega ao Cliente e a Data Efetiva, só nas entregas que atrasaram</li><li><b>Faturamento transportado</b> — soma do Valor da NF de todas as notas transportadas</li><li><b>Frete</b> — soma da coluna Frete</li><li><b>FSF % (fat. transportado)</b> — Frete ÷ Faturamento transportado × 100 — mesmas metas do FSF</li><li><b>Custo por entrega</b> — Frete ÷ número de entregas</li><li><b>Custo por NF</b> — Frete ÷ número de NFs</li><li><b>Custo por volume</b> — Frete ÷ soma de Volumes</li><li><b>Custo por kg</b> — Frete ÷ soma do Peso (kg)</li><li><b>Custo por km</b> — Frete ÷ km rodados; km = distância de Uberlândia até o município (aba Base Distâncias do Quadro), contada 1× por entrega</li><li><b>Faixa de distância</b> — entregas agrupadas pelo km até o destino</li><li><b>Gráficos</b> — mostram só transportadoras com 3 ou mais entregas no período; a tabela mostra todas</li></ul></div>
+</div>
+
+<!-- ═══════════════ FRETE POR ITEM ═══════════════ -->
+<div id="page-fi" class="page">
+  <div class="ano-bar" id="fi-anos"></div>
+  <div class="fi-fil">
+    <div><span class="ano-lbl">Natureza</span><span class="fi-seg" id="fi-nat"><button data-v="" class="on">Todas</button><button data-v="VENDA">Venda</button><button data-v="BONIFICAÇÃO">Bonificação</button></span></div>
+    <div><span class="ano-lbl">Rateio entre itens</span><span class="fi-seg" id="fi-rat"><button data-v="val" class="on">Por valor (custo)</button><button data-v="qtd">Por quantidade</button></span></div>
+    <div><span class="ano-lbl">Região</span><select id="fi-reg" class="fi-sel"><option value="">Todas</option></select></div>
+    <div><span class="ano-lbl">Tipo de cliente</span><select id="fi-tip" class="fi-sel"><option value="">Todos</option></select></div>
+  </div>
+  <div class="t2-ctx" id="fi-ctx"></div>
+  <div id="fi-kpis" class="fk-row"></div>
+  <div class="fi-ins" id="fi-ins"></div>
+  <div class="fi-stack">
+    <div class="tc"><div class="ct">Por tipo de cliente</div><div class="cs">Barra = frete por unidade</div><div class="tw"><table class="fi-t" id="fi-t-tip"></table></div></div>
+    <div class="tc"><div class="ct">Por região</div><div class="cs">km = distância média de Uberlândia até o município (por NF)</div><div class="tw"><table class="fi-t" id="fi-t-reg"></table></div></div>
+    <div class="tc"><div class="ct">Por faixa de distância</div><div class="cs">R$/kg a cada 1.000 km = frete ÷ (kg × km ÷ 1.000) — compara o preço sem o efeito da distância</div><div class="tw"><table class="fi-t" id="fi-t-km"></table></div></div>
+    <div class="tc"><div class="ct">Por tamanho do pedido</div><div class="cs">Unidades na NF — mostra o ganho de escala</div><div class="tw"><table class="fi-t" id="fi-t-tam"></table></div></div>
+  </div>
+  <div class="tc"><div class="ct">Cruzamento: tipo de cliente × região</div><div class="cs">Frete por unidade · verde = mais barato, vermelho = mais caro · número pequeno = NFs (cor só com 3 NFs ou mais)</div><div class="tw"><table class="fi-t fi-hm" id="fi-t-hm"></table></div></div>
+  <div class="tc"><div class="ct">Frete por item</div><div class="cs">Frete de cada NF dividido entre os itens dela · clique no título da coluna para ordenar &nbsp; <input class="fi-bus" id="fi-bus" placeholder="Buscar item ou código"></div><div class="tw"><table class="fi-t" id="fi-t-it"></table></div></div>
+  <div class="t2-calc"><div class="t2-calc-t">ℹ️ Como os indicadores são calculados</div><ul>
+    <li><b>Base</b> — NFs do Quadro de Envios (empresa do botão IAB/Verbum do topo) com coleta a partir do início da Movimentação de Estoque, cujos itens foram encontrados na Movimentação pelo número da NF + empresa. A cobertura aparece no topo da tela</li>
+    <li><b>Frete</b> — coluna Frete do Quadro · <b>Peso</b> — coluna Peso (kg) · <b>Unidades</b> — soma das quantidades dos itens que saíram na NF (Movimentação de Estoque)</li>
+    <li><b>Frete/unid.</b> — Frete ÷ unidades · <b>Frete/kg</b> — Frete ÷ peso · <b>Frete/NF</b> — Frete ÷ número de NFs · <b>kg/unid.</b> — peso ÷ unidades</li>
+    <li><b>Frete ÷ valor NF</b> — Frete ÷ Valor da NF × 100 · <b>Frete ÷ custo do material</b> — Frete ÷ (quantidade × custo unitário dos itens) × 100</li>
+    <li><b>R$/kg a cada 1.000 km</b> — Frete ÷ (peso × km ÷ 1.000), só NFs com km e peso: mostra o preço do transporte sem o efeito da distância (trechos curtos tendem a sair mais caros por km)</li>
+    <li><b>Rateio entre itens</b> — Por valor: cada item recebe Frete × (qtd × custo do item) ÷ custo total da NF. Por quantidade: Frete × qtd ÷ unidades da NF. O cadastro não tem peso por item, por isso o peso não é usado no rateio</li>
+    <li><b>Distância</b> — aba Base Distâncias do Quadro (km de Uberlândia até o município)</li>
+    <li><b>Exceções</b> — Simples Remessa de Pilar/AL e dos colégios da Verbum (Caminho, Elena Guerra, Mar Aberto, Monte Carmelo, Safari Kids) contam como Venda</li>
+  </ul></div>
 </div>
 
 <!-- ═══════════════ ACOMPANHAMENTO ═══════════════ -->
@@ -782,7 +838,7 @@ body.tema-verbum .t2-mx tr.t2-sec td,body.tema-verbum .t2-scroll tfoot td{backgr
     <li><b>Cobertura</b> — saldo ÷ média mensal de saídas (em meses). Acima de 12 meses = estoque alto para o ritmo atual</li>
     <li><b>Itens parados</b> — itens com saldo e sem nenhuma saída nos últimos 180 dias</li>
     <li><b>Margem bruta</b> — Receita das notas de venda (já descontadas as devoluções) − custo das saídas de venda; notas entre IAB e Verbum ficam fora. Custo das bonificações = custo do material bonificado</li>
-    <li><b>Exceção Pilar/AL</b> — os envios por Simples Remessa (Outras) contam como VENDA e a nota entra na receita da margem. A baixa "Ajuste de estoque - saída de estoque com terceiros" continua em Ajustes de saída (sem duplicar com a remessa, combinado em 22/10/2026); só na margem o custo dela entra, para casar com a receita da remessa. Outra empresa paga por recibo, por isso não há nota de venda</li>
+    <li><b>Exceção Pilar/AL e colégios da Verbum (Caminho, Elena Guerra, Mar Aberto, Monte Carmelo, Safari Kids)</b> — os envios por Simples Remessa (Outras) contam como VENDA e a nota entra na receita da margem. A baixa "Ajuste de estoque - saída de estoque com terceiros" continua em Ajustes de saída (sem duplicar com a remessa, combinado em 22/10/2026); só na margem o custo dela entra, para casar com a receita da remessa. Outra empresa paga por recibo, por isso não há nota de venda</li>
     <li><b>Itens não comerciais</b> — mídia (CDs, DVDs), brindes, arquivos, máquinas e equipamentos, uniformes, embalagem e uso/consumo, conforme o programa da Análise de Estoque e o grupo do cadastro de itens. Por padrão ficam FORA de todos os indicadores desta tela; o botão "Mostrar" inclui. A Coala só tem brindes, então aparece sempre completa</li>
     <li><b>Itens a corrigir</b> — alertas da Análise de Estoque (consignação a acertar, item de outra empresa, saldo negativo)</li>
   </ul></div>
@@ -830,7 +886,7 @@ const NM_ABAS = {
   'vg':'📊 Visão Geral','reg':'📍 Por Região','cli':'💰 Custo por Cliente',
   'est-vg':'📦 Visão Geral do Estoque','est-det':'📋 Análise de Estoque','est-ve':'🖨️ Estimativa de Venda Próximo Ciclo',
   've':'📊 Visão Executiva','fin':'💰 Financeiro',
-  'tr':'🚛 Transportadoras','acomp':'📋 Acompanhamento',
+  'tr':'🚛 Transportadoras','fi':'🏷️ Frete por Item','acomp':'📋 Acompanhamento',
   'est-pos':'📦 Posição de Estoque','est-fin':'💎 Saúde Financeira','est-mov':'📊 Movimentações'
 };
 
@@ -838,7 +894,15 @@ const NM_ABAS = {
 // Altere aqui para propagar para todos os cards, gráficos e tabelas
 const META = {
   ns:  { ok: 98.0, wn: 97.0 },          // NS%: >=ok Ótimo, >=wn Atenção, <wn Crítico
-  lt:  { ok: 7,    wn: 12   },           // Lead Time dias: <=ok Ótimo
+  lt:  { ok: 7,    wn: 12   },           // Lead Time dias: <=ok Ótimo (geral, quando não há região)
+  // Lead Time por região (05/11/2026): Ótimo = média histórica da região; Atenção = até onde chegam 80% das entregas
+  lt_reg: {
+    'SUDESTE':      { ok: 5,  wn: 8  },   // ~640 km
+    'CENTRO-OESTE': { ok: 7,  wn: 10 },   // ~393 km
+    'SUL':          { ok: 7,  wn: 10 },   // ~1.192 km
+    'NORDESTE':     { ok: 11, wn: 16 },   // ~1.855 km
+    'NORTE':        { ok: 12, wn: 18 },   // ~2.933 km
+  },
   fsf: {
     IAB:    { ok: 2.0, wn: 3.0 },        // FSF% IAB
     VERBUM: { ok: 3.0, wn: 4.0 },        // FSF% Verbum
@@ -889,6 +953,7 @@ function navPage(p) {
   if (p === 've')    renderVE();
   if (p === 'fin')   renderFin();
   if (p === 'tr')    renderTR2();
+  if (p === 'fi')    renderFI();
   if (p === 'vg')    renderVG();
   if (p === 'est-vg')  renderEstVG();
   if (p === 'est-det') renderEstDet();
@@ -925,6 +990,7 @@ function fEmp(e) {
   if (PAGINA === 'est-vg')  { EV_EMP = e === 'VERBUM' ? 'Verbum' : 'IAB'; renderEstVG(); }
   if (PAGINA === 'reg')     renderReg();
   if (PAGINA === 'cli')     renderCli();
+  if (PAGINA === 'fi')      renderFI();
   if (PAGINA === 'est-pos') renderEstPos();
   if (PAGINA === 'est-fin') renderEstFin();
   if (PAGINA === 'est-mov') renderEstMov();
@@ -1989,7 +2055,18 @@ function _temaFrame(f) {
     const d = f.contentDocument, P = _pal();
     let st = d.getElementById('tema-emp');
     if (!st) { st = d.createElement('style'); st.id = 'tema-emp'; d.head.appendChild(st); }
-    st.textContent = ':root{' + (f.id === 'if-analise' ? P.ana : P.est) + '}';
+    let css = ':root{' + (f.id === 'if-analise' ? P.ana : P.est) + '}';
+    if (f.id === 'if-analise') {
+      // Empresa da logo do topo: IAB mostra IAB e Coala (brindes no estoque do IAB); Verbum mostra Filial e Matriz
+      const perm = EMP === 'VERBUM' ? ['Verbum (Filial)', 'Verbum (Matriz)'] : ['IAB', 'Coala'];
+      css += '#g-chips button' + perm.map(v => ':not([data-v="' + v + '"])').join('') + '{display:none!important}';
+      const sel = d.getElementById('g-emp');
+      if (sel && !perm.includes(sel.value)) {
+        const b = d.querySelector('#g-chips button[data-v="' + perm[0] + '"]');
+        if (b) b.click(); else { sel.value = perm[0]; sel.dispatchEvent(new Event('change')); }
+      }
+    }
+    st.textContent = css;
   } catch (e) {}
 }
 const T2_MESES_CICLO = ['Out','Nov','Dez','Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set'];
@@ -2017,12 +2094,13 @@ function _t2AnoBar(elId, atual, fnName) {
 }
 
 // Status pelas metas: NS%, Lead Time e FSF% (frete ÷ faturamento total)
-function _t2Status(k) {
+function _ltMeta(reg) { return (reg && META.lt_reg[reg]) || META.lt; }
+function _t2Status(k, reg) {
   if (!k || !k.ent) return {cls:'neu', txt:'—', mot:[]};
   const mot = []; let pior = 0;
   const lvl = (v, ok, wn, menorMelhor) => v == null ? 0 : menorMelhor ? (v <= ok ? 0 : v <= wn ? 1 : 2) : (v >= ok ? 0 : v >= wn ? 1 : 2);
   const ns = lvl(k.ns, META.ns.ok, META.ns.wn, false); if (ns) mot.push('prazo');
-  const lt = lvl(k.lt, META.lt.ok, META.lt.wn, true);  if (lt) mot.push('lead time');
+  const ml = _ltMeta(reg); const lt = lvl(k.lt, ml.ok, ml.wn, true);  if (lt) mot.push('lead time');
   const m = fsfMeta(); const fs = lvl(k.fsf_t, m.ok, m.wn, true); if (fs) mot.push('custo do frete');
   pior = Math.max(ns, lt, fs);
   return pior === 0 ? {cls:'ok', txt:'Ótimo', mot} : pior === 1 ? {cls:'wn', txt:'Atenção', mot} : {cls:'bd', txt:'Melhorar', mot};
@@ -2034,7 +2112,7 @@ function _t2Tag(st) {
   return `<span class="tag ${c}"${tit}>${ic} ${st.txt}${st.mot.length ? ' · ' + st.mot.join(', ') : ''}</span>`;
 }
 const _t2CorNS = v => v == null ? 'var(--gl)' : nsColor(v);
-const _t2CorLT = v => v == null ? 'var(--gl)' : v <= META.lt.ok ? 'var(--ok)' : v <= META.lt.wn ? 'var(--al)' : 'var(--err)';
+const _t2CorLT = (v, reg) => { const m = _ltMeta(reg); return v == null ? 'var(--gl)' : v <= m.ok ? 'var(--ok)' : v <= m.wn ? 'var(--al)' : 'var(--err)'; };
 const _t2CorFS = v => v == null ? 'var(--gl)' : fsfColor(v);
 const _t2CorRes = v => v == null ? 'var(--gl)' : v < 0 ? 'var(--err)' : 'var(--gd)';
 
@@ -2162,6 +2240,121 @@ function _t2Linhas(el, series, labels, fmtY) {
     <div class="t2-leg">${series.map(s => `<span><i style="background:${s.cor}"></i>${s.nome}: <b>${fmtY(s.vals.filter(v => v != null).slice(-1)[0] || 0)}</b></span>`).join('')}</div>`;
 }
 
+// ════════════════════════════════════════════════════════════
+// FRETE POR ITEM (05/11/2026)
+// nf: [emp,data,ano,tipo,reg,uf,km,nat,frete,kg,vol,vrnf,un,custo]  ln: [nf,item,qtd,custo_unit]  it: [cod,desc]
+// ════════════════════════════════════════════════════════════
+const FI = ___PAYLOAD_FI___;
+const FIS = {ano: 'TODOS', nat: '', rat: 'val', reg: '', tip: '', ord: ['fr', -1], busca: '', its: []};
+function fiAno(a) { FIS.ano = a; renderFI(); }
+const _fiR = v => 'R$ ' + (v || 0).toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+const _fiR0 = v => 'R$ ' + Math.round(v || 0).toLocaleString('pt-BR');
+const _fiN = v => Math.round(v || 0).toLocaleString('pt-BR');
+const _fiD = (v, d = 1) => v == null || !isFinite(v) ? '—' : v.toLocaleString('pt-BR', {minimumFractionDigits: d, maximumFractionDigits: d});
+function _fiIds() {
+  const e = EMP === 'VERBUM' ? 'V' : 'I';
+  const out = [];
+  FI.nf.forEach((r, i) => { if (r[0] === e && (FIS.ano === 'TODOS' || r[2] === FIS.ano) && (!FIS.nat || r[7] === FIS.nat)
+    && (!FIS.reg || r[4] === FIS.reg) && (!FIS.tip || r[3] === FIS.tip)) out.push(i); });
+  return out;
+}
+function _fiSoma(ids) {
+  const t = {nf: ids.length, fr: 0, kg: 0, un: 0, vol: 0, vr: 0, cu: 0, km: 0, kmkg: 0, frk: 0};
+  ids.forEach(i => { const r = FI.nf[i]; t.fr += r[8]; t.kg += r[9]; t.vol += r[10]; t.vr += r[11]; t.un += r[12]; t.cu += r[13]; t.km += r[6];
+    if (r[6] > 0 && r[9] > 0) { t.kmkg += r[9] * r[6] / 1000; t.frk += r[8]; } });
+  t.fu = t.un ? t.fr / t.un : null; t.fk = t.kg ? t.fr / t.kg : null; t.fn = t.nf ? t.fr / t.nf : null; t.ku = t.un ? t.kg / t.un : null;
+  t.pv = t.vr ? t.fr / t.vr * 100 : null; t.pc = t.cu ? t.fr / t.cu * 100 : null; t.kmm = t.nf ? t.km / t.nf : null; t.fkk = t.kmkg ? t.frk / t.kmkg : null;
+  return t;
+}
+function _fiGrupo(ids, fn) { const g = {}; ids.forEach(i => { const k = fn(FI.nf[i]); (g[k] = g[k] || []).push(i); }); return g; }
+function _fiTabela(el, linhas, o) {
+  const mx = Math.max(...linhas.map(l => l.t.fu || 0), 0.01);
+  let h = `<thead><tr><th>${o.tit}</th><th>NFs</th>${o.km ? '<th>km méd.</th>' : ''}<th>Unidades</th><th>Peso (kg)</th><th>Frete</th><th>Frete/unid.</th><th>Frete/kg</th><th>Frete/NF</th><th>kg/unid.</th><th>Frete ÷ valor NF</th>${o.fkk ? '<th>R$/kg·1.000 km</th>' : ''}</tr></thead><tbody>`;
+  linhas.forEach(l => { const t = l.t;
+    h += `<tr><td>${_t2Esc(l.k)}</td><td>${_fiN(t.nf)}</td>${o.km ? `<td>${_fiN(t.kmm)}</td>` : ''}<td>${_fiN(t.un)}</td><td>${_fiN(t.kg)}</td><td>${_fiR0(t.fr)}</td>
+      <td class="fi-b">${t.fu == null ? '—' : _fiR(t.fu)}<span class="fi-bar" style="width:${(t.fu || 0) / mx * 60}px"></span></td><td>${t.fk == null ? '—' : _fiR(t.fk)}</td>
+      <td>${_fiR(t.fn)}</td><td>${_fiD(t.ku, 2)}</td><td>${_fiD(t.pv, 1)}%</td>${o.fkk ? `<td>${t.fkk == null ? '—' : _fiR(t.fkk)}</td>` : ''}</tr>`; });
+  document.getElementById(el).innerHTML = h + (linhas.length ? '' : '<tr><td colspan="12" style="text-align:center;color:var(--gl)">Sem dados no filtro.</td></tr>') + '</tbody>';
+}
+function renderFI() {
+  _t2AnoBar('fi-anos', FIS.ano, 'fiAno');
+  const ctx = document.getElementById('fi-ctx');
+  if (!FI || !FI.nf) { ctx.innerHTML = '⚠️ Frete por Item não foi gerado. Rode o ATUALIZAR DASHBOARD.bat e veja o aviso da etapa "[ 8c ]".'; return; }
+  // opções dos filtros (uma vez)
+  const sr = document.getElementById('fi-reg'), st = document.getElementById('fi-tip');
+  if (sr.options.length === 1) {
+    [...new Set(FI.nf.map(r => r[4]))].sort().forEach(v => sr.add(new Option(v, v)));
+    [...new Set(FI.nf.map(r => r[3]))].sort().forEach(v => st.add(new Option(v, v)));
+    sr.onchange = e => { FIS.reg = e.target.value; renderFI(); };
+    st.onchange = e => { FIS.tip = e.target.value; renderFI(); };
+    document.getElementById('fi-bus').oninput = e => { FIS.busca = e.target.value; _fiItens(); };
+    document.querySelectorAll('#page-fi .fi-seg').forEach(sg => sg.onclick = e => { const b = e.target.closest('button'); if (!b) return;
+      sg.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
+      if (sg.id === 'fi-nat') FIS.nat = b.dataset.v; else FIS.rat = b.dataset.v; renderFI(); });
+  }
+  const ids = _fiIds(), T = _fiSoma(ids), cob = FI.cobertura || {};
+  ctx.innerHTML = `<b>${_t2EmpNm()}</b> · ${FIS.ano === 'TODOS' ? 'Todos os anos' : 'Ano Ref ' + FIS.ano} · coleta de ${FI.periodo[0]} a ${FI.periodo[1]} · ${_fiN(T.nf)} NFs no filtro`
+    + (cob.frete_periodo ? ` · a base cobre ${_fiD(cob.frete_base / cob.frete_periodo * 100, 0)}% do frete do período (IAB + Verbum)` : '');
+  document.getElementById('fi-kpis').innerHTML =
+    _fk('bl', '🚚', 'Frete analisado', _fiR0(T.fr), _fiN(T.nf) + ' NFs') +
+    _fk('bl', '📦', 'Unidades transportadas', _fiN(T.un), _fiN(T.vol) + ' volumes · ' + _fiD(T.vol ? T.un / T.vol : null, 1) + ' un./volume') +
+    _fk('or', '🏷️', 'Frete por unidade', T.fu == null ? '—' : _fiR(T.fu), 'frete ÷ unidades') +
+    _fk('bl', '⚖️', 'Frete por kg', T.fk == null ? '—' : _fiR(T.fk), _fiN(T.kg) + ' kg transportados') +
+    _fk('bl', '🧾', 'Frete por NF', _fiR(T.fn), 'média por nota') +
+    _fk('bl', '📏', 'Peso por unidade', _fiD(T.ku, 2) + ' kg', 'peso ÷ unidades') +
+    _fk('or', '💲', 'Frete ÷ custo do material', _fiD(T.pc, 1) + '%', 'frete sobre o custo dos itens enviados') +
+    _fk('bl', '🛣️', 'R$/kg a cada 1.000 km', T.fkk == null ? '—' : _fiR(T.fkk), 'preço do transporte sem a distância');
+  const ord = (g, f) => Object.entries(g).map(([k, v]) => ({k, t: _fiSoma(v)})).sort(f || ((a, b) => b.t.fr - a.t.fr));
+  const tip = ord(_fiGrupo(ids, r => r[3])); _fiTabela('fi-t-tip', tip, {tit: 'Tipo de cliente'});
+  const reg = ord(_fiGrupo(ids, r => r[4])); _fiTabela('fi-t-reg', reg, {tit: 'Região', km: 1, fkk: 1});
+  const FX = [[0, 300, 'até 300 km'], [300, 800, '300 a 800 km'], [800, 1500, '800 a 1.500 km'], [1500, 2500, '1.500 a 2.500 km'], [2500, 1e9, 'acima de 2.500 km']];
+  const fx = r => { if (!r[6]) return '9|sem km cadastrado'; const i = FX.findIndex(f => r[6] >= f[0] && r[6] < f[1]); return i + '|' + FX[i][2]; };
+  _fiTabela('fi-t-km', ord(_fiGrupo(ids, fx), (a, b) => a.k.localeCompare(b.k)).map(l => ({k: l.k.split('|')[1], t: l.t})), {tit: 'Distância', km: 1, fkk: 1});
+  const TM = [[1, 10, '1 a 10 un.'], [11, 50, '11 a 50 un.'], [51, 200, '51 a 200 un.'], [201, 1000, '201 a 1.000 un.'], [1001, 1e12, 'acima de 1.000 un.']];
+  const tm = r => { const i = TM.findIndex(f => r[12] >= f[0] && r[12] <= f[1]); return i + '|' + (i < 0 ? '?' : TM[i][2]); };
+  const tam = ord(_fiGrupo(ids, tm), (a, b) => a.k.localeCompare(b.k)).map(l => ({k: l.k.split('|')[1], t: l.t}));
+  _fiTabela('fi-t-tam', tam, {tit: 'Unidades na NF'});
+  // cruzamento tipo × região
+  const regs = reg.map(r => r.k), tips = tip.map(t => t.k), cel = {};
+  ids.forEach(i => { const r = FI.nf[i], k = r[3] + '§' + r[4]; (cel[k] = cel[k] || []).push(i); });
+  const vals = Object.values(cel).map(_fiSoma).filter(t => t.nf >= 3 && t.fu != null).map(t => t.fu).sort((a, b) => a - b);
+  const q = p => vals.length ? vals[Math.floor(p * (vals.length - 1))] : 0, lo = q(.1), hi = q(.9);
+  const cor = v => { const x = Math.max(0, Math.min(1, (v - lo) / ((hi - lo) || 1)));
+    return `rgba(${Math.round(31 + 181 * x)},${Math.round(157 - 73 * x)},${Math.round(104 - 41 * x)},.18)`; };
+  let h = '<thead><tr><th>Tipo \\ Região</th>' + regs.map(r => `<th style="text-align:center">${_t2Esc(r)}</th>`).join('') + '<th style="text-align:center">Total</th></tr></thead><tbody>';
+  tips.forEach(t => { h += `<tr><td>${_t2Esc(t)}</td>` + regs.map(r => { const v = cel[t + '§' + r]; if (!v) return '<td style="text-align:center;color:var(--gl)">—</td>';
+      const s = _fiSoma(v); return `<td style="text-align:center;font-weight:600;background:${s.nf >= 3 ? cor(s.fu) : 'transparent'}">${_fiR(s.fu)}<br><span class="fi-n">${s.nf} NF</span></td>`; }).join('')
+    + `<td style="text-align:center"><b>${_fiR(tip.find(x => x.k === t).t.fu)}</b></td></tr>`; });
+  document.getElementById('fi-t-hm').innerHTML = h + '</tbody>';
+  // itens (rateio)
+  const sel = new Set(ids), acc = {};
+  FI.ln.forEach(([n, c, qq, cu]) => { if (!sel.has(n)) return; const r = FI.nf[n];
+    const sh = FIS.rat === 'val' && r[13] > 0 ? qq * cu / r[13] : (r[12] ? qq / r[12] : 0);
+    const a = acc[c] || (acc[c] = {c, fr: 0, un: 0, nfs: 0, val: 0}); a.fr += r[8] * sh; a.un += qq; a.nfs++; a.val += qq * cu; });
+  FIS.its = Object.values(acc); _fiItens();
+  // destaques
+  const ins = [];
+  const t0 = tam.find(x => x.k.startsWith('1 a 10')), tN = tam.find(x => x.k.startsWith('acima de 1.000'));
+  if (t0 && tN && tN.t.fu) ins.push(`<b>Escala:</b> em NFs com até 10 unidades o frete sai <b>${_fiR(t0.t.fu)}</b> por unidade; acima de 1.000 unidades, <b>${_fiR(tN.t.fu)}</b> — ${_fiD(t0.t.fu / tN.t.fu, 0)}× mais caro por item nos pedidos pequenos.`);
+  const to = tip.filter(x => x.t.un >= 200).sort((a, b) => b.t.fu - a.t.fu);
+  if (to.length > 1) ins.push(`<b>Tipo de cliente:</b> o mais caro por unidade é <b>${_t2Esc(to[0].k)}</b> (${_fiR(to[0].t.fu)}) e o mais barato é <b>${_t2Esc(to[to.length - 1].k)}</b> (${_fiR(to[to.length - 1].t.fu)}).`);
+  const ro = reg.filter(x => x.t.un >= 200).sort((a, b) => b.t.fu - a.t.fu);
+  if (ro.length > 1) ins.push(`<b>Região:</b> o frete por unidade vai de <b>${_fiR(ro[ro.length - 1].t.fu)}</b> (${_t2Esc(ro[ro.length - 1].k)}) a <b>${_fiR(ro[0].t.fu)}</b> (${_t2Esc(ro[0].k)}).`);
+  if (T.pc != null) ins.push(`<b>Peso do frete no material:</b> o frete equivale a <b>${_fiD(T.pc, 1)}%</b> do custo dos itens enviados${T.pv != null ? ` e a ${_fiD(T.pv, 1)}% do valor das NFs` : ''}.`);
+  document.getElementById('fi-ins').innerHTML = ins.length ? '<div class="fi-ins-t">💡 O que os números mostram (com o filtro atual)</div><ul>' + ins.map(x => '<li>' + x + '</li>').join('') + '</ul>' : '';
+}
+function _fiItens() {
+  const b = FIS.busca.trim().toLowerCase();
+  let r = FIS.its.filter(a => !b || String(FI.it[a.c][0]).includes(b) || FI.it[a.c][1].toLowerCase().includes(b))
+    .map(a => ({...a, fu: a.un ? a.fr / a.un : 0, pc: a.val ? a.fr / a.val * 100 : null, cu: a.un ? a.val / a.un : 0}));
+  const [k, d] = FIS.ord; r.sort((x, y) => ((x[k] ?? -1) - (y[k] ?? -1)) * d);
+  const cols = [['Cód.', null], ['Item ', null], ['NFs', 'nfs'], ['Unidades', 'un'], ['Custo unit. médio', 'cu'], ['Frete rateado', 'fr'], ['Frete/unid.', 'fu'], ['Frete ÷ custo', 'pc']];
+  document.getElementById('fi-t-it').innerHTML = '<thead><tr>' + cols.map(([t, c]) => `<th${c ? ` data-o="${c}" style="cursor:pointer"` : t === 'Item ' ? ' style="text-align:left"' : ''}>${t}${c === k ? (d < 0 ? ' ▼' : ' ▲') : ''}</th>`).join('') + '</tr></thead><tbody>' +
+    r.slice(0, 100).map(a => `<tr><td>${FI.it[a.c][0]}</td><td style="text-align:left;max-width:420px;overflow:hidden;text-overflow:ellipsis" title="${_t2Esc(FI.it[a.c][1])}">${_t2Esc(FI.it[a.c][1])}</td><td>${_fiN(a.nfs)}</td><td>${_fiN(a.un)}</td><td>${_fiR(a.cu)}</td><td>${_fiR0(a.fr)}</td><td class="fi-b">${_fiR(a.fu)}</td><td>${_fiD(a.pc, 1)}%</td></tr>`).join('') +
+    (r.length > 100 ? `<tr><td colspan="8" style="text-align:center;color:var(--gl)">mostrando 100 de ${r.length} itens — use a busca</td></tr>` : '') + '</tbody>';
+  document.querySelectorAll('#fi-t-it th[data-o]').forEach(th => th.onclick = () => { const c = th.dataset.o; FIS.ord = [c, FIS.ord[0] === c ? -FIS.ord[1] : -1]; _fiItens(); });
+}
+
 // ── REGIÕES ─────────────────────────────────────────────────
 function regAno(a) { ANO_REG = a; REG_SEL = null; UF_SEL = null; renderReg(); }
 function regSel(r) { REG_SEL = REG_SEL === r ? null : r; UF_SEL = null; renderReg(); }
@@ -2174,18 +2367,21 @@ function renderReg() {
   if (ctx) ctx.innerHTML = `<b>${_t2EmpNm()}</b> · ${ANO_REG === 'TODOS' ? 'Todos os anos' : 'Ano Ref ' + ANO_REG}`;
   const cards = document.getElementById('reg-cards');
   if (!d) { cards.innerHTML = '<div class="cs">Sem dados.</div>'; document.getElementById('reg-uf-tb').innerHTML = ''; return; }
+  const ufReg = {}; d.uf.forEach(u => { ufReg[u.k] = u.reg; });
+  _REG_DA_UF = ufReg;
   cards.innerHTML = d.macro.map(k => {
-    const st = _t2Status(k);
+    const st = _t2Status(k, k.k), ml = _ltMeta(k.k);
     return `<div class="t2-reg ${st.cls}${REG_SEL === k.k ? ' sel' : ''}" onclick="regSel('${k.k}')">
       <div class="t2-reg-h"><b>${k.k}</b>${_t2Tag({cls: st.cls, txt: st.txt, mot: []})}</div>
       <div class="t2-reg-g">
         <div><span>Entregas</span><b>${fmtN(k.ent)}</b></div>
         <div><span>NS %</span><b style="color:${_t2CorNS(k.ns)}">${_t2Pct(k.ns)}</b></div>
-        <div><span>Lead Time</span><b style="color:${_t2CorLT(k.lt)}">${_t2Dias(k.lt)}</b></div>
+        <div><span>Lead Time</span><b style="color:${_t2CorLT(k.lt, k.k)}">${_t2Dias(k.lt)}</b></div>
         <div><span>Custo/Ent.</span><b>${_t2R2(k.c_ent)}</b></div>
         <div><span>Frete/Valor</span><b style="color:${_t2CorFS(k.fsf_t)}">${_t2Pct(k.fsf_t)}</b></div>
         <div><span>Resultado</span><b style="color:${_t2CorRes(k.res)}">${fmtM(k.res || 0)}</b></div>
       </div>
+      <div class="t2-reg-meta">Meta LT: ótimo ≤ ${ml.ok} d · atenção ≤ ${ml.wn} d${k.km_med ? ' · distância média ' + fmtN(k.km_med) + ' km' : ''}</div>
       ${st.mot.length ? `<div class="t2-reg-m">Melhorar: ${st.mot.join(', ')}</div>` : '<div class="t2-reg-m ok">Dentro das metas</div>'}
     </div>`;
   }).join('');
@@ -2201,12 +2397,14 @@ function renderReg() {
     document.getElementById('reg-mun-tb').innerHTML = d.mun.filter(m => m.uf === UF_SEL).map(k => _regLinha(k, false)).join('');
   } else box.style.display = 'none';
 }
+let _REG_DA_UF = {};
 function _regLinha(k, isUF) {
-  const st = _t2Status(k);
+  const reg = isUF ? k.reg : _REG_DA_UF[k.uf];
+  const st = _t2Status(k, reg);
   const clk = isUF ? ` onclick="ufSel('${k.k}')" style="cursor:pointer${UF_SEL === k.k ? ';background:rgba(var(--ac-rgb),.08)' : ''}"` : '';
   return `<tr${clk}><td style="text-align:left;font-weight:600">${_t2Esc(k.k)}</td><td>${fmtN(k.ent)}</td>
     <td style="color:${_t2CorNS(k.ns)};font-weight:700">${_t2Pct(k.ns)}</td>
-    <td style="color:${_t2CorLT(k.lt)}">${_t2Dias(k.lt)}</td><td>${_t2R(k.frete)}</td><td>${_t2R2(k.c_ent)}</td>
+    <td style="color:${_t2CorLT(k.lt, reg)}">${_t2Dias(k.lt)}</td><td>${_t2R(k.frete)}</td><td>${_t2R2(k.c_ent)}</td>
     <td style="color:${_t2CorFS(k.fsf_t)};font-weight:700">${_t2Pct(k.fsf_t)}</td><td>${_t2R(k.fat_l)}</td>
     <td style="color:${_t2CorRes(k.res)};font-weight:700">${_t2R(k.res)}</td>
     ${isUF ? `<td style="color:${_t2CorRes(k.pct_res)}">${_t2Pct(k.pct_res)}</td>` : ''}

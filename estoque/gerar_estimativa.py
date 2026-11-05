@@ -915,6 +915,9 @@ CNPJ_IAB = "08.458.084/0001-13"
 # Clientes que recebem como "Simples remessa (outras)" mas é VENDA (combinado em 22/10/2026):
 # Pilar/AL - o material é doado e outra empresa paga por recibo (outro documento fiscal).
 SIMPLES_REMESSA_E_VENDA = {("pilar", "AL")}
+# Colégios da Verbum que recebem por SIMPLES REMESSA / OUTRAS SAÍDAS mas é VENDA (05/11/2026): (trecho do nome, UF)
+CLIENTES_SR_VENDA = [("CENTRO EDUCACIONAL CAMINHO", "RJ"), ("ELENA GUERRA", "RJ"), ("MAR ABERTO", "RJ"),
+                     ("MONTE CARMELO", "MG"), ("SAFARI KIDS", "SP")]
 
 
 def resumo_vendas(props):
@@ -960,7 +963,8 @@ def resumo_vendas(props):
         if nome not in c["dest"]:
             c["dest"].append(nome)
         col, sinal = OPS_RESUMO[r.op]
-        if col == "o" and "SIMPLES REMESSA" in r.op and (chave_cidade(cid), uf) in {(chave_cidade(c), u) for c, u in SIMPLES_REMESSA_E_VENDA}:
+        if col == "o" and "SIMPLES REMESSA" in r.op and ((chave_cidade(cid), uf) in {(chave_cidade(c), u) for c, u in SIMPLES_REMESSA_E_VENDA}
+                                                       or any(norm(t) in norm(nome) and uf == u for t, u in CLIENTES_SR_VENDA)):
             col = "v"
         nfx = _nf_txt(r.NRO_NFE)
         notas.append([idx[k], 0 if pd.isna(r.dt) else int(r.dt.timestamp()) + 43200, col, round(sinal * float(r.valor), 2),

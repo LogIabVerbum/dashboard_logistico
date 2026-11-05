@@ -430,15 +430,22 @@ def gerar():
     # Exceção (04/11/2026): clientes que recebem por SIMPLES REMESSA mas é VENDA (outra empresa paga por recibo,
     # não há nota de venda). Ex.: Pilar/AL. Mesma lista da Análise de Estoque e da Estimativa.
     SIMPLES_REMESSA_E_VENDA = {("PILAR", "AL")}
+    # Colégios da Verbum (05/11/2026): Simples Remessa / Outras Saídas = VENDA. (trecho do nome, UF)
+    CLIENTES_SR_VENDA = [("CENTRO EDUCACIONAL CAMINHO", "RJ"), ("ELENA GUERRA", "RJ"), ("MAR ABERTO", "RJ"),
+                         ("MONTE CARMELO", "MG"), ("SAFARI KIDS", "SP")]
     if {"municipio", "uf", "natureza_operacao"} <= set(df.columns):
         import unicodedata as _ud0
         _cn = lambda v: "".join(ch for ch in _ud0.normalize("NFKD", str(v or "")).encode("ascii", "ignore").decode().upper() if ch.isalpha())
         _alvo = {(_cn(c), u) for c, u in SIMPLES_REMESSA_E_VENDA}
-        _pv = pd.Series([(_cn(m), str(u or "").strip().upper()) in _alvo for m, u in zip(df["municipio"], df["uf"])], index=df.index)
-        _sr = _pv & df["natureza_operacao"].fillna("").astype(str).str.contains("SIMPLES REMESSA")
+        _cli = [(_cn(n), u) for n, u in CLIENTES_SR_VENDA]
+        _nomes = df["cliente"] if "cliente" in df.columns else pd.Series("", index=df.index)
+        _pv = pd.Series([(_cn(m), str(u or "").strip().upper()) in _alvo
+                         or any(t in _cn(n) and str(u or "").strip().upper() == uf for t, uf in _cli)
+                         for m, u, n in zip(df["municipio"], df["uf"], _nomes)], index=df.index)
+        _sr = _pv & df["natureza_operacao"].fillna("").astype(str).str.contains("SIMPLES REMESSA|OUTRAS SA", regex=True)
         if _sr.any():
             df.loc[_sr, "natureza_operacao"] = "VENDA"
-            print(f"      Simples remessa tratada como venda (Pilar/AL...): {int(_sr.sum())} NF(s)")
+            print(f"      Simples remessa tratada como venda (Pilar/AL e colégios da lista): {int(_sr.sum())} linha(s)")
     # Garantir coluna distancia_km — busca robusta por variações de nome
     if "distancia_km" not in df.columns:
         import unicodedata as _ud
@@ -875,6 +882,7 @@ def gerar():
             "fsf":   _r(frete / fat_t * 100, 2) if fat_t else None,     # FSF% = Frete ÷ Faturamento total (todas as NFs transportadas) — 04/11/2026
             "pct_res": _r(res / venda * 100, 1) if venda else None,
             "c_ent": _r(frete / ent, 2) if ent else None,
+            "km_med": _r(km / ent, 0) if ent and km else None,     # distância média por entrega (km)
         }
         if leve:
             return k
@@ -955,6 +963,74 @@ def gerar():
 
     PAYLOAD_T2 = _jdump(T2)
     print(f"      T2: {len(PAYLOAD_T2)//1024} KB")
+
+    # 8c. FRETE POR ITEM (05/11/2026) — frete de cada NF do Quadro dividido entre os itens que saíram nela
+    #     (Movimentação de Estoque, ligada pelo número da NF + empresa). Período = o da Movimentação.
+    print("[ 8c ] Payload FI (Frete por Item)...")
+    PAYLOAD_FI = "null"
+    try:
+        import shutil as _sh, tempfile as _tf
+        _pasta_dash = os.path.dirname(os.path.dirname(BASE_DIR))
+        _arq_mov = os.path.join(_pasta_dash, "Arquivos de Claude Relatórios - Relatórios Logística", "Movimentação de Estoque.xlsx")
+        if not os.path.isfile(_arq_mov):
+            raise FileNotFoundError(_arq_mov)
+        _tmp = os.path.join(_tf.gettempdir(), "mov_frete_item.xlsx")
+        _sh.copyfile(_arq_mov, _tmp)
+        _mv = pd.read_excel(_tmp, usecols=["CODIGO_PRODUTO", "CUSTO_UNITARIO", "DATA_MOVIMENTO", "DESCRICAO_PRODUTO",
+                                             "EMPRESA_ESTOQUE", "NUMERO_NF", "QUANTIDADE", "TIPO_MOVIMENTO"])
+        _mv["cod"] = pd.to_numeric(_mv["CODIGO_PRODUTO"], errors="coerce")
+        _mv["cu"] = pd.to_numeric(_mv["CUSTO_UNITARIO"], errors="coerce")
+        _mv["dt"] = pd.to_datetime(_mv["DATA_MOVIMENTO"], errors="coerce")
+        _ini_mov = _mv["dt"].min()
+        _ult_cu = _mv[_mv["cu"] > 0].sort_values("dt").groupby("cod")["cu"].last()
+        _s = _mv[_mv["TIPO_MOVIMENTO"].astype(str).str.upper().str.startswith("SA")].copy()
+        _s["emp"] = np.where(_s["EMPRESA_ESTOQUE"].astype(str).str.upper().str.contains("VERBUM"), "VERBUM", "IAB")
+        _s["nfk"] = pd.to_numeric(_s["NUMERO_NF"], errors="coerce")
+        _s["qtd"] = pd.to_numeric(_s["QUANTIDADE"], errors="coerce").fillna(0)
+        _s["cu"] = _s["cu"].where(_s["cu"] > 0, _s["cod"].map(_ult_cu)).fillna(0)
+        _s["desc"] = _s["DESCRICAO_PRODUTO"].astype(str).str.split("|").str[0].str.strip()
+        _s = _s[(_s["qtd"] > 0) & _s["nfk"].notna() & _s["cod"].notna()]
+        _lin = _s.groupby(["emp", "nfk", "cod"]).agg(qtd=("qtd", "sum"), cu=("cu", "max"), desc=("desc", "first")).reset_index()
+        # NFs do Quadro no período da Movimentação
+        _q = df.copy()
+        _q["nfk"] = pd.to_numeric(_q["nf"] if "nf" in _q.columns else _q["NF"], errors="coerce")
+        _q["emp"] = _q["empresa"].astype(str).str.upper().str.strip()
+        _q = _q[(_q["data_coleta"] >= _ini_mov) & _q["nfk"].fillna(0).gt(0)]
+        _frete_periodo = float(df.loc[df["data_coleta"] >= _ini_mov, "frete"].sum())
+        _kmc = "distancia_km" if "distancia_km" in _q.columns else None
+        _nf = _q.groupby(["emp", "nfk"]).agg(dt=("data_coleta", "min"), ano=("ano_ref", "first"), tipo=("tipo_cliente", "first"),
+                                             reg=("regiao", "first"), uf=("uf", "first"), nat=("_nat", "first"),
+                                             km=(_kmc, "max") if _kmc else ("frete", lambda x: 0),
+                                             frete=("frete", "sum"), kg=("peso_kg", "sum"), vol=("volumes", "sum"),
+                                             vr=("vr_nf", "sum")).reset_index()
+        _lin["val"] = _lin["qtd"] * _lin["cu"]
+        _ag = _lin.groupby(["emp", "nfk"]).agg(u=("qtd", "sum"), c=("val", "sum")).reset_index()
+        _nf = _nf.merge(_ag, on=["emp", "nfk"])
+        _nf = _nf[_nf["u"] > 0].reset_index(drop=True)
+        _nf["i"] = _nf.index
+        _L = _lin.merge(_nf[["emp", "nfk", "i"]], on=["emp", "nfk"])
+        _cods = sorted(_L["cod"].unique()); _ci = {c: k for k, c in enumerate(_cods)}
+        _desc = _L.drop_duplicates("cod").set_index("cod")["desc"]
+        def _ano_txt(v):
+            try:
+                return str(int(float(v)))
+            except Exception:
+                return ""
+        _txt = lambda v, pad: pad if (v is None or str(v).strip().upper() in ("", "NAN", "NONE")) else str(v).strip().upper()
+        FI = {
+            "nf": [[r.emp[0], r.dt.strftime("%Y-%m-%d"), _ano_txt(r.ano), _txt(r.tipo, "NÃO INFORMADO"), _txt(r.reg, "SEM REGIÃO"),
+                    str(r.uf), int(round(float(r.km or 0))), str(r.nat), round(float(r.frete), 2), round(float(r.kg or 0), 1),
+                    int(r.vol or 0), round(float(r.vr or 0), 2), int(r.u), round(float(r.c), 2)] for r in _nf.itertuples()],
+            "ln": [[int(i), _ci[c], float(q), round(float(cu), 4)] for i, c, q, cu in zip(_L["i"], _L["cod"], _L["qtd"], _L["cu"])],
+            "it": [[int(c), str(_desc[c]).title()[:90]] for c in _cods],
+            "periodo": [_nf["dt"].min().strftime("%d/%m/%Y"), _nf["dt"].max().strftime("%d/%m/%Y")] if len(_nf) else ["", ""],
+            "cobertura": {"frete_periodo": round(_frete_periodo, 2), "frete_base": round(float(_nf["frete"].sum()), 2)},
+        }
+        PAYLOAD_FI = _jdump(FI)
+        print(f"      FI: {len(_nf)} NFs com itens | {len(FI['ln'])} linhas | "
+              f"{FI['cobertura']['frete_base'] / max(_frete_periodo, 1) * 100:.0f}% do frete do período | {len(PAYLOAD_FI)//1024} KB")
+    except Exception as _e:
+        print(f"      AVISO: Frete por Item não gerado ({type(_e).__name__}: {_e})")
 
     # 9-EST. ESTOQUE — Análise de Estoque + Estimativa de Venda (pasta dashboard_logistico\estoque)
     #   Saldo sempre calculado pela movimentação (implantação + entradas − saídas), pelas regras do gerar_analise.py.
@@ -1048,6 +1124,7 @@ def gerar():
         "___GERADO_EM___":    datetime.now().strftime("%d/%m/%Y %H:%M"),
         "___PAYLOAD_EST___":  PAYLOAD_EST,
         "___PAYLOAD_T2___":   PAYLOAD_T2,
+        "___PAYLOAD_FI___":   PAYLOAD_FI,
         "___PAYLOAD_EST2___": PAYLOAD_EST2,
     }
     for ph, val in substitucoes.items():

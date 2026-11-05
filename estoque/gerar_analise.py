@@ -49,6 +49,9 @@ NAT_SAIDA_VENDA = {"NOTA DE VENDA DE PRODUTO PRODUZIDO", "REMESSA VENDA ENTREGA 
 # Clientes que recebem por "SIMPLES REMESSA (OUTRAS)" mas é VENDA (outra empresa paga por recibo, não há nota de venda).
 # Combinado em 22/10/2026 e 04/11/2026 — vale para Margem, Visão Geral do Estoque e Estimativa. (cidade, UF)
 SIMPLES_REMESSA_E_VENDA = {("PILAR", "AL")}
+# Colégios da Verbum que recebem por SIMPLES REMESSA / OUTRAS SAÍDAS mas é VENDA (05/11/2026): (trecho do nome, UF)
+CLIENTES_SR_VENDA = [("CENTRO EDUCACIONAL CAMINHO", "RJ"), ("ELENA GUERRA", "RJ"), ("MAR ABERTO", "RJ"),
+                     ("MONTE CARMELO", "MG"), ("SAFARI KIDS", "SP")]
 NAT_SR = "SIMPLES REMESSA (OUTRAS)"
 NAT_RETORNO_SR = "RETORNO SIMPLES REMESSA"
 NAT_AJUSTE_TERCEIROS = "SAÍDA DE ESTOQUE COM TERCEIROS"   # baixa do material em poder de terceiros que foi ao Pilar:
@@ -62,11 +65,19 @@ def _cid(v):
     return "".join(ch for ch in t if ch.isalpha())
 
 
-def remessa_e_venda(cidades, ufs):
-    """True nas linhas cujo destino (cidade + UF) está em SIMPLES_REMESSA_E_VENDA."""
+def remessa_e_venda(cidades, ufs, nomes=None):
+    """True nas linhas cujo destino (cidade + UF) está em SIMPLES_REMESSA_E_VENDA ou cujo cliente (nome + UF)
+    está em CLIENTES_SR_VENDA."""
     alvo = {(_cid(c), u.upper()) for c, u in SIMPLES_REMESSA_E_VENDA}
-    return pd.Series([(_cid(c), str(u or "").strip().upper()[:2]) in alvo for c, u in zip(cidades, ufs)],
-                     index=getattr(cidades, "index", None))
+    cli = [(_cid(n), u.upper()) for n, u in CLIENTES_SR_VENDA]
+    nomes = [None] * len(cidades) if nomes is None else list(nomes)
+    def ok(c, u, n):
+        u = str(u or "").strip().upper()[:2]
+        if (_cid(c), u) in alvo:
+            return True
+        nn = _cid(n) if n is not None else ""
+        return bool(nn) and any(t in nn and u == uf for t, uf in cli)
+    return pd.Series([ok(c, u, n) for c, u, n in zip(cidades, ufs, nomes)], index=getattr(cidades, "index", None))
 
 
 NAT_DEVOLUCAO_VENDA = {"DEVOLUÇÃO DE VENDA - NF PRÓPRIA", "DEVOLUÇÃO DE VENDA - NF TERCEIROS", "DEVOLUÇÃO DE REMESSA - ENTREGA FUTURA"}
@@ -370,7 +381,7 @@ def margem_vendas(df, cli):
     f["nf"] = f["NRO_NFE"].map(lambda x: "" if pd.isna(x) else str(int(x)) if isinstance(x, (int, float)) else str(x).strip())
     interno = lambda c: c[:8] in RAIZES_GRUPO
     f = f[f["emp"].notna() & ~f["cli"].map(interno)]
-    pv_f = remessa_e_venda(f["CIDADE_DESTINO"], f["UF_DESTINO"]) if "CIDADE_DESTINO" in f else pd.Series(False, index=f.index)
+    pv_f = remessa_e_venda(f["CIDADE_DESTINO"], f["UF_DESTINO"], f["CLIENTE_DESTINATARIO"]) if "CIDADE_DESTINO" in f else pd.Series(False, index=f.index)
     f["dev"] = f["op"].isin(OPS_DEVOLUCAO_VENDA) | (pv_f & f["op"].str.startswith(NAT_RETORNO_SR))
     rec = f[f["op"].isin(OPS_RECEITA | OPS_DEVOLUCAO_VENDA) | (pv_f & (f["op"].eq(NAT_SR) | f["op"].str.startswith(NAT_RETORNO_SR)))].copy()
     rec.loc[rec["dev"], "valor"] = -rec["valor"].abs()   # devolução sempre reduz a receita
@@ -381,7 +392,7 @@ def margem_vendas(df, cli):
     m = m[~m["cli"].map(interno)]
     m["custo"] = m["qtd"] * pd.to_numeric(m["custo_unit"], errors="coerce").fillna(0)
     sai, ent = m["tipo"].str.startswith("SA"), m["tipo"].eq("ENTRADA")
-    pv_m = remessa_e_venda(m["cidade"], m["uf_estado"])
+    pv_m = remessa_e_venda(m["cidade"], m["uf_estado"], m["parceiro"])
     cmv = m[(sai & (m["nat"].isin(NAT_SAIDA_VENDA) | (pv_m & (m["nat"].eq(NAT_SR) | m["nat"].str.contains(NAT_AJUSTE_TERCEIROS)))))
             | (ent & (m["nat"].isin(NAT_DEVOLUCAO_VENDA) | (pv_m & m["nat"].str.startswith(NAT_RETORNO_SR))))].copy()
     cmv.loc[cmv["tipo"].eq("ENTRADA"), "custo"] *= -1
@@ -745,7 +756,7 @@ def resumo_dashboard(df, cad, est, margem):
     d["emp"] = d["empresa_nome"].str.replace(r"\s*\(.*\)", "", regex=True)          # Verbum (Filial/Matriz) -> Verbum
     ent = d["tipo"].eq("ENTRADA"); sai = d["tipo"].str.startswith("SA")
     impl = nat.eq(NATUREZA_IMPLANTACAO)
-    pv = remessa_e_venda(d["cidade"], d["uf_estado"]).to_numpy()   # Pilar/AL: simples remessa = venda
+    pv = remessa_e_venda(d["cidade"], d["uf_estado"], d["parceiro"]).to_numpy()   # Pilar/AL e colégios da lista: simples remessa = venda
     # só a Simples Remessa vira venda; o "Ajuste - saída de estoque com terceiros" continua como AJUSTE (combinado em 22/10/2026)
     sai_pv = sai & pv & nat.eq(NAT_SR)
     ent_pv = ent & pv & nat.str.startswith(NAT_RETORNO_SR)
