@@ -295,6 +295,7 @@
         </div></div>
       <div><label for="g-emp">Empresa</label><select id="g-emp"></select></div>
       <div class="chk"><input type="checkbox" id="g-zero"><label for="g-zero" style="margin:0;color:#fff;font-weight:normal">Ocultar itens com saldo zero</label></div>
+      <div class="chk"><input type="checkbox" id="g-nc"><label for="g-nc" style="margin:0;color:#fff;font-weight:normal" title="Mídia, brindes, arquivos, pastas, máquinas e equipamentos, uniformes, embalagem">Incluir itens não comerciais</label></div>
     </div>
   </div>
 </header>
@@ -406,6 +407,7 @@
       <legend>Filtros</legend>
       <div class="campo"><label for="x-grupo">Itens</label><select id="x-grupo">
         <option value="livros">Livros e materiais (programas e outros itens)</option><option value="">Todos (sem itens fora do escopo)</option></select></div>
+      <div class="campo"><label for="x-ano">Ano Ref</label><select id="x-ano"></select></div>
       <div class="campo"><label for="x-prog">Programa</label><select id="x-prog"></select></div>
       <div class="campo"><label for="x-busca">Buscar item</label><input type="search" id="x-busca" placeholder="Código ou descrição"></div>
       <div class="campo"><label for="x-dest">Buscar município ou escola</label><input type="search" id="x-dest" placeholder="Ex.: Teresina"></div>
@@ -574,7 +576,8 @@ const XLSX_MINI=(function(){
 })();
 
 const DADOS = /*__DADOS__*/null;
-const APP = {emp:'', zero:false};
+const APP = {emp:'', zero:false, nc:false};
+const NC_OK = r => APP.nc || !r.nc || r.emp === 'Coala';   // itens não comerciais só entram com a caixa marcada (Coala = só brindes, sempre entra)
 (function(){
   const $=s=>document.querySelector(s);
   const fmt=new Intl.NumberFormat('pt-BR',{maximumFractionDigits:0}), f=n=>fmt.format(n);
@@ -627,7 +630,7 @@ const APP = {emp:'', zero:false};
   let ord={k:'desc',dir:1}, vis=[];
   function filtrar(){
     const p=$('#f-prog').value,g=$('#f-grupo').value,b=$('#f-busca').value.trim().toLowerCase();
-    vis=L.filter(r=>(!APP.emp||r.emp===APP.emp)
+    vis=L.filter(r=>(!APP.emp||r.emp===APP.emp)&&NC_OK(r)
       &&(!p||(p==='__sem__'?r.progs.length===0:r.progs.includes(p)))
       &&(!g||(g===ESCOPO?noEscopo(r):r.grupo===g))
       &&(!b||String(r.cod).includes(b)||r.desc.toLowerCase().includes(b))
@@ -733,12 +736,12 @@ const APP = {emp:'', zero:false};
 
   // ---------- filtros globais ----------
   function aplicarGlobal(){
-    APP.emp=$('#g-emp').value; APP.zero=$('#g-zero').checked;
+    APP.emp=$('#g-emp').value; APP.zero=$('#g-zero').checked; APP.nc=$('#g-nc').checked;
     menuProgramas(); filtrar();
     if(view==='prog'){ if(!programasDaEmpresa().some(([p])=>p===progAtual)) mostrar('estoque'); else desenharPrograma(); }
     document.dispatchEvent(new CustomEvent('empresa',{detail:APP.emp}));
   }
-  $('#g-emp').addEventListener('change',aplicarGlobal); $('#g-zero').addEventListener('change',aplicarGlobal);
+  $('#g-emp').addEventListener('change',aplicarGlobal); $('#g-zero').addEventListener('change',aplicarGlobal); $('#g-nc').addEventListener('change',aplicarGlobal);
   menuProgramas(); filtrar();
 })();
 
@@ -780,11 +783,13 @@ const APP = {emp:'', zero:false};
   let linhas=[], cols=[];
   function calc(){
     const g=$('#x-grupo').value,p=$('#x-prog').value,b=$('#x-busca').value.trim().toLowerCase(),dq=$('#x-dest').value.trim().toLowerCase();
-    linhas=L.filter(r=>(!APP.emp||r.emp===APP.emp)&&!r.grupo.startsWith('Fora do escopo')
+    const ano=$('#x-ano').value;
+    linhas=L.filter(r=>(!APP.emp||r.emp===APP.emp)&&!r.grupo.startsWith('Fora do escopo')&&NC_OK(r)
       &&(g!=='livros'||!r.progs.some(x=>SEMLIVRO.includes(x)))
       &&(!p||r.abas.includes(p))&&(!b||String(r.cod).includes(b)||r.desc.toLowerCase().includes(b))
       &&(!APP.zero||Math.round(r.atual)!==0))
-      .sort((a,c)=>a.desc.localeCompare(c.desc,'pt-BR')||a.cod-c.cod||a.emp.localeCompare(c.emp));
+      .sort((a,c)=>a.desc.localeCompare(c.desc,'pt-BR')||a.cod-c.cod||a.emp.localeCompare(c.emp))
+      .map(r=>{if(!ano)return r;const m=(r.m_anos||{})[ano]||{ini:0,comp:0,dest:{}};return Object.assign({},r,{m_ini:m.ini,m_comp:m.comp,m_dest:m.dest});});
     const tot={}; linhas.forEach(r=>{for(const k in r.m_dest) tot[k]=(tot[k]||0)+r.m_dest[k];});
     const nz=k=>Math.round(tot[k]||0)!==0;
     const din=tipo=>Object.keys(tot).filter(k=>DS[k]&&DS[k].tipo===tipo&&nz(k)&&(!dq||DS[k].rot.toLowerCase().includes(dq))).sort((a,c)=>DS[a].rot.localeCompare(DS[c].rot,'pt-BR'));
@@ -811,7 +816,9 @@ const APP = {emp:'', zero:false};
     $('#xk-itens').textContent=f(linhas.length); $('#xk-pf').textContent=f(tot.PF||0); $('#xk-pj').textContent=f(tot.PJ||0);
     $('#xk-mun').textContent=f(soma('mun')); $('#xk-esc').textContent=f(soma('esc')); $('#xk-saldo').textContent=f(T.fin);
   }
-  ['#x-grupo','#x-prog','#x-mun','#x-esc'].forEach(s=>$(s).addEventListener('change',desenhar));
+  const ANOS=[...new Set(L.flatMap(r=>Object.keys(r.m_anos||{})))].sort();
+  $('#x-ano').innerHTML='<option value="">Todo o período</option>'+ANOS.map(a=>`<option value="${a}">Ano Ref ${a} (out/${a-1} a set/${a})</option>`).join('');
+  ['#x-grupo','#x-prog','#x-mun','#x-esc','#x-ano'].forEach(s=>$(s).addEventListener('change',desenhar));
   let tm;['#x-busca','#x-dest'].forEach(s=>$(s).addEventListener('input',()=>{clearTimeout(tm);tm=setTimeout(desenhar,250)}));
   $('#x-xls').addEventListener('click',()=>{const tot=calc(), ce=!APP.emp;
     const cab=['Cód.','Descrição',...(ce?['Empresa']:[]),'Saldo inicial','Compras',...cols.map(c=>(c.g==='mun'?'Município: ':c.g==='esc'?'Escola: ':'')+c.rot),'Saldo final'];
@@ -953,7 +960,7 @@ const APP = {emp:'', zero:false};
   $('#m-cont').textContent=(DADOS.correcoes||[]).length||'';
   /* PAINEL */
   function painel(){
-    const emp=APP.emp, est=L.filter(r=>!emp||r.emp===emp);
+    const emp=APP.emp, est=L.filter(r=>(!emp||r.emp===emp)&&NC_OK(r));
     const valor=est.reduce((a,r)=>a+(r.custo||0)*Math.max(r.atual,0),0), ativos=est.filter(r=>r.atual>0).length;
     const alertas=est.filter(r=>r.alerta).length;
     const cl=M?M.clientes.filter(c=>!emp||c.emp===emp):[];
@@ -1030,6 +1037,7 @@ const APP = {emp:'', zero:false};
   /* liga tudo */
   sel.addEventListener('change',()=>{desenharChips();painel();precoAuto=true;preencherProgs();if($('#s-prog').value)sim();alunos();});
   painel();
+  document.addEventListener('empresa',painel);
   const bp=document.querySelector('aside.menu button.it[data-view="painel"]'); if(bp) bp.click();
 })();
 </script>

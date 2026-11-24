@@ -352,11 +352,28 @@ def saidas_por_destino(df, cad, cli):
         compras=np.where(ent & ~impl & ~aj & ~dev, q, 0),
         cli_q=np.where(sai & ~aj, q, 0) - np.where(ent & dev & ~aj, q, 0))
     base = df.groupby(["empresa_nome", "codigo"]).agg(ini=("ini", "sum"), compras=("compras", "sum")).reset_index()
+    # por Ano Ref (06/11/2026): saldo inicial do ano = tudo antes do ano + implantação/ajustes do ano
+    df = df.assign(ano=_ano_ref(df["data"]).fillna(0).astype(int))
+    anos = sorted(a for a in df["ano"].unique() if a > 0)
+    pa = df.groupby(["empresa_nome", "codigo", "ano"]).agg(ini=("ini", "sum"), comp=("compras", "sum"), cq=("cli_q", "sum"))
+    pd_ = df[df["cli_q"] != 0].groupby(["empresa_nome", "codigo", "ano", "dest"])["cli_q"].sum()
+    dest_ano = {}
+    for (e, c, a, d), v in pd_.items():
+        if round(v) != 0: dest_ano.setdefault((e, int(c), int(a)), {})[d] = float(v)
+    por_ano = {}
+    for (e, c), g in pa.groupby(level=[0, 1]):
+        g = g.droplevel([0, 1]); acum = 0.0; res = {}
+        for a in anos:
+            r = g.loc[a] if a in g.index else None
+            ini_a, comp_a, cq_a = (float(r["ini"]), float(r["comp"]), float(r["cq"])) if r is not None else (0.0, 0.0, 0.0)
+            res[str(a)] = {"ini": acum + ini_a, "comp": comp_a, "dest": dest_ano.get((e, int(c), int(a)), {})}
+            acum += ini_a + comp_a - cq_a
+        por_ano[(e, int(c))] = res
     m = df[df["cli_q"] != 0].groupby(["empresa_nome", "codigo", "dest"])["cli_q"].sum()
     out = {}
     for (e, c, d), v in m.items():
         if round(v) != 0: out.setdefault((e, int(c)), {})[d] = float(v)
-    linhas = {(e, int(c)): {"ini": float(i), "comp": float(cp), "dest": out.get((e, int(c)), {})}
+    linhas = {(e, int(c)): {"ini": float(i), "comp": float(cp), "dest": out.get((e, int(c)), {}), "anos": por_ano.get((e, int(c)), {})}
               for e, c, i, cp in zip(base["empresa_nome"], base["codigo"], base["ini"], base["compras"])}
     return linhas, {k: {"rot": v[0], "tipo": v[1]} for k, v in destinos.items()}
 
@@ -672,6 +689,8 @@ def main():
     for r in est:
         mm = matriz.get((r["emp"], r["cod"]), {"ini": 0, "comp": 0, "dest": {}})
         r["m_ini"], r["m_comp"], r["m_dest"] = mm["ini"], mm["comp"], mm["dest"]
+        r["m_anos"] = mm.get("anos", {})
+        r["nc"] = 1 if _categoria_nc(r.get("grupo"), r.get("progs")) else 0   # item não comercial (mídia, brindes...)
     desc = {r["cod"]: r["desc"] for r in est}
     progs = {r["cod"]: r["progs"] for r in est}
     corr = [dict(cod=int(k), desc=desc.get(k, ""), progs=progs.get(k, []), **v) for k, v in conc.items() if v["acoes"]]

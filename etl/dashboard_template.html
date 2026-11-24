@@ -479,15 +479,16 @@ body.tema-verbum .t2-mx tr.t2-sec td,body.tema-verbum .t2-scroll tfoot td{backgr
     <a class="ni ni-sub2" data-k="d-painel"   onclick="estDet('painel');fMenu()">↳ Painel detalhado</a>
     <a class="ni ni-sub2" data-k="d-estoque"  onclick="estDet('estoque');fMenu()">↳ Itens (Estoque Geral)</a>
     <a class="ni ni-sub2" data-k="d-margem"   onclick="estDet('margem');fMenu()">↳ Margem (venda × custo)</a>
-    <a class="ni ni-sub2" data-k="d-kits"     onclick="estDet('kits');fMenu()">↳ Preço × custo dos kits</a>
     <a class="ni ni-sub2" data-k="d-clientes" onclick="estDet('clientes');fMenu()">↳ Saídas por cliente</a>
     <a class="ni ni-sub2" data-k="d-corr"     onclick="estDet('corr');fMenu()">↳ Correções</a>
     <a class="ni ni-est" id="ni-est-ve" onclick="estVe('geral');fMenu()">🖨️ Estimativa de Venda Próximo Ciclo</a>
     <a class="ni ni-sub2" data-k="v-producao"    onclick="estVe('producao');fMenu()">↳ Necessidade de produção</a>
+    <a class="ni ni-sub2" data-k="v-verbum"      onclick="estVe('verbum');fMenu()">↳ Produção Verbum</a>
     <a class="ni ni-sub2" data-k="v-matriz"      onclick="estVe('matriz');fMenu()">↳ Item x Clientes</a>
     <a class="ni ni-sub2" data-k="v-conferencia" onclick="estVe('conferencia');fMenu()">↳ Falta x Análise de Estoque</a>
     <a class="ni ni-sub2" data-k="v-propostas"   onclick="estVe('propostas');fMenu()">↳ Propostas do Comercial</a>
     <a class="ni ni-sub2" data-k="v-vendas"      onclick="estVe('vendas');fMenu()">↳ Resumo de vendas</a>
+    <a class="ni ni-sub2" data-k="v-faturamento" onclick="estVe('faturamento');fMenu()">↳ Estimativa de faturamento</a>
     <a class="ni ni-sub2" data-k="v-regras"      onclick="estVe('regras');fMenu()">↳ Regras e parâmetros</a>
   </nav>
 </div>
@@ -2067,6 +2068,8 @@ function _temaFrame(f) {
       }
     }
     st.textContent = css;
+    // (11/11/2026) Estimativa: quadro de insumos segue a empresa da logo do topo (IAB ou Verbum)
+    if (f.id === 'if-estim' && f.contentWindow && f.contentWindow.setEmpresaTopo) f.contentWindow.setEmpresaTopo(EMP);
   } catch (e) {}
 }
 const T2_MESES_CICLO = ['Out','Nov','Dez','Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set'];

@@ -254,10 +254,12 @@ tfoot td{font-weight:600;background:#f9f9fb;border-top:1px solid var(--line);pad
       <div class="grp">Análise</div>
       <a data-view="geral" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg><span>Visão geral</span></a>
       <a data-view="producao"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V3h12v6"/><rect x="3" y="9" width="18" height="8" rx="2"/><path d="M6 14h12v7H6z"/></svg><span>Necessidade de produção</span></a>
+      <a data-view="verbum"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg><span>Produção Verbum</span></a>
       <a data-view="matriz"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/></svg><span>Item x Clientes</span></a>
       <a data-view="conferencia"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg><span>Falta x Análise de Estoque</span></a>
       <a data-view="propostas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg><span>Propostas do Comercial</span></a>
       <a data-view="vendas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg><span>Resumo de vendas</span></a>
+      <a data-view="faturamento"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l3-3 3 3 5-6"/><circle cx="18" cy="8" r="1"/></svg><span>Estimativa de faturamento</span></a>
       <div class="grp">Configuração</div>
       <a data-view="regras"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg><span>Regras e parâmetros</span></a>
     </nav>
@@ -279,6 +281,10 @@ tfoot td{font-weight:600;background:#f9f9fb;border-top:1px solid var(--line);pad
 
 <script>
 const D = /*__DADOS__*/null;
+if(!D){ // este é o MODELO (sem dados): mostra um aviso em vez de travar (10/11/2026)
+  document.addEventListener('DOMContentLoaded',()=>{ document.body.innerHTML='<div style="font-family:Poppins,Arial,sans-serif;max-width:560px;margin:80px auto;padding:24px;border:1px solid #d0d7e2;border-radius:12px;color:#01337C"><h2 style="margin-top:0">Este é o modelo da Estimativa de Venda</h2><p>Ele não tem dados. Rode o <b>ATUALIZAR DASHBOARD.bat</b> e abra o <b>dashboard.html</b> (aba Estimativa de Venda Próximo Ciclo) ou o arquivo <b>Estimativa de Vendas.html</b> desta pasta.</p></div>'; });
+  throw new Error('Modelo sem dados: abra o Estimativa de Vendas.html ou o dashboard.html');
+}
 const TEMPS = ['Fechada','Quente','Morna','Fria'];
 const TCOR = {Fechada:'#1f9d68',Quente:'#c64a35',Morna:'#d3881f',Fria:'#3461bb'};
 const $ = s => document.querySelector(s);
@@ -390,18 +396,18 @@ const LS='iab_estimativa_v1';
 const S = { view:'geral', modo:'ponderada', temps:{Fechada:true,Quente:true,Morna:true,Fria:true},
   pcts:Object.assign({Fechada:100},D.pcts), seg:0, versoes:true, verbum:true, proj:true, busca:'', prog:'', vend:'', uf:'', soFalta:true,
   sort:{k:'falta',d:-1}, filtroProp:'demanda', buscaProp:'', filtroConf:'todos', mz:{busca:'',prog:'',filtro:'todos',val:'falta',ord:'programa'}, vd:{periodo:'corte',busca:'',filtro:'todos',semNota:true,sort:{k:'tot',d:-1}} };
-try{ const s=JSON.parse(localStorage.getItem(LS)||'null'); if(s){ ['soFalta','versoes','verbum','proj'].forEach(k=>{ if(s[k]!=null) S[k]=s[k]; }); S.pcts.Fechada=100; } }catch(e){}
+try{ const s=JSON.parse(localStorage.getItem(LS)||'null'); if(s){ ['temps','soFalta','versoes','verbum','proj'].forEach(k=>{ if(s[k]!=null) S[k]=s[k]; }); S.pcts.Fechada=100; } }catch(e){}
 function persist(){ try{ localStorage.setItem(LS,JSON.stringify({modo:S.modo,temps:S.temps,pcts:S.pcts,seg:S.seg,soFalta:S.soFalta,versoes:S.versoes,verbum:S.verbum,proj:S.proj})); }catch(e){} }
 
 /* ---------- cálculo ---------- */
 // (23/10/2026) Cálculo simples: demanda total a 100% (sem % por temperatura e sem margem de segurança)
-S.modo='cenario'; S.seg=0; TEMPS.forEach(t=>S.temps[t]=true);
+S.modo='cenario'; S.seg=0; TEMPS.forEach(t=>{ if(S.temps[t]==null) S.temps[t]=true; });   // (10/11/2026) temperaturas: incluir/excluir
 function fator(t){ return S.temps[t] ? 1 : 0; }
 function calc(){
   const P = D.props;
   const pok = P.map(p => p.u && (S.verbum || p.tipo!=='Consignação') && (S.proj || !p.pj) && (!S.vend || p.vend===S.vend) && (!S.uf || p.uf===S.uf));
   const it = D.itens.map((x,i)=>({i, c:x.c, d:x.d, n:x.n, pr:x.pr, s:x.s, cs:x.cs, ds:x.ds||0, cu:x.cu, cud:x.cud, g:x.g,
-     sc:x.sc??x.s, rg:x.rg||[], rgt:(x.rg||[]).reduce((a,[,q])=>a+q,0), sp:x.sp||0, om:x.om||0,
+     sc:x.sc??x.s, rg:x.rg||[], rgt:(x.rg||[]).reduce((a,[,q])=>a+q,0), sp:x.sp||0, om:x.om||0, ve:x.ve||[], vet:(x.ve||[]).reduce((a,[,q])=>a+q,0),
      q:{Fechada:0,Quente:0,Morna:0,Fria:0}, cons:0, qp:0, qs:0, pj:0, pjc:0, cli:new Set()}));
   // o que já saiu (notas depois do corte) abate da proposta do cliente; a demanda é o que FALTA SAIR
   const saiu={}; for(const [pi,ii,q] of (D.saidas||[])) saiu[pi+'|'+ii]=(saiu[pi+'|'+ii]||0)+q;
@@ -472,16 +478,278 @@ function sheetSemEstoque(){
     total:['','Total ('+fn(r.length)+' itens)','',Math.round(r.reduce((a,o)=>a+o.x.bruta,0)),Math.round(r.reduce((a,o)=>a+o.x.nec,0)),r.reduce((a,o)=>a+o.x.falta,0),null,''],
     legenda:[[null,'Itens com demanda (proposta ou projeção) com saldo zero e sem outra versão (mesma descrição) com estoque.'],[OR['Projeção'].bg,'◇ Projeção: demanda vinda do que enviamos no ciclo passado a clientes com proposta ainda sem itens.'],[null,'Sem compra no período: pode ser item descontinuado ou versão nova com outro código/nome.']]};
 }
-const XL_EXTRA = {'Item x Clientes':()=>[sheetSemEstoque()], 'Necessidade de producao':()=>[sheetSemEstoque()]};
+// (10/11/2026) aba "Já saíram": municípios e escolas com notas desde o corte — nome e valor por tipo de saída
+// (23/11/2026) notas tiradas do resumo de vendas por exceção (lista NOTAS_IGNORAR_VENDAS do gerar_estimativa.py)
+function exclVendas(){ const E=(D.vendas||{}).excl||[]; if(!E.length) return [];
+  const g={}; E.forEach(e=>{ (g[e.motivo]=g[e.motivo]||[]).push(e); });
+  return Object.entries(g).map(([m,es])=>`Exceção — fora do relatório: NF ${es.map(e=>e.nf).join(', ')} (${brl(es.reduce((a,e)=>a+e.v,0))}): ${m}.`); }
+function sheetJaSairam(){
+  const VD=D.vendas||{clientes:[],notas:[]}, ini=tsBR(CORTE);
+  const ag=VD.clientes.map(c=>({c,v:0,e:0,b:0,o:0,d:0,n:0}));
+  // (23/11/2026) devoluções/retornos em coluna própria: Venda, Bonificação e Remessa ficam brutas e o Total segue líquido
+  for(const [ci,ts,col,val,nf,cn,dv] of (VD.notas||[])){ if(ts<ini&&!cn) continue; const a=ag[ci]; if(!a) continue;
+    if(col!=='e'&&(dv!=null?dv===1:val<0)) a.d+=val; else a[col]+=val; a.n++; }
+  const semAc=t=>String(t||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();
+  const ehMun=a=>/^munic/i.test(semAc(a.c.n));
+  const ehEsc=a=>!ehMun(a)&&!/verbum educa/.test(semAc(a.c.n))&&/col[e]gio|escola|educacional|centro de educa|instituto educa|creche|ensino|pedag/.test(semAc(a.c.n))
+                 &&!/municipa|estadua|prefeit|secretaria/.test(semAc(a.c.n));
+  const tot=a=>a.v+a.b+a.o+a.d;
+  const lista=f=>ag.filter(a=>a.n&&f(a)&&(Math.abs(tot(a))>0.005||Math.abs(a.d)>0.005)).sort((x,y)=>tot(y)-tot(x));
+  const mun=lista(ehMun), esc=lista(ehEsc);
+  const S0={b:1,c:'FFFFFF',bg:'2B56A8'}, ST={b:1,bg:'EEF1F7'};
+  const sm=(rs,f)=>rs.reduce((s,a)=>s+f(a),0), RD={f:'money',c:'B23C28'};
+  const sub=(rs,t)=>({v:[t,'',sm(rs,a=>a.v),sm(rs,a=>a.b),sm(rs,a=>a.o),sm(rs,a=>a.d)||null,sm(rs,tot)],st:Array(7).fill(ST).map((x,i)=>i===5?Object.assign({},ST,RD):x)});
+  const bloco=(rs,tit)=>[{v:[`${tit} (${rs.length})`,'',null,null,null,null,null],st:Array(7).fill(S0)},
+    ...rs.map(a=>({v:[a.c.n,(a.c.cid?a.c.cid+'/':'')+a.c.uf,a.v,a.b,a.o,a.d||null,tot(a)],st:[null,null,null,null,null,a.d?RD:null,null]})), sub(rs,'Subtotal '+tit.toLowerCase())];
+  const all=mun.concat(esc);
+  return {nome:'Já saíram',titulo:`Municípios e escolas que já receberam material — notas desde ${CORTE}`,
+    contexto:[`Gerado em ${D.gerado} · fonte: Relatório de faturamento (${VD.periodo&&VD.periodo[0]||''} a ${VD.periodo&&VD.periodo[1]||''}) · valores das notas (R$)`],
+    cols:[{h:'Cliente',w:52,f:'text'},{h:'Município/UF',w:24,f:'text'},{h:'Venda',w:16,f:'money'},{h:'Bonificação',w:16,f:'money'},{h:'Remessa / outras saídas',w:18,f:'money'},{h:'Devoluções',w:16,f:'money'},{h:'Total (líquido)',w:17,f:'money'}],
+    linhas:all.length?[...bloco(mun,'MUNICÍPIOS'),{v:['','',null,null,null,null,null]},...bloco(esc,'ESCOLAS')]:[],
+    total:['Total geral','',sm(all,a=>a.v),sm(all,a=>a.b),sm(all,a=>a.o),sm(all,a=>a.d),sm(all,tot)],
+    legenda:[[null,'Venda = notas de venda faturadas. Bonificação = remessas de bonificação. Remessa / outras saídas = simples remessa, consignação e outras saídas. Pilar/AL e os colégios da lista de exceção contam a simples remessa como Venda. Essas três colunas são brutas (antes das devoluções).'],
+      [null,'Devoluções = notas de devolução e retorno do cliente (devolução de venda, de bonificação, retorno de simples remessa e de consignação), em vermelho e com sinal negativo. Total (líquido) = Venda + Bonificação + Remessa + Devoluções.'],
+      [null,'Entrega futura: entra em Venda quando é faturada; a remessa da entrega futura não é somada de novo para não contar duas vezes.'],
+      [null,'Municípios = notas para prefeituras, secretarias e órgãos do município (juntos por município). Escolas = colégios, escolas, creches e centros educacionais particulares.'],
+      ...exclVendas().map(t=>['FFF2CC',t])]};
+}
+/* ---------- (11/11/2026) Estimativa de consumo de insumos: caixas, fita e etiquetas ----------
+   Base: "Base Insumos - Itens por Caixa.xlsx" (romaneios 2025/2026). Quantidade = o que FALTA SAIR das propostas do cenário. */
+const INS = D.insumos||null;
+const INS_SEG = pn => { const t=String(pn||''); let m;
+  if(/Pr[ée]-Escola II\b/.test(t)) return 'Pré II'; if(/Pr[ée]-Escola I\b/.test(t)) return 'Pré I';
+  if((m=/(\d)º ano/.exec(t))) return m[1]+'º ano'; return null; };
+const INS_TIPO = p => /^Kit do Professor/.test(p)?'Professor':/^Kit do Coord.*Escola/.test(p)?'Escola':/^Kit do Coord/.test(p)?'Coord/Secretaria':null;
+// (11/11/2026) demanda da coluna Verbum (consignação) sai em caixa da Verbum e abate das caixas do IAB
+const INS_VB = {'236':'2025','547':'2026','562':'2027','2023':'2024','240':'2022'};
+const insVb = k => INS_VB[k] || ('VB:'+k);
+// (12/11/2026) troca de modelos (Anderson): 340 e 520 → Modelo 250 nova (cód. 2362); 530 → 515 (IAB 2023 / Verbum 2024)
+const INS_REDIR = {'237':'250N','1391':'250N','240':'2023','2022':'2024'};
+const insRd = k => INS_REDIR[k] || k;
+const VBP_C = 'Produção Verbum';
+function insumosCalc(){
+  if(!INS) return null;
+  const {lin}=calc(); const M=S.mz;
+  const cls=p=>p.pj?'Projeção':p.t;
+  const loose={}, kitq={}, sem={}, est={};   // por cliente
+  // item sem parâmetro próprio: usa a mediana dos itens do mesmo programa que têm parâmetro (marcado como estimado)
+  const fb={}; { const g={}; D.itens.forEach(x=>{ const p=INS.itens[String(x.c)]; if(p&&x.pn) (g[x.pn]=g[x.pn]||[]).push(p); });
+    const med=a=>{ const v=a.filter(z=>z!=null).sort((p,q)=>p-q); return v.length?v[Math.floor(v.length/2)]:null; };
+    for(const [pn,ps] of Object.entries(g)){ const km={}; ps.forEach(p=>km[p.k]=(km[p.k]||0)+1);
+      fb[pn]={cap:med(ps.map(p=>p.cap)),kgu:med(ps.map(p=>p.kgu)),k:Object.keys(km).sort((p,q)=>km[q]-km[p])[0],fb:1}; } }
+  D.linhas.forEach(([pi,ii,q,papel],n)=>{ const L=lin[n]; if(!L.ok||!(L.rem>0)) return; const p=D.props[pi];
+    if(S.temps[p.t]===false) return;
+    const x=D.itens[ii]; if(M.prog&&!(x.pr||[]).includes(M.prog)) return;
+    const vb=p.tipo==='Consignação', ck=(vb?'VB§':'')+p.uf+'|'+p.cli, c=cls(p), seg=INS_SEG(x.pn), tp=INS_TIPO(String(papel||'')), par=INS.itens[String(x.c)], pf=fb[x.pn]&&fb[x.pn].cap?fb[x.pn]:null;
+    if(tp&&seg){ const k=[ck,c,seg,tp].join('§'); (kitq[k]=kitq[k]||[]).push(L.rem); }
+    else if(par){ const k=[ck,c,ii].join('§'); loose[k]=(loose[k]||0)+L.rem; }
+    else if(seg&&/Kit|Proje/.test(String(papel||''))){ const k=[ck,c,seg,'Professor'].join('§'); (kitq[k]=kitq[k]||[]).push(L.rem); }
+    else if(pf){ const k=[ck,c,ii].join('§'); loose[k]=(loose[k]||0)+L.rem; est[ii]=(est[ii]||0)+L.rem; }
+    else { sem[ii]=(sem[ii]||0)+L.rem; } });
+  const R={};   // modelo → {cls:{cx,av,kt}}
+  const add=(mk,c,cx,kg,et,orig)=>{ const r=(R[mk]=R[mk]||{by:{},kg:{},et:{},av:0,kt:0}); r.by[c]=(r.by[c]||0)+cx; r.kg[c]=(r.kg[c]||0)+kg; r.et[c]=(r.et[c]||0)+et; r[orig]+=cx; };
+  const etq=(mk,e)=> e!=null?e:((INS.mods[mk]||{}).e??1);
+  let unAv=0, unKit=0, nKits=0;
+  for(const [k,u] of Object.entries(loose)){ const ks=k.split('§'), vb=ks[0]==='VB', [c,ii]=ks.slice(vb?2:1); const x=D.itens[+ii], par=INS.itens[String(x.c)]||fb[x.pn];
+    const cx=Math.ceil(u/par.cap-1e-9); unAv+=u; const pk=insRd(par.k||'?'), mk=vb?insVb(pk):pk;
+    add(mk,c,cx,u*(par.kgu||0),cx*etq(mk),'av'); }
+  for(const [k,qs] of Object.entries(kitq)){ const ks=k.split('§'), vb=ks[0]==='VB', [c,seg,tp]=ks.slice(vb?2:1);
+    const f={}; qs.forEach(v=>f[v]=(f[v]||0)+1);
+    const kits=+Object.keys(f).sort((a,b)=>f[b]-f[a]||b-a)[0];   // nº de kits = quantidade mais comum entre os itens do kit
+    const kp=INS.kits[`${seg} – Kit ${tp}`]||INS.kits[`${seg} – Kit Professor`]||{k:'562',pk:null,e:null};
+    unKit+=qs.reduce((a,v)=>a+v,0); nKits+=kits;
+    const kk=insRd(kp.k||'562'), mk=vb?insVb(kk):kk;
+    const ek=kp.e!=null?kp.e:(seg==='1º ano'&&tp!=='Aluno'?2:null);   // regra: kits do 1º ano = 2 etiquetas por caixa
+    add(mk,c,kits,kits*(kp.pk||0),kits*etq(mk,ek),'kt'); }
+  // (19/11/2026) produção Verbum (planilha Demanda Verbum): caixas = necessidade ÷ qtd por caixa do mesmo título já enviado, por item
+  const vbp={it:[],sem:[]}; const DVI=(D.demanda_verbum||{}).itens||[];
+  if(!M.prog) DVI.forEach(x=>{ if(!(x.nec>0)) return; const p=x.cx; if(!p||!p.cap){ vbp.sem.push(x); return; }
+    const cx=Math.ceil(x.nec/p.cap-1e-9); add(p.k,VBP_C,cx,x.nec*(p.kgu||0),cx*etq(p.k),'av'); vbp.it.push({x,cx}); });
+  const usadas=[...CLS,VBP_C].filter(c=>Object.values(R).some(r=>r.by[c]));
+  const linhas=Object.entries(R).map(([k,r])=>{ let m=INS.mods[k];
+    if(!m&&k.startsWith('VB:')){ const o=INS.mods[k.slice(3)]||{}; m={emp:'Verbum',cod:'(sem caixa Verbum)',m:(o.m||'?')+' — usa a caixa do IAB',f:o.f||0,e:o.e??1,a:o.a,l:o.l,c:o.c}; }
+    m=m||{emp:'',cod:k,m:'Sem modelo',f:0,e:1};
+    return {k,m,r,tot:usadas.reduce((a,c)=>a+(r.by[c]||0),0)}; }).sort((a,b)=>(a.m.emp==='Verbum')-(b.m.emp==='Verbum')||b.tot-a.tot);
+  const tot=f=>usadas.map(c=>linhas.reduce((a,l)=>a+f(l,c),0));
+  const fita=tot((l,c)=>(l.r.by[c]||0)*(l.m.f||0)), etqs=tot((l,c)=>l.r.et[c]||0), peso=tot((l,c)=>l.r.kg[c]||0), cxs=tot((l,c)=>l.r.by[c]||0);
+  const semL=Object.entries(sem).map(([ii,u])=>({x:D.itens[+ii],u})).sort((a,b)=>b.u-a.u);
+  const estL=Object.entries(est).map(([ii,u])=>({x:D.itens[+ii],u})).sort((a,b)=>b.u-a.u);
+  const cxEmp=e=>linhas.filter(l=>(l.m.emp==='Verbum')===(e==='Verbum')).reduce((a,l)=>a+l.tot,0);
+  return {usadas,linhas,fita,etqs,peso,cxs,unAv,unKit,nKits,semL,estL,vbp,cxIab:cxEmp('IAB'),cxVb:cxEmp('Verbum')};
+}
+// (11/11/2026) quadros separados IAB e Verbum; dentro do dashboard segue a empresa escolhida na logo do topo
+var EMP_TOPO = null;
+function setEmpresaTopo(e){ const v=e==='VERBUM'?'Verbum':e==='IAB'?'IAB':null; if(v===EMP_TOPO) return; EMP_TOPO=v; try{ if(S.view==='matriz') render(); }catch(err){} }
+const insEmps = () => EMP_TOPO ? [EMP_TOPO] : ['IAB','Verbum'];
+const PFE = (D.ecommerce_pf||{}).por_emp||{};
+// (11/11/2026) saldo atual das embalagens (programa EMBALAGEM) por empresa — mesma regra do saldo (implantação + entradas − saídas)
+const EMB = {}; (D.embalagens||[]).forEach(e=>EMB[e.emp+'|'+e.cod]=e);
+// estoque da caixa de uma linha do quadro: caixa Verbum → estoque da Verbum; "usa a caixa do IAB" → estoque do IAB
+function embLinha(l){ const vbIab=l.k.startsWith('VB:'), cod=vbIab?(INS.mods[l.k.slice(3)]||{}).cod:l.m.cod;
+  if(cod==null||typeof cod!=='number') return null;
+  const emp=(l.m.emp==='Verbum'&&!vbIab)?'Verbum':'IAB'; const e=EMB[emp+'|'+cod]; return e?{...e,emp}:{emp,cod,s:0,ult:'',d:''}; }
+// (11/11/2026) fita adesiva 72 mm (cód. 1762): rolo de 100 m (informado por Anderson). Estoque da fita está no IAB.
+const FITA = {cod:1762, m:100};
+function fitaEst(emp){ if(emp!=='IAB') return null; const e=EMB['IAB|'+FITA.cod]; return e?{rolos:e.s,m:e.s*FITA.m,ult:e.ult}:{rolos:0,m:0,ult:''}; }
+// (16/11/2026) medidas da caixa em cm (A = altura, L = largura, C = comprimento), da aba Modelos de Caixa da base de insumos
+const dimNum = v => v==null||v===''?null:+v;
+const dimTxt = m => [m.a,m.l,m.c].every(v=>v!=null&&v!=='')?[m.a,m.l,m.c].map(v=>String(+v).replace('.',',')).join(' × '):'';
+const CAIXAS_QUADRO = () => new Set([...Object.values(INS.mods).map(m=>m.cod).filter(c=>typeof c==='number'),FITA.cod]);
+function insQuadro(r,emp){
+  const L=r.linhas.filter(l=>(l.m.emp==='Verbum')===(emp==='Verbum')), U=r.usadas.filter(c=>L.some(l=>l.r.by[c]));
+  const soma=f=>U.map(c=>L.reduce((a,l)=>a+f(l,c),0));
+  return {emp,L,U,cxs:soma((l,c)=>l.r.by[c]||0),fita:soma((l,c)=>(l.r.by[c]||0)*(l.m.f||0)),etqs:soma((l,c)=>l.r.et[c]||0),peso:soma((l,c)=>l.r.kg[c]||0),
+    kits:L.reduce((a,l)=>a+l.r.kt,0),av:L.reduce((a,l)=>a+l.r.av,0)};
+}
+// (11/11/2026) saquinho de e-commerce: envios para pessoa física com até 2 volumes no Ano Ref anterior (1 saquinho por volume)
+function pfKpi(emp){ const p=PFE[emp]; if(!p) return '';
+  return `<div class="kpi"><div class="lbl">Saquinhos e-commerce</div><div class="val">${fn(p.volumes)}</div><div class="meta">PF até 2 volumes · base Ano Ref ${p.ref}</div></div>`; }
+function pfLinha(emp){ const p=PFE[emp]; if(!p) return '';
+  return `<div class="help" style="margin:10px 20px 16px"><div><b>Saquinho de e-commerce (pessoa física, até 2 volumes):</b> ${fn(p.volumes)} saquinhos estimados para o ciclo — no Ano Ref ${p.ref} (out–set) foram <b>${fn(p.envios)} envios</b> para pessoa física com 1 ou 2 volumes, somando <b>${fn(p.volumes)} volumes</b> (1 saquinho por volume). No Ano Ref ${p.atual} até agora: ${fn(p.envios_at)} envios / ${fn(p.volumes_at)} volumes. Fonte: Quadro de Envios (devoluções fora). Não depende das propostas nem dos filtros acima e fica fora das caixas, fita e etiquetas.</div></div>`; }
+function embOutros(emp){ const cx=CAIXAS_QUADRO();
+  const o=(D.embalagens||[]).filter(e=>e.emp===emp&&!cx.has(e.cod)&&Math.round(e.s)!==0).sort((a,b)=>a.d.localeCompare(b.d,'pt-BR'));
+  if(!o.length) return '';
+  return `<div class="help" style="margin:0 20px 16px"><div><b>Outros itens de embalagem em estoque (${emp}):</b> ${o.map(e=>`${esc(e.d)} (cód. ${e.cod}): <b>${fn(Math.round(e.s))}</b>`).join(' · ')}.</div></div>`; }
+function vbpLinha(r){ const v=r.vbp; if(!v||(!v.it.length&&!v.sem.length)) return S.mz.prog&&((D.demanda_verbum||{}).itens||[]).length?`<div class="help" style="margin:10px 20px 16px"><div>A <b>produção Verbum</b> fica fora quando há filtro de programa.</div></div>`:'';
+  const ab={}; v.it.forEach(({x,cx})=>{ const a=(ab[x.aba]=ab[x.aba]||{n:0,cx:0}); a.n+=x.nec; a.cx+=cx; });
+  return `<div class="help" style="margin:10px 20px 16px"><div><b>Produção Verbum:</b> ${fn(v.it.reduce((a,o)=>a+o.cx,0))} caixas para ${fn(v.it.reduce((a,o)=>a+o.x.nec,0))} un. de necessidade — ${Object.entries(ab).map(([a,o])=>`${esc(a)}: ${fn(o.cx)} cx (${fn(o.n)} un.)`).join(' · ')}. Detalhe por item na aba <b>Caixas Produção Verbum</b> do Excel.${v.sem.length?` <span class="falta">Sem parâmetro de caixa (fora da conta): ${v.sem.map(x=>`${x.c} ${esc(x.n)} (${fn(x.nec)})`).join(' · ')} — informe quantos vão por caixa.</span>`:''}</div></div>`; }
+function sheetCaixasVbp(){
+  const r=INS?insumosCalc():null, v=r&&r.vbp; if(!v) return null;
+  const B={b:1,bg:'EEF1F7'}, A={bg:'FFF2CC'};
+  const nm=k=>{ const m=INS.mods[k]; if(m) return `${m.cod} – Verbum ${m.m}`; const o=INS.mods[String(k).replace('VB:','')]||{}; return `${o.cod||''} – ${o.m||k} (usa a caixa do IAB)`; };
+  const L=v.it.map(({x,cx})=>({v:[x.aba,String(x.c),x.n,x.nec,x.sug,x.cx.cap,cx,nm(x.cx.k),x.cx.ref],st:[null,null,null,null,null,/estimado/.test(x.cx.ref)?A:null,{b:1}]}));
+  const S2=v.sem.map(x=>({v:[x.aba,String(x.c),x.n,x.nec,x.sug,null,null,'—','sem parâmetro de caixa: informe a quantidade por caixa'],st:[null,null,null,null,null,A,null,null,{i:1,c:'B23C28'}]}));
+  return {nome:'Caixas Produção Verbum',titulo:'Caixas da produção Verbum — por item da planilha Demanda Verbum',
+    contexto:[`Gerado em ${D.gerado} · fonte: ${(D.demanda_verbum||{}).arq||''} · caixas pela necessidade (o que será enviado), não pela sugestão de produção`],
+    cols:[{h:'Aba',w:16,f:'text'},{h:'Cód.',w:9,f:'text',centro:1},{h:'Item',w:46,f:'text'},{h:'Necessidade',w:12,f:'int'},{h:'Sugestão de produção',w:12,f:'int'},{h:'Qtd por caixa',w:10,f:'int'},{h:'Caixas',w:9,f:'int'},{h:'Caixa',w:30,f:'text'},{h:'Origem da qtd por caixa',w:60,f:'text'}],
+    linhas:[...L,...S2], total:['Total','','',v.it.reduce((a,o)=>a+o.x.nec,0)+v.sem.reduce((a,x)=>a+x.nec,0),v.it.reduce((a,o)=>a+o.x.sug,0)+v.sem.reduce((a,x)=>a+x.sug,0),null,v.it.reduce((a,o)=>a+o.cx,0),'',''],
+    legenda:[[null,'Caixas = necessidade ÷ quantidade por caixa, arredondado para cima por item. A quantidade por caixa vem do mesmo título já enviado pelo IAB nos romaneios de 2025/2026 (mediana dos códigos de referência).'],
+      [null,'Livro do professor (LP) usa o parâmetro do livro do aluno. Caixa IAB 220 → Verbum 220 (cód. 2025); Germinar → Verbum 515 (cód. 2024); EVA 54 letras → Modelo 450 do IAB (a Verbum não tem essa caixa).'],
+      ['FFF2CC','Amarelo = quantidade por caixa estimada (sem envio do título) ou faltando.']]};
+}
+function blocoInsumos(){
+  if(!INS) return `<div class="card" style="margin-top:18px"><div class="hd"><h3>📦 Estimativa de consumo de insumos</h3></div><div class="help warn" style="margin:0 20px 20px"><div>Base de insumos não encontrada. Coloque o arquivo <b>Base Insumos - Itens por Caixa.xlsx</b> na pasta <b>estoque</b> e rode a atualização.</div></div></div>`;
+  const r=insumosCalc(), sm=a=>a.reduce((s,v)=>s+v,0), f1=v=>v?fn(Math.round(v)):'<span class="muted">–</span>';
+  const quadro=q=>{ const U=q.U;
+    const th=U.map(c=>`<th class="num" style="background:#${TSH[c].h};color:#${TSH[c].ht}">${c==='Projeção'?'◇ ':''}${c}</th>`).join('');
+    const tl=(t,a,u)=>`<tr><td colspan="4"><b>${t}</b></td>${a.map(v=>`<td class="num">${f1(v)}</td>`).join('')}<td class="num" style="font-weight:700">${fn(Math.round(sm(a)))}${u?' '+u:''}</td><td></td><td></td><td></td></tr>`;
+    const sub=q.emp==='Verbum'?'coluna Verbum (consignação, o que falta sair) + produção Verbum (necessidade da planilha Demanda Verbum)':'propostas do IAB (sem a coluna Verbum) · o que falta sair no cenário';
+    return `<div class="card" style="margin-top:18px"><div class="hd"><h3>📦 Insumos ${q.emp} — caixas, fita e etiquetas</h3><span class="sub">${sub}${S.mz.prog?` · programa: ${esc(S.mz.prog)}`:''}</span></div>
+    ${q.L.length?`<div class="kpis" style="padding:0 20px">
+      <div class="kpi"><div class="lbl">Caixas</div><div class="val">${fn(sm(q.cxs))}</div><div class="meta">${fn(q.av)} de itens avulsos · ${fn(q.kits)} de kits</div></div>
+      <div class="kpi"><div class="lbl">Fita</div><div class="val">${fn(Math.round(sm(q.fita)))} m</div><div class="meta">≈ ${fn(Math.ceil(sm(q.fita)/FITA.m))} rolos de ${FITA.m} m${(f=>f?` · estoque ${fn(Math.round(f.rolos))} rolos (${fn(Math.round(f.m))} m)`:'')(fitaEst(q.emp))}</div></div>
+      <div class="kpi"><div class="lbl">Etiquetas</div><div class="val">${fn(Math.round(sm(q.etqs)))}</div><div class="meta">kits do 1º ano: 2 por caixa · demais: 1</div></div>
+      <div class="kpi"><div class="lbl">Peso estimado</div><div class="val">${sm(q.peso)>=10000?fn(Math.round(sm(q.peso)/1000))+' t':fn(Math.round(sm(q.peso)))+' kg'}</div><div class="meta">${fn(Math.round(sm(q.peso)))} kg</div></div>
+      ${pfKpi(q.emp)}</div>
+    <div class="tbl-scroll" style="max-height:none;margin-top:10px"><table><thead><tr><th>Cód. caixa</th><th>Modelo</th><th title="Altura × Largura × Comprimento, em cm">Medidas A × L × C (cm)</th><th class="num">Fita/cx (m)</th>${th}<th class="num">Total caixas</th><th class="num">Avulsos / kits</th><th class="num" title="Saldo atual da caixa no estoque (IAB ou Verbum)">Estoque atual</th><th class="num" title="Estoque atual − total de caixas da demanda">Saldo após demanda</th></tr></thead>
+    <tbody>${q.L.map(l=>`<tr><td class="cod">${esc(String(l.m.cod??l.k))}</td><td>${esc(l.m.m)}</td><td style="white-space:nowrap">${dimTxt(l.m)||'<span class="falta">sem medida</span>'}</td><td class="num">${l.m.f?l.m.f.toFixed(3).replace('.',','):'–'}</td>
+      ${U.map(c=>`<td class="num">${f1(l.r.by[c])}</td>`).join('')}<td class="num" style="font-weight:600">${fn(l.tot)}</td><td class="num muted">${fn(l.r.av)} / ${fn(l.r.kt)}</td>${(()=>{ const e=embLinha(l); if(!e) return '<td class="num muted">–</td><td class="num muted">–</td>';
+        const sd=e.s-l.tot; return `<td class="num" title="${esc(e.emp)} · cód. ${e.cod}${e.ult?' · último movimento '+e.ult:''}">${fn(Math.round(e.s))}${l.k.startsWith('VB:')?' <span class="muted">(IAB)</span>':''}</td><td class="num ${sd<0?'falta':'ok'}" style="font-weight:600">${sd<0?'−'+fn(Math.round(-sd)):fn(Math.round(sd))}</td>`; })()}</tr>`).join('')}
+    ${tl('Total de caixas',q.cxs,'')}${tl('Fita (metros)',q.fita,'m').replace(/<td><\/td><td><\/td><\/tr>$/,(f=>{ if(!f) return '<td class="num muted">–</td><td class="num muted">–</td></tr>';
+      const sd=f.m-sm(q.fita); return `<td class="num" title="Fita adesiva 72 mm (cód. ${FITA.cod}): ${fn(Math.round(f.rolos))} rolos × ${FITA.m} m${f.ult?' · último movimento '+f.ult:''}">${fn(Math.round(f.m))} m</td><td class="num ${sd<0?'falta':'ok'}" style="font-weight:600" title="${sd<0?'Faltam ≈ '+fn(Math.ceil(-sd/FITA.m))+' rolos':'Sobram ≈ '+fn(Math.floor(sd/FITA.m))+' rolos'}">${sd<0?'−'+fn(Math.round(-sd)):fn(Math.round(sd))} m</td></tr>`; })(fitaEst(q.emp)))}${tl('Etiquetas',q.etqs,'')}${tl('Peso estimado (kg)',q.peso,'kg')}</tbody></table></div>`
+    :`<div class="empty-st">Sem demanda de ${q.emp} neste filtro.</div>`}${q.emp==='Verbum'?vbpLinha(r):''}${pfLinha(q.emp)}${embOutros(q.emp)}</div>`; };
+  const notas=`${r.estL.length?`<div class="help" style="margin:12px 0 0"><div><b>${fn(r.estL.length)} itens sem parâmetro próprio</b> (${fn(Math.round(r.estL.reduce((a,o)=>a+o.u,0)))} un.) foram calculados pela <b>mediana dos itens do mesmo programa</b> (ex.: ${r.estL.slice(0,6).map(o=>`${o.x.c} ${esc(o.x.n||o.x.d)}`).join(' · ')}${r.estL.length>6?' …':''}).</div></div>`:''}
+  ${r.semL.length?`<div class="help warn" style="margin:12px 0 0"><div><b>${fn(r.semL.length)} itens sem parâmetro de caixa</b> (${fn(Math.round(r.semL.reduce((a,o)=>a+o.u,0)))} un., fora do cálculo): ${r.semL.slice(0,12).map(o=>`${o.x.c} ${esc(o.x.n||o.x.d)} (${fn(Math.round(o.u))})`).join(' · ')}${r.semL.length>12?' …':''}. Inclua na base para entrarem.</div></div>`:''}
+  <div class="help" style="margin:12px 0 0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h0"/></svg><div><b>Como é calculado:</b> usa o que <b>falta sair</b> de cada proposta das temperaturas incluídas (mesmo cenário da tabela acima). <b>Empresa:</b> ${EMP_TOPO?`mostrando só <b>${EMP_TOPO}</b>, conforme a empresa escolhida na logo do topo do dashboard. `:''}O quadro <b>Verbum</b> é a demanda da coluna Verbum (consignação), contada em <b>caixas da Verbum</b> (220 → 2025, 170 → 2026, padrão → 2027, 515 → 2024; 450, 520 e 250 não têm caixa Verbum e usam a caixa do IAB); ela <b>não entra</b> no quadro do IAB. <b>Produção Verbum</b> (coluna laranja): itens da planilha <b>Demanda Verbum</b> pela <b>necessidade</b> (o que vai ser enviado; a margem de 15% da sugestão de produção fica no estoque e não usa caixa); caixas = necessidade ÷ quantidade por caixa do <b>mesmo título já enviado pelo IAB</b> nos romaneios (Enraizar, Germinar, Plenitude, Movimente, Grafismo, Minilivros, EVA, cartazes, cartelas), arredondado para cima por item; o livro do professor (LP) usa o parâmetro do livro do aluno; Consciência ainda não tem envio e usa o Enraizar HGC; Germinar vai na Verbum 515, os demais na Verbum 220. <b>Itens avulsos</b> (material do aluno, coleções): caixas = falta sair ÷ quantidade padrão por caixa do item, <b>arredondado para cima por cliente</b> (as sobras viram caixas e cobrem as caixas mistas). Item sem parâmetro próprio usa a mediana dos itens do mesmo programa. <b>Kits</b> (professor, coord. da escola, coord. da secretaria): 1 caixa por kit; nº de kits = quantidade mais comum entre os itens do kit no cliente; modelo pelo segmento (Pré → 515, 1º ano → 450, professor 2º–9º → 170, coord./escola 2º–5º → padrão, 6º–9º → 170). <b>Troca de modelos (12/11/2026):</b> a demanda das caixas 340 e 520 vai para a <b>Modelo 250 nova (cód. 2362)</b> e a da 530 vai para a <b>515</b> (IAB 2023 / Verbum 2024). Na <b>projeção</b>, os itens que só saem em kit contam como kit do professor. <b>Fita</b> = caixas × metros por caixa do modelo. <b>Estoque atual</b> = saldo da caixa pela movimentação (implantação + entradas − saídas): caixas Verbum no estoque da Verbum (Filial + Matriz), as demais no estoque do IAB; <b>saldo após demanda</b> = estoque atual − total de caixas (vermelho = falta comprar). <b>Fita</b>: estoque = rolos da fita adesiva 72 mm (cód. 1762) × 100 m. <b>Etiquetas</b>: kits do 1º ano = 2 por caixa; demais = 1. <b>Peso</b> = unidades × peso por unidade (avulsos) e kits × peso médio da caixa do kit. Parâmetros dos romaneios de 2025/2026 em <b>estoque\\Base Insumos - Itens por Caixa.xlsx</b> (células amarelas podem ser ajustadas).</div></div>`;
+  return insEmps().map(e=>quadro(insQuadro(r,e))).join('')+`<div style="margin-top:4px">${notas}</div>`;
+}
+function sheetInsumos(){ const v=insEmps().includes('Verbum')?sheetCaixasVbp():null; return [...insEmps().map(e=>sheetInsumosEmp(e)), ...(v&&v.linhas.length?[v]:[]), sheetComprasEmb(), sheetEtiquetas()]; }
+// (12/11/2026) aba "Etiquetas": papel couchê por cor de tarja + etiqueta branca 10x8 (cód. 2263), em ETIQUETAS
+// (compra em rolo de 400 é convertida). Item sem movimento no ERP sai com as células em amarelo para preencher à mão.
+function sheetEtiquetas(){
+  const E=D.etiquetas||[], P=D.etiquetas_periodo||[], B={b:1,bg:'EEF1F7'}, Y={bg:'FFF2CC'};
+  const S=['text','text','int','int','int','money','text','text','text'];
+  const linhas=E.map(e=>{ const sem=!e.mov;
+    return {v:[String(e.cod),e.d,sem?null:Math.round(e.s||0),sem?null:Math.round(e.c||0),sem?null:(e.ce?Math.round(e.ce):null),e.cu||null,
+        e.cu?`${e.cud} · NF ${e.nf} · ${e.forn}`:'',e.ult||'',sem?'sem movimento no ERP — preencher estoque e consumo à mão':''],
+      st:S.map((f,i)=>Object.assign({f,h:f==='text'?'left':'right'},sem&&(i===2||i===3)?Y:{},i===3&&!sem?{b:1}:{},i===8&&sem?{i:1,c:'9A6A09'}:{}))}; });
+  const sm=k=>E.reduce((a,e)=>a+(e.mov?(e[k]||0):0),0);
+  return {nome:'Etiquetas',titulo:'Etiquetas — estoque atual e consumo 2025/2026',
+    contexto:[`Gerado em ${D.gerado} · fonte: Movimentação de Estoque${P.length?` (movimentos das etiquetas de ${P[0]} a ${P[1]})`:''} · quantidades em etiquetas (rolo = 400)`],
+    cols:[{h:'Cód.',w:10,f:'text',centro:1},{h:'Descrição',w:34,f:'text'},{h:'Estoque atual (etiquetas)',w:14,f:'int'},{h:'Consumo 2025/2026 (etiquetas)',w:15,f:'int'},
+      {h:'Comprado no período (etiquetas)',w:15,f:'int'},{h:'Último valor por etiqueta',w:13,f:'money'},{h:'Última compra',w:36,f:'text'},{h:'Último movimento',w:13,f:'text',centro:1},{h:'Observação',w:44,f:'text'}],
+    linhas, total:['Total','',Math.round(sm('s')),Math.round(sm('c')),Math.round(sm('ce')),null,'','',''],
+    legenda:[[null,'Papel couchê = etiqueta da caixa, uma cor por série/tarja do romaneio. Cód. 2263 = etiqueta branca 10x8 cm (cadastro novo).'],
+      [null,'Estoque atual = implantação + entradas − saídas. Consumo 2025/2026 = todas as saídas no período (no ERP a baixa é feita em lote, por ajuste de estoque).'],
+      [null,'As compras vieram ora por etiqueta (R$ 0,10), ora por rolo de 400 (R$ 39,48): movimento com valor unitário ≥ R$ 10 é tratado como rolo e convertido em etiquetas.'],
+      ['FFF2CC','Amarelo = item ainda sem movimento no ERP: preencha o estoque e o consumo à mão (o arquivo é gerado de novo a cada exportação).']]};
+}
+// (11/11/2026) aba "Compras de embalagens": notas de compra (qtd e valor unitário) + último custo, estoque e custo estimado da falta
+// (12/11/2026) aba "Compras de embalagens": notas de compra + UMA tabela por embalagem com estoque, consumo 2025/2026,
+// demanda, falta, último custo e custo estimado da falta (a baixa no ERP é feita em lote, por ajuste, então o consumo vale para o período)
+function sheetComprasEmb(){
+  const C=D.embalagens_compras||[], P=D.embalagens_periodo||[], B={b:1,bg:'EEF1F7'}, H={b:1,c:'FFFFFF',bg:'2B56A8'};
+  const r=INS?insumosCalc():null, dem={};
+  if(r) insEmps().forEach(emp=>{ const q=insQuadro(r,emp);
+    q.L.forEach(l=>{ const e=embLinha(l); if(!e) return; const k=e.emp+'|'+e.cod; dem[k]=(dem[k]||0)+l.tot; });
+    if(emp==='IAB'||q.fita.some(v=>v)){ const k='IAB|'+FITA.cod; dem[k]=(dem[k]||0)+q.fita.reduce((a,v)=>a+v,0)/FITA.m; } });
+  const E=new Map((D.embalagens||[]).map(e=>[e.emp+'|'+e.cod,e]));
+  // caixa com demanda que ainda não tem movimento no estoque (ex.: Modelo 250 nova, cód. 2362)
+  for(const k of Object.keys(dem)) if(!E.has(k)){ const [emp,cod]=k.split('|'); const m=Object.values(INS?INS.mods:{}).find(x=>String(x.cod)===cod)||{};
+    E.set(k,{emp,cod:+cod,d:`CAIXA ${m.emp==='Verbum'?'VERBUM':'IAB'} - ${String(m.m||'').toUpperCase()} (sem movimento no estoque)`,s:0}); }
+  const res=[...E.values()].map(e=>{ const d=dem[e.emp+'|'+e.cod]||0, falta=d>0?Math.max(0,Math.ceil(d-Math.max(0,e.s))):0, cons=(e.c_aj||0)+(e.c_rq||0)+(e.c_ou||0);
+      return {e,d:Math.ceil(d),falta,cons,custo:e.cu&&falta?falta*e.cu:null}; })
+    .filter(o=>Math.round(o.e.s)!==0||o.d>0||o.cons>0)
+    .sort((a,b)=>(b.custo||0)-(a.custo||0)||b.d-a.d||(a.e.emp==='Verbum')-(b.e.emp==='Verbum')||b.cons-a.cons);
+  const n=10, vazio={v:Array(n).fill(null)};
+  const S2=['text','text','text','int','int','int','int','money','money','text'];
+  const cx=res.filter(o=>/CAIXA/i.test(o.e.d)&&o.e.emp==='IAB'), totCx=cx.reduce((a,o)=>a+(o.e.c_aj||0)+(o.e.c_ou||0),0);
+  const fita=res.find(o=>o.e.emp==='IAB'&&o.e.cod===FITA.cod), mFita=fita?fita.cons*FITA.m:0;
+  const linhas=[...C.map(c=>({v:[c.dt,c.emp,c.nf,c.forn,c.cod,c.d,c.q,c.cu,c.cu!=null?c.q*c.cu:null,c.cu==null?'nota lançada sem valor no ERP':''],
+      st:c.cu==null?[null,null,null,null,null,null,null,null,null,{i:1,c:'B23C28'}]:null})),
+    {v:['Total das compras','',null,'',null,'',C.reduce((a,c)=>a+c.q,0),null,C.reduce((a,c)=>a+(c.cu!=null?c.q*c.cu:0),0),''],st:Array(n).fill(B)},
+    vazio,
+    {v:[`ESTOQUE, CONSUMO 2025/2026, ÚLTIMO CUSTO E CUSTO ESTIMADO DA FALTA`,...Array(n-1).fill(null)],st:Array(n).fill(H)},
+    {v:['Cód.','Empresa','Item','Estoque atual',`Consumo 2025/2026`,'Demanda (caixas / rolos)','Falta comprar','Último valor unitário','Custo estimado da falta','Origem do valor'],st:Array(n).fill(Object.assign({},B,{f:'text',w:1}))},
+    ...res.map(({e,d,falta,cons,custo})=>({v:[String(e.cod),e.emp,e.d,Math.round(e.s),cons||null,d||null,falta||null,e.cu||null,custo,
+        e.cu?`${e.cun} em ${e.cud}`:'sem valor no ERP'],
+      st:S2.map((f,i)=>Object.assign({f,h:f==='text'?'left':'right'},i===6&&falta?{b:1,c:'B23C28'}:{},i===9&&!e.cu?{i:1,c:'B23C28'}:{},i===8&&custo?{b:1}:{},i===4&&cons?{b:1}:{}))})),
+    {v:['Total','','',null,null,null,null,null,res.reduce((a,o)=>a+(o.custo||0),0),''],st:S2.map(f=>Object.assign({},B,{f}))},
+    ...(totCx?[{v:['Caixas consumidas do estoque do IAB em 2025/2026 (inclui Verbum e Ômega; sem requisição interna)','','',null,totCx,null,null,null,null,''],st:S2.map(f=>Object.assign({},B,{f}))}]:[]),
+    ...(fita&&totCx?[{v:['Fita consumida por caixa em 2025/2026','','',null,null,null,null,null,null,`${(mFita/totCx).toFixed(2).replace('.',',')} m por caixa (${fn(mFita)} m ÷ ${fn(totCx)} caixas) — o parâmetro por modelo usa 0,86 a 1,82 m`],st:S2.map(f=>Object.assign({},B,{f}))}]:[])];
+  return {nome:'Compras de embalagens',titulo:'Compras de embalagens — notas de compra (abaixo: estoque, consumo 2025/2026, último custo e custo estimado da falta)',
+    contexto:[`Gerado em ${D.gerado} · fonte: Movimentação de Estoque (entradas com natureza COMPRA e saídas dos itens de embalagem: caixas, fitas, filmes, embalagens)`],
+    cols:[{h:'Data',w:12,f:'text'},{h:'Empresa',w:10,f:'text'},{h:'NF',w:36,f:'text'},{h:'Fornecedor',w:40,f:'text'},{h:'Cód.',w:14,f:'int'},{h:'Item',w:40,f:'text'},{h:'Quantidade',w:14,f:'int'},{h:'Valor unitário',w:16,f:'money'},{h:'Total',w:18,f:'money'},{h:'Observação',w:44,f:'text'}],
+    linhas,
+    legenda:[[null,'Notas de compra: entradas com natureza COMPRA dos itens de embalagem no período da movimentação.'],
+      [null,`Consumo 2025/2026: todas as saídas da embalagem de ${P[0]||''} a ${P[1]||''} (baixa por ajuste/descarte, requisição interna e outras). No ERP a baixa é feita em lote, não por envio, então o consumo vale para o período todo. Requisição interna do IAB = caixas Verbum passadas para a Verbum (aparecem de novo na linha da Verbum).`],
+      [null,'Demanda e falta vêm dos quadros de insumos (mesmo cenário da aba Item x Clientes); fita em rolos de 100 m. Último valor unitário: última entrada com custo (compra, ajuste ou implantação).'],
+      [null,'Custo estimado da falta = falta comprar × último valor unitário (sem reajuste de preço).']]};
+}
+function sheetInsumosEmp(emp){
+  if(!INS) return {nome:'Insumos '+emp,linhas:[]};
+  const r=insumosCalc(), q=insQuadro(r,emp), U=q.U, sm=a=>a.reduce((s,v)=>s+v,0), B={b:1,bg:'EEF1F7'};
+  return {nome:'Insumos '+emp,titulo:`Estimativa de consumo de insumos ${emp} — caixas, fita e etiquetas`,
+    contexto:contextoXL((emp==='Verbum'?'coluna Verbum (consignação, o que falta sair) + produção Verbum (necessidade da planilha Demanda Verbum), em caixas da Verbum':'propostas do IAB, sem a coluna Verbum · quantidade: o que falta sair das propostas do cenário')+(S.mz.prog?` · programa: ${S.mz.prog}`:'')),
+    cols:[{h:'Cód. caixa',w:16,f:'text',centro:1},{h:'Modelo',w:30,f:'text'},{h:'Altura (cm)',w:9,f:'dec'},{h:'Largura (cm)',w:9,f:'dec'},{h:'Comprimento (cm)',w:11,f:'dec'},{h:'Fita por caixa (m)',w:11,f:'dec'},
+      ...U.map(c=>({hst:{bg:TSH[c].h,c:TSH[c].ht},h:c,w:11,f:'int'})),{h:'Total',w:12,f:'int'},{h:'Caixas de itens avulsos',w:12,f:'int'},{h:'Caixas de kits',w:12,f:'int'},{h:'Estoque atual',w:12,f:'int'},{h:'Saldo após demanda',w:12,f:'int'}],
+    linhas:(q.L.length||PFE[emp])?[...q.L.map(l=>{ const e=embLinha(l), sd=e?Math.round(e.s-l.tot):null; const st=[]; if(!dimTxt(l.m)) st[2]=st[3]=st[4]={bg:'FCEBE7'}; st[U.length+10]=sd!=null?(sd<0?{b:1,c:'B23C28'}:{b:1,c:'157950'}):null;
+        return {v:[String(l.m.cod??l.k),l.m.m,dimNum(l.m.a),dimNum(l.m.l),dimNum(l.m.c),l.m.f||null,...U.map(c=>l.r.by[c]||null),l.tot,l.r.av||null,l.r.kt||null,e?Math.round(e.s):null,sd],st}; }),
+      ...[['Total de caixas',q.cxs],['Fita (metros)',q.fita],['Etiquetas',q.etqs],['Peso estimado (kg)',q.peso]].map(([t,a])=>{ const f=t.startsWith('Fita')?fitaEst(emp):null, sd=f?Math.round(f.m-sm(a)):null;
+        const st=Array(U.length+11).fill(B); if(f) st[U.length+10]=Object.assign({},B,{c:sd<0?'B23C28':'157950'});
+        return {v:[t,f?`${Math.ceil(sm(a)/FITA.m)} rolos de ${FITA.m} m · estoque ${Math.round(f.rolos)} rolos`:'',null,null,null,null,...a.map(v=>Math.round(v)||null),Math.round(sm(a)),null,null,f?Math.round(f.m):null,sd],st}; }),
+      ...(PFE[emp]?[{v:Array(U.length+11).fill(null)},{v:['Saquinho e-commerce (PF até 2 volumes)',`base: Ano Ref ${PFE[emp].ref} — ${PFE[emp].envios} envios`,null,null,null,null,...U.map(()=>null),PFE[emp].volumes,null,null,null,null],st:Array(U.length+11).fill({b:1,bg:'FFF2CC'})}]:[]),
+      ...(()=>{ const cx=CAIXAS_QUADRO(), o=(D.embalagens||[]).filter(e=>e.emp===emp&&!cx.has(e.cod)&&Math.round(e.s)!==0);
+        return o.length?[{v:Array(U.length+11).fill(null)},{v:['Outros itens de embalagem em estoque',...Array(U.length+10).fill(null)],st:Array(U.length+11).fill({b:1,bg:'EEF1F7'})},
+          ...o.map(e=>({v:[String(e.cod),e.d,null,null,null,null,...U.map(()=>null),null,null,null,Math.round(e.s),null]}))]:[]; })()]:[],
+    legenda:[[null,emp==='Verbum'?'Verbum: demanda da coluna Verbum (consignação), contada em caixas da Verbum (220 → 2025, 170 → 2026, padrão → 2027, 515 → 2024). 450, 520 e 250 não têm caixa Verbum: usam a caixa do IAB.':'IAB: propostas do IAB; a demanda da coluna Verbum (consignação) está no quadro/aba da Verbum.'],
+      [null,'Itens avulsos: caixas = falta sair ÷ quantidade padrão por caixa do item, arredondado para cima por cliente. Kits: 1 caixa por kit; nº de kits = quantidade mais comum entre os itens do kit no cliente.'],
+      [null,'Fita = caixas × metros por caixa do modelo. Etiquetas: kits do 1º ano = 2 por caixa; demais = 1. Peso = unidades × peso por unidade (avulsos) e kits × peso médio da caixa do kit.'],
+      ...(PFE[emp]?[[ 'FFF2CC',`Saquinho e-commerce: envios para pessoa física com 1 ou 2 volumes no Ano Ref ${PFE[emp].ref} (out–set), 1 saquinho por volume — Quadro de Envios, devoluções fora. Não depende das propostas e fica fora das caixas, fita e etiquetas.`]]:[]),
+      [null,'Estoque atual = saldo da caixa pela movimentação (implantação + entradas − saídas): caixas Verbum no estoque da Verbum (Filial + Matriz), as demais no estoque do IAB. Saldo após demanda = estoque atual − total de caixas (vermelho = falta comprar). Fita: estoque = rolos da fita adesiva 72 mm (cód. 1762) × 100 m por rolo.'],
+      [null,'Medidas da caixa em cm: Altura × Largura × Comprimento (aba Modelos de Caixa da base de insumos). Em vermelho claro = caixa sem medida cadastrada.'],
+      [null,'Parâmetros: romaneios de 2025/2026 — estoque\\Base Insumos - Itens por Caixa.xlsx.'+(r.semL.length?` ${r.semL.length} itens sem parâmetro de caixa ficaram fora (${Math.round(r.semL.reduce((a,o)=>a+o.u,0))} un.).`:'')]]};
+}
+const XL_EXTRA = {'Estoque x Demanda':()=>[...sheetInsumos(),sheetSemEstoque(),sheetJaSairam()], 'Necessidade de producao':()=>[sheetSemEstoque()]};
 const verTxt = x => x.ver==='nova' ? 'Versão mais nova' : x.ver==='antiga' ? 'Versão antiga' : '';
 
 /* ---------- navegação ---------- */
-const VIEWS = {geral:['Análise','Visão geral'], producao:['Análise','Necessidade de produção'], conferencia:['Análise','Falta x Análise de Estoque'], matriz:['Análise','Item x Clientes — saldo, saídas, falta e sobra'], propostas:['Análise','Propostas do Comercial'], vendas:['Análise','Resumo de vendas por cliente'], regras:['Configuração','Regras e parâmetros']};
+const VIEWS = {geral:['Análise','Visão geral'], producao:['Análise','Necessidade de produção'], verbum:['Análise','Produção Verbum — previsão de demanda da Verbum'], conferencia:['Análise','Falta x Análise de Estoque'], matriz:['Análise','Item x Clientes — saldo, saídas, falta e sobra'], propostas:['Análise','Propostas do Comercial'], vendas:['Análise','Resumo de vendas por cliente'], faturamento:['Análise','Estimativa de faturamento — propostas e projeções'], regras:['Configuração','Regras e parâmetros']};
 function go(v){ S.view=v; document.querySelectorAll('#nav a').forEach(a=>a.classList.toggle('on',a.dataset.view===v));
   $('#crumb').textContent=VIEWS[v][0]; $('#pageTitle').textContent=VIEWS[v][1]; render(); window.scrollTo(0,0); }
 document.querySelectorAll('#nav a').forEach(a=>a.addEventListener('click',()=>go(a.dataset.view)));
 $('#printBtn').addEventListener('click',()=>window.print());
-function render(){ ({geral:vGeral, producao:vProducao, conferencia:vConferencia, matriz:vMatriz, propostas:vPropostas, vendas:vVendas, regras:vRegras})[S.view](); }
+function render(){ ({geral:vGeral, producao:vProducao, verbum:vVerbum, conferencia:vConferencia, matriz:vMatriz, propostas:vPropostas, vendas:vVendas, faturamento:vFaturamento, regras:vRegras})[S.view](); }
 
 /* ---------- barra de cenário (comum) ---------- */
 function opts(arr,sel,todos){ return `<option value="">${todos}</option>`+arr.map(v=>`<option ${v===sel?'selected':''} value="${esc(v)}">${esc(v)}</option>`).join(''); }
@@ -490,6 +758,7 @@ function cenarioBar(){
   const ufs=[...new Set(D.props.filter(p=>p.u).map(p=>p.uf).filter(Boolean))].sort();
   return `<div class="card no-print" style="margin-bottom:18px"><div class="scen">
     <div class="grpx"><span class="lbl-mini">Cálculo</span><b style="font-size:13px">Demanda total (100%) − saldo atual</b></div>
+    <div class="grpx"><span class="lbl-mini">Temperaturas</span>${TEMPS.map(t=>`<button type="button" class="chip ${S.temps[t]?'':'t-off'}" data-temp="${t}" aria-pressed="${S.temps[t]}" title="${S.temps[t]?'Clique para excluir':'Clique para incluir'} as propostas ${t} do cálculo"><span class="sw" style="background:${TCOR[t]}"></span>${t}</button>`).join('')}</div>
     <div class="grpx"><span class="lbl-mini">Versões antigas</span><div class="seg" role="group">
       <button type="button" data-ver="1" class="${S.versoes?'on':''}" title="O saldo das versões antigas (mesma descrição, código menor) é usado antes de imprimir a versão nova">Usar antes de imprimir</button>
       <button type="button" data-ver="0" class="${!S.versoes?'on':''}" title="Cada código é calculado sozinho">Não considerar</button></div></div>
@@ -663,17 +932,19 @@ const ORD_T={Fechada:0,Quente:1,Morna:2,Fria:3};
 const GCOR=[['EAF1FB','3685FE'],['FFF4DC','D3881F'],['EAF6EF','1F9D68'],['F3ECFA','8E5BC6'],['FCEBE7','C64A35'],['E8F6F7','1A9AA6']];
 // classes das colunas de cliente, na ordem da planilha: Fechado, Quente, Morna, Projeção, Fria (mais escuro = mais chance de fechar)
 const CLS=['Fechada','Quente','Morna','Projeção','Fria'], ORD_C={Fechada:0,Quente:1,Morna:2,'Projeção':3,Fria:4};
-const TSH={Fechada:{h:'0B2E6B',ht:'FFFFFF',c:'C3D2EC'},Quente:{h:'2F6FD0',ht:'FFFFFF',c:'DCE7F8'},Morna:{h:'2E9E68',ht:'FFFFFF',c:'DCF0E4'},'Projeção':{h:'8E5BC6',ht:'FFFFFF',c:'EFE6F8'},Fria:{h:'BFDCCB',ht:'1D3B2A',c:'F2F8F4'}};
+const TSH={Fechada:{h:'0B2E6B',ht:'FFFFFF',c:'C3D2EC'},Quente:{h:'2F6FD0',ht:'FFFFFF',c:'DCE7F8'},Morna:{h:'2E9E68',ht:'FFFFFF',c:'DCF0E4'},'Projeção':{h:'8E5BC6',ht:'FFFFFF',c:'EFE6F8'},Fria:{h:'BFDCCB',ht:'1D3B2A',c:'F2F8F4'},'Produção Verbum':{h:'C2571A',ht:'FFFFFF',c:'FBE9DD'}};
 const MZV={falta:'Falta sair',proposta:'Proposta',saiu:'Já saiu',considerado:'Considerada'};
 const CORTE = D.corte||'';
 const GRAF = D.graficas||[];
 const nomeGraf = g => g.replace(/\b(LTDA|EIRELI|EPP|ME|S\/?A|EMPREENDIMENTOS|COMERCIAIS|COMERCIO|INDUSTRIA)\b\.?/gi,'').replace(/\s+/g,' ').trim();
 // colunas do caminho do saldo: no corte → + gráficas → − saiu p/ propostas → ± outras → saldo atual
 const colsSaldo = () => [
-  {k:'sc', h:`Saldo em ${CORTE}`, v:x=>x.sc, tip:'Saldo congelado na data de corte'},
+  {k:'sc', h:`Saldo em ${CORTE}`, v:x=>x.sc, tip:'Saldo congelado na data de corte, já com os ajustes de estoque feitos depois dela (tratados como implantação)'},
   ...GRAF.map((g,j)=>({k:'g'+j, h:`+ ${nomeGraf(g)}`, gf:1, v:x=>(x.rg.find(r=>r[0]===j)||[,0])[1], tip:`Recebido de ${g} depois de ${CORTE}`})),
-  {k:'sp', h:'− Saiu p/ propostas', v:x=>x.sp, tip:`Saiu para clientes das propostas depois de ${CORTE} (venda, bonificação, simples remessa, consignação; devoluções abatem)`},
-  {k:'om', h:'± Outras mov.', v:x=>x.om, tip:'Outras entradas e saídas depois do corte (clientes sem proposta, ajustes, descarte, devoluções...)'},
+  {k:'sp', h:'− Saiu p/ propostas', v:x=>x.sp-x.vet, tip:`Saiu para clientes das propostas depois de ${CORTE} (venda, bonificação, simples remessa; devoluções abatem)`},
+  ...(D.escolas_vb||[]).map((e,j)=>({k:'e'+j, h:`− ${e}`, gf:1, v:x=>(x.ve.find(r=>r[0]===j)||[,0])[1],
+    tip:/via Verbum/.test(e)?`Consignado à Verbum e faturado pela Verbum para a escola depois de ${CORTE} — abate a demanda da Verbum`:`Enviado depois de ${CORTE} para cliente com proposta "Material enviado" (fora da demanda)`})),
+  {k:'om', h:'± Outras mov.', v:x=>x.om, tip:'Outras entradas e saídas depois do corte: clientes sem proposta na demanda, devoluções desses clientes, consignação à Verbum ainda sem NF para escola, transferências (ajustes de estoque ficam no saldo do corte)'},
   {k:'s', h:'= Saldo atual', v:x=>x.s, forte:1, tip:'Estoque do dia (usado no cálculo da falta)'}];
 function blocosMatriz(){
   const {it,all,pok,lin}=calc(); const M=S.mz;
@@ -706,7 +977,8 @@ function blocosMatriz(){
   if(M.ord==='programa') blocos.splice(0,blocos.length,...juntarVolumes(blocos));   // Vol. I, Vol. II... em sequência
   let ng=0; const cores=new Map(); blocos.forEach(b=>{ if(b.g){ const k=b.orig||b; if(!cores.has(k)) cores.set(k,GCOR[ng++%GCOR.length]); b.cor=cores.get(k); } });
   const rows=blocos.flatMap(b=>b.ms.map((m,j)=>({x:m,b,pri:j===0,ult:j===b.ms.length-1})));
-  const cols=clientes.filter(c=>rows.some(r=>cel[r.x.i]&&cel[r.x.i][c.k]));
+  // (10/11/2026) clientes das temperaturas excluídas na barra de cálculo não aparecem como coluna
+  const cols=clientes.filter(c=>S.temps[c.t]!==false&&rows.some(r=>cel[r.x.i]&&cel[r.x.i][c.k]));
   // saldo atual que atende o que falta sair de cada cliente: com versões, o saldo do grupo inteiro (mais nova → mais antiga)
   const est={};
   for(const b of blocosOrig){
@@ -722,7 +994,76 @@ function blocosMatriz(){
   const dem=x=>M.val==='proposta'?x.qp:M.val==='saiu'?x.qs:M.val==='considerado'?x.cons:x.bruta;
   return {it,all,clientes,cols,cel,vcel,rows,blocos,status,dem,M};
 }
+// (19/11/2026) Item x Clientes com a VERBUM escolhida na logo do topo: a Verbum não tem propostas no CRM, então a tabela mostra
+// a demanda da planilha Demanda Verbum (necessidade x estoque Verbum x sugestão de produção) e a consignação do IAB para a Verbum
+function dadosMzVerbum(){
+  const M=S.mz, q=(M.busca||'').trim().toLowerCase(), I=((D.demanda_verbum||{}).itens)||[];
+  const F=I.filter(x=>(!S.mzVbAba||x.aba===S.mzVbAba)&&(!q||(x.c+' '+x.n+' '+x.cat).toLowerCase().includes(q)))
+    .map(x=>({...x,falta:Math.max(0,Math.ceil((x.nec||0)-Math.max(0,x.s||0)-1e-9))}));
+  const {all,lin}=calc(), sal={}; all.forEach(x=>sal[x.i]=x.s);
+  const cg={}; D.linhas.forEach(([pi,ii],n)=>{ const L=lin[n], p=D.props[pi]; if(!L.ok||p.tipo!=='Consignação') return;
+    const z=(cg[ii]=cg[ii]||{i:ii,p:0,s:0,r:0}); z.p+=L.q; z.s+=L.s; z.r+=L.rem; });
+  const C=Object.values(cg).map(z=>{ const x=D.itens[z.i]; return {...z,c:x.c,d:x.d||x.n,pn:x.pn||'',sal:sal[z.i]}; })
+    .filter(z=>(!M.prog||(D.itens[z.i].pr||[]).includes(M.prog))&&(!q||(z.c+' '+z.d).toLowerCase().includes(q)))
+    .sort((a,b)=>b.r-a.r||String(a.d).localeCompare(String(b.d),'pt-BR'));
+  return {I,F,C,abas:[...new Set(I.map(x=>x.aba))]};
+}
+function vMatrizVerbum(){
+  const M=S.mz, {I,F,C,abas}=dadosMzVerbum(), sm=(a,k)=>a.reduce((t,x)=>t+(+(typeof k==='function'?k(x):x[k])||0),0);
+  const progs=[...new Set(D.itens.flatMap(x=>x.pr||[]))].sort((a,b)=>a.localeCompare(b,'pt-BR'));
+  const atende=z=>z.r<=1e-9?'sai':(z.sal||0)>=z.r-1e-9?'ok':(z.sal||0)>0?'pa':'no';
+  $('#content').innerHTML=cenarioBar()+`
+  <div class="kpis">
+    <div class="kpi"><div class="lbl">Necessidade Verbum (planilha)</div><div class="val">${fn(sm(F,'nec'))}</div><div class="meta">${fn(F.length)} itens · ${I.length?esc(D.demanda_verbum.arq):'planilha não encontrada'}</div></div>
+    <div class="kpi"><div class="lbl">A produzir (sugestão)</div><div class="val">${fn(sm(F,'sug'))}</div><div class="meta">necessidade + margem da planilha</div></div>
+    <div class="kpi"><div class="lbl">Falta pelo estoque Verbum</div><div class="val" style="color:var(--red)">${fn(sm(F,'falta'))}</div><div class="meta">necessidade − estoque Verbum atual</div></div>
+    <div class="kpi"><div class="lbl">Consignação IAB → Verbum</div><div class="val">${fn(sm(C,'r'))}</div><div class="meta">falta sair · ${fn(C.filter(z=>z.r>0).length)} itens · do estoque do IAB</div></div>
+  </div>
+  <div class="card" style="margin-top:16px"><div class="hd"><h3>Item x Verbum — demanda da planilha Demanda Verbum</h3><span class="sub">a Verbum não tem propostas no CRM: a demanda vem da planilha de previsão (pasta estoque)</span></div>
+  <div class="hd" style="padding-top:0">
+    <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><input id="mzBusca" placeholder="Buscar código ou item" value="${esc(M.busca)}" aria-label="Buscar item"></div>
+    <select class="sel" id="mzVbAba" aria-label="Aba">${opts(abas,S.mzVbAba||'','Todas as abas')}</select>
+    <div class="spacer"></div><span class="sub">${fn(F.length)} itens Verbum · ${fn(C.length)} itens em consignação</span>
+    <button class="btn sm no-print" id="mzCsv" type="button">Exportar Excel</button></div>
+  <div class="tbl-scroll" style="max-height:60vh">${F.length?`<table><thead><tr><th>Cód.</th><th>Item</th><th>Aba</th><th class="num">Estoque Verbum atual</th><th class="num">Necessidade</th><th class="num">Falta</th><th class="num">A produzir (sugestão)</th><th class="num" title="Quantidade por caixa usada no cálculo de insumos">Qtd/caixa</th></tr></thead><tbody>
+    ${F.map(x=>`<tr><td class="cod">${x.c}</td><td class="itn">${esc(x.n)}${/\bLP\b/.test(x.n)?' <span class="vb">professor</span>':''}</td><td style="font-size:12px">${esc(x.aba)}</td>
+      <td class="num">${x.s!=null?fn(Math.round(x.s)):'<span class="muted">sem movimento</span>'}</td><td class="num">${fn(x.nec)}</td><td class="num ${x.falta?'falta':'ok'}" style="font-weight:600">${x.falta?fn(x.falta):'–'}</td>
+      <td class="num" style="font-weight:600">${x.sug?fn(x.sug):'<span class="muted">0</span>'}</td><td class="num muted" title="${esc(x.cx?x.cx.ref:'sem parâmetro de caixa')}">${x.cx?fn(x.cx.cap):'<span class="falta">?</span>'}</td></tr>`).join('')}
+    </tbody><tfoot><tr><td></td><td>Total (${fn(F.length)} itens)</td><td></td><td class="num">${fn(Math.round(F.reduce((a,x)=>a+Math.max(0,x.s||0),0)))}</td><td class="num">${fn(sm(F,'nec'))}</td><td class="num falta">${fn(sm(F,'falta'))}</td><td class="num">${fn(sm(F,'sug'))}</td><td></td></tr></tfoot></table>`
+    :'<div class="empty-st">Nenhum item da planilha da Verbum neste filtro.</div>'}</div></div>
+  <div class="card" style="margin-top:16px"><div class="hd"><h3>Consignação do IAB para a Verbum (coluna Verbum)</h3><span class="sub">itens do IAB nas propostas de consignação · saem do estoque do IAB${M.prog?` · programa: ${esc(M.prog)}`:''}</span>
+    <div class="spacer"></div><select class="sel" id="mzProg" aria-label="Programa">${opts(progs,M.prog,'Todos os programas')}</select></div>
+  <div class="tbl-scroll" style="max-height:50vh">${C.length?`<table><thead><tr><th>Cód.</th><th>Item</th><th>Programa</th><th class="num">Proposta</th><th class="num">Já saiu</th><th class="num">Falta sair</th><th class="num">Saldo IAB atual</th></tr></thead><tbody>
+    ${C.map(z=>{ const a=atende(z); return `<tr class="click" data-item="${z.i}"><td class="cod">${z.c}</td><td class="itn">${esc(z.d)}</td><td style="font-size:12px">${esc(z.pn)}</td><td class="num">${fn(z.p)}</td><td class="num">${fn(z.s)}</td>
+      <td class="num" style="font-weight:600;color:${{ok:'#157950',pa:'#b36b00',no:'#c0392b',sai:'#2b56a8'}[a]}" title="${{ok:'saldo do IAB atende',pa:'saldo do IAB atende em parte',no:'sem saldo no IAB',sai:'tudo enviado'}[a]}">${z.r>0?fn(z.r):'✓'}</td><td class="num">${z.sal!=null?fn(Math.round(z.sal)):'–'}</td></tr>`; }).join('')}
+    </tbody><tfoot><tr><td></td><td>Total (${fn(C.length)} itens)</td><td></td><td class="num">${fn(sm(C,'p'))}</td><td class="num">${fn(sm(C,'s'))}</td><td class="num">${fn(sm(C,'r'))}</td><td></td></tr></tfoot></table>`
+    :'<div class="empty-st">Sem consignação para a Verbum neste filtro.</div>'}</div></div>
+  <div class="help" style="margin-top:14px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h0"/></svg><div><b>Verbum escolhida na logo do topo.</b> A Verbum não tem propostas no CRM, por isso não há colunas por cliente. <b>Item x Verbum</b>: itens da planilha ${esc((D.demanda_verbum||{}).arq||'Demanda Verbum')}; <b>estoque Verbum atual</b> = saldo da Verbum (Filial + Matriz) pela movimentação; <b>falta</b> = necessidade − estoque Verbum (estoque negativo conta como zero); <b>a produzir</b> = coluna Sugestão de Produção da planilha; <b>qtd/caixa</b> = a usada no quadro de insumos abaixo (passe o mouse para ver a origem). <b>Consignação</b>: itens do IAB nas propostas de consignação para a Verbum (proposta, já saiu e falta sair desde o corte); a cor do "falta sair" compara com o <b>saldo atual do IAB</b> (verde atende, laranja em parte, vermelho sem saldo, ✓ azul tudo enviado). Para ver as propostas do IAB por cliente, escolha a logo do IAB no topo.</div></div>`;
+  $('#content').insertAdjacentHTML('beforeend', blocoInsumos());
+  bindCenario();
+  const b=$('#mzBusca'); b.oninput=()=>{M.busca=b.value; const pos=b.selectionStart; vMatriz(); const n=$('#mzBusca'); n.focus(); n.setSelectionRange(pos,pos);};
+  $('#mzVbAba').onchange=e=>{S.mzVbAba=e.target.value; vMatriz();};
+  $('#mzProg').onchange=e=>{M.prog=e.target.value; vMatriz();};
+  document.querySelectorAll('tr[data-item]').forEach(e=>e.onclick=()=>modalItem(+e.dataset.item));
+  $('#mzCsv').onclick=exportMatrizVerbum;
+}
+function exportMatrizVerbum(){
+  const {F,C}=dadosMzVerbum(), sm=(a,k)=>a.reduce((t,x)=>t+(+x[k]||0),0), arq=(D.demanda_verbum||{}).arq||'';
+  XL.baixar('Estoque x Demanda Verbum',[
+    {nome:'Item x Verbum',titulo:'Item x Verbum — demanda da planilha Demanda Verbum',contexto:[`Gerado em ${D.gerado} · planilha ${arq}`+(S.mzVbAba?` · aba: ${S.mzVbAba}`:'')+(S.mz.busca?` · busca: "${S.mz.busca}"`:'')],
+     cols:[{h:'Código',w:9,f:'text',centro:1},{h:'Item',w:46,f:'text'},{h:'Aba',w:16,f:'text'},{h:'Estoque Verbum atual',w:13,f:'int'},{h:'Necessidade',w:12,f:'int'},{h:'Falta',w:10,f:'int'},{h:'A produzir (sugestão)',w:13,f:'int'},{h:'Qtd por caixa',w:10,f:'int'}],
+     congelaCol:2, linhas:F.map(x=>({v:[String(x.c),x.n,x.aba,x.s!=null?Math.round(x.s):null,x.nec,x.falta||null,x.sug,x.cx?x.cx.cap:null],st:[null,null,null,null,null,x.falta?{b:1,c:'B23C28'}:null,{b:1}]})),
+     total:['','Total ('+fn(F.length)+' itens)','',Math.round(F.reduce((a,x)=>a+Math.max(0,x.s||0),0)),sm(F,'nec'),sm(F,'falta'),sm(F,'sug'),null],
+     legenda:[[null,'A Verbum não tem propostas no CRM: a demanda é a planilha de previsão da Verbum (pasta estoque).'],[null,'Falta = necessidade − estoque Verbum atual (Filial + Matriz, pela movimentação; negativo conta como zero). A produzir = coluna Sugestão de Produção da planilha.']]},
+    {nome:'Consignacao IAB-Verbum',titulo:'Consignação do IAB para a Verbum — proposta, já saiu e falta sair',contexto:[`Gerado em ${D.gerado} · notas desde ${CORTE}`+(S.mz.prog?` · programa: ${S.mz.prog}`:'')],
+     cols:[{h:'Código',w:9,f:'text',centro:1},{h:'Item',w:46,f:'text'},{h:'Programa',w:26,f:'text'},{h:'Proposta',w:11,f:'int'},{h:'Já saiu',w:11,f:'int'},{h:'Falta sair',w:11,f:'int'},{h:'Saldo IAB atual',w:12,f:'int'}],
+     congelaCol:2, linhas:C.map(z=>({v:[String(z.c),z.d,z.pn,z.p,z.s,z.r||null,z.sal!=null?Math.round(z.sal):null],st:[null,null,null,null,null,{b:1}]})),
+     total:['','Total ('+fn(C.length)+' itens)','',sm(C,'p'),sm(C,'s'),sm(C,'r'),null],
+     legenda:[[null,'Itens do IAB nas propostas de consignação para a Verbum; saem do estoque do IAB.']]},
+    ...sheetInsumos().filter(sh=>sh&&sh.linhas&&sh.linhas.length)]);
+}
 function vMatriz(){
+  if(EMP_TOPO==='Verbum') return vMatrizVerbum();
   const {it,all,clientes,cols,cel,vcel,rows,blocos,status,dem,M}=blocosMatriz();
   const tF=it.filter(x=>x.falta>0), tS=it.filter(x=>x.sobra>0&&x.bruta>0);
   const ant=all.filter(x=>x.ver==='antiga'&&x.s>0), usaAnt=ant.reduce((a,x)=>a+x.usa,0), salAnt=ant.reduce((a,x)=>a+x.s,0);
@@ -767,7 +1108,7 @@ function vMatriz(){
     <td class="fim r1">${fn(sm(xs,x=>x.dT||0))}</td><td class="fim r2">${fn(sm(xs,x=>x.sT||0))}</td><td class="fim r4 falta">${fn(sm(xs,'falta'))}</td><td class="fim r5 ok">${fn(sm(xs,'sobra'))}</td></tr></tfoot></table>`
     :'<div class="empty-st">Nenhum item neste filtro.</div>'}</div></div>
   <div class="help" style="margin-top:14px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h0"/></svg><div><b>Saldo congelado em ${esc(CORTE)}</b>; depois dele entram as notas de compra de cada <b>gráfica</b> e as notas que <b>saíram para os clientes das propostas</b> (venda, bonificação, simples remessa e consignação Verbum; devoluções abatem). O <b>saldo atual</b> (estoque do dia) é o usado no cálculo. Nas células, escolha ver o que <b>falta sair</b>, a proposta ou o que <b>já saiu</b> (passe o mouse para ver os três). A demanda e a falta usam sempre o que falta sair. <b>Versões</b>: códigos com a mesma descrição ficam juntos, com o mesmo sombreamento; ${S.versoes?'a necessidade do grupo usa primeiro o saldo da versão mais antiga e a falta aparece só no código mais novo.':'com "Não considerar", cada código é calculado sozinho.'}</div></div>`;
-  $('#content').insertAdjacentHTML('beforeend', blocoSemEstoque());
+  $('#content').insertAdjacentHTML('beforeend', blocoInsumos()+blocoSemEstoque());
   document.querySelectorAll('.semest tr[data-item]').forEach(e=>e.onclick=()=>modalItem(+e.dataset.item));
   bindCenario();
   const b=$('#mzBusca'); b.oninput=()=>{M.busca=b.value; const pos=b.selectionStart; vMatriz(); const n=$('#mzBusca'); n.focus(); n.setSelectionRange(pos,pos);};
@@ -822,7 +1163,7 @@ function exportMatriz(){
     st[1]=Object.assign({},st[1]||{},{w:1});
     return {v:[x.c,x.d,x.ver?verTxt(x)+(x.qp>0?'':' (fora das propostas)'):'',...CS.map(c=>c.v(x)||null),...sts.map(s=>s?Math.round(s.v*100)/100:null),
       x.noGrp?`no cód. ${x.noGrp}`:(Math.round(x.dT||0)||null),x.noGrp?null:(Math.round(x.sT||0)||null),x.falta||null,x.sobra||null],st}; })()); });
-  XL.baixar('Item x Clientes',[{nome:'Item x Clientes',titulo:'Item x Clientes — saldo, saídas, falta e sobra por cliente',
+  XL.baixar('Estoque x Demanda',[{nome:'Item x Clientes',titulo:'Item x Clientes — saldo, saídas, falta e sobra por cliente',
     contexto:contextoXL(`células: ${MZV[M.val].toLowerCase()} · saldo congelado em ${CORTE}`+(M.filtro!=='todos'?` · filtro: ${({falta:'com falta',sobra:'com sobra',eq:'equilibrados'})[M.filtro]}`:'')+(M.prog?` · programa: ${M.prog}`:'')+(M.busca?` · busca: "${M.busca}"`:'')),
     cols, congelaCol:2, altCab:150, linhas,
     total:['','Total ('+fn(rows.length)+' linhas)','',...CS.map(c=>sm(c.v)),...cc.map(c=>xs.reduce((a,x)=>a+vcel((cel[x.i]||{})[c.k]),0)),Math.round(sm(x=>x.dT||0)),Math.round(sm(x=>x.sT||0)),sm('falta'),sm('sobra')],
@@ -849,9 +1190,132 @@ function linhasVendas(){
   r.forEach(a=>{ a.tot=a.v+a.e+a.b+a.o; a.p=a.pi>=0?D.props[a.pi]:null; a.notas=a.nn.size; });
   const q=R.busca.trim().toLowerCase();
   r=r.filter(a=>(R.filtro==='todos'||(R.filtro==='prop'?!!a.p:!a.p)) && (!S.uf||a.uf===S.uf) && (!q||(a.n+' '+a.cid+' '+a.uf).toLowerCase().includes(q)));
+  // (23/11/2026) pessoas físicas (CPF, sem proposta) numa linha só, somando o período
+  const ehPF=a=>!a.p&&String(a.doc||'').replace(/\D/g,'').length===11, pf=r.filter(ehPF);
+  if(pf.length){ const z={i:-99999,n:`Pessoas físicas (${fn(pf.length)} clientes)`,cid:'—',uf:'',pi:-1,p:null,pf:1,dest:[],v:0,e:0,b:0,o:0,tot:0,notas:0,ult:0};
+    pf.forEach(a=>{ ['v','e','b','o','tot','notas'].forEach(k=>z[k]+=a[k]||0); if(a.ult>z.ult) z.ult=a.ult; });
+    r=r.filter(a=>!ehPF(a)).concat([z]); }
   const {k,d}=R.sort; const val=a=>k==='cli'?a.n:k==='cid'?a.cid:k==='uf'?a.uf:k==='ult'?a.ult:a[k];
   r.sort((a,b)=>{const va=val(a),vb=val(b); return (typeof va==='string'?va.localeCompare(vb,'pt-BR'):(va-vb))*d;});
   return {r,ini};
+}
+/* ---------- (16/11/2026) Estimativa de faturamento: propostas (valor do CRM) + projeções (faturado no ciclo passado) ---------- */
+function fatCalc(){
+  const P=D.props, VD=D.vendas||{clientes:[],notas:[]}, corte=tsBR(CORTE), ini=corte-365*86400;
+  const pok=P.map(p=>p.u && p.tipo!=='Consignação' && !/Bonifica/i.test(p.tipo) && (S.proj||!p.pj) && (!S.vend||p.vend===S.vend) && (!S.uf||p.uf===S.uf) && (S.temps[p.t]!==false||p.t==='Fria'));   // Frias: sempre no quadro à parte
+  const ant={}, ja={}, nAnt={};
+  for(const [ci,ts,col,val,nf,cn] of (VD.notas||[])){ if(col!=='v') continue; const pi=(VD.clientes[ci]||{}).pi; if(pi==null||pi<0) continue;
+    if(ts>=corte||cn) ja[pi]=(ja[pi]||0)+val; else if(ts>=ini){ ant[pi]=(ant[pi]||0)+val; nAnt[pi]=(nAnt[pi]||0)+1; } }
+  // a venda já faturada é do cliente: junta as propostas do mesmo cliente (venda + aditivo) para não contar duas vezes
+  const ck=p=>p.uf+'|'+p.cli, jaCli={}; P.forEach((p,i)=>{ if(ja[i]) jaCli[ck(p)]=(jaCli[ck(p)]||0)+ja[i]; });
+  const rows=P.map((p,i)=>({p,i})).filter(o=>pok[o.i]).map(({p,i})=>{
+    // regra: o CRM prevalece — projeção (faturado no ciclo passado) só quando a proposta não tem valor no CRM
+    const crm=+p.v||0, usaCrm=!p.pj||crm>0, est=usaCrm?crm:(ant[i]||0);
+    return {p,i,est,crm,ant:ant[i]||0,nAnt:nAnt[i]||0,orig:p.pj?'Projeção':'Proposta',fonte:usaCrm?'CRM':'Ciclo passado'}; });
+  const vistos=new Set(); rows.sort((a,b)=>b.est-a.est).forEach(r=>{ const k=ck(r.p); r.ja=vistos.has(k)?0:(jaCli[k]||0); vistos.add(k); r.afat=Math.max(0,r.est-r.ja); });
+  const semIt=P.filter(p=>!p.u&&/Sem itens/.test(p.m||'')&&p.tipo!=='Consignação'&&!/Bonifica/i.test(p.tipo)&&(!S.vend||p.vend===S.vend)&&(!S.uf||p.uf===S.uf)&&S.temps[p.t]!==false);
+  const bon=P.filter(p=>p.u&&/Bonifica/i.test(p.tipo)&&S.temps[p.t]!==false);
+  return {rows,semIt,bon,ini,corte};
+}
+function linhaFat(L){ return L.map(r=>`<tr class="click" data-prop="${r.i}"><td class="itn">${esc(r.p.cli)}</td><td>${esc(r.p.uf)}</td><td class="cod">${esc(r.p.id)}</td><td style="font-size:12px">${esc(r.p.tipo)}</td><td>${tb(r.p.t)}</td>
+    <td>${r.orig==='Projeção'?`<span class="badge pj" title="Proposta sem itens: quantidades projetadas pelo ciclo passado · valor ${r.fonte==='CRM'?'do CRM':'= faturado no ciclo passado'}">◇ Projeção${r.fonte==='CRM'?' · valor CRM':''}</span>`:'<span class="badge g">Proposta</span>'}</td><td style="font-size:12px">${esc(r.p.vend||'')}</td>
+    <td class="num">${r.crm?brl(r.crm):'<span class="muted">–</span>'}</td><td class="num" title="${fn(r.nAnt)} notas de venda de ${new Date((tsBR(CORTE)-365*86400)*1000).toLocaleDateString('pt-BR')} a ${esc(CORTE)}">${r.ant?brl(r.ant):'<span class="muted">–</span>'}</td>
+    <td class="num" style="font-weight:600">${r.est?brl(r.est):'<span class="muted">R$ 0</span>'}</td><td class="num">${r.ja?brl(r.ja):'<span class="muted">–</span>'}</td><td class="num">${r.afat?brl(r.afat):'<span class="muted">–</span>'}</td></tr>`).join(''); }
+function vFaturamento(){
+  // (16/11/2026) propostas FRIAS ficam num quadro à parte (grande chance de não virar venda) e fora do total principal
+  const fc=fatCalc(), semIt=fc.semIt, bon=fc.bon, sm=(a,k)=>a.reduce((s,x)=>s+(typeof k==='function'?k(x):x[k]),0);
+  const rows=fc.rows.filter(r=>r.p.t!=='Fria'), frias=fc.rows.filter(r=>r.p.t==='Fria');
+  const prop=rows.filter(r=>r.orig==='Proposta'), proj=rows.filter(r=>r.orig==='Projeção');
+  const tot=sm(rows,'est'), ja=sm(rows,'ja'), CL=['Fechada','Quente','Morna'];
+  const porT=CL.map(t=>{ const a=prop.filter(r=>r.p.t===t), b=proj.filter(r=>r.p.t===t), x=a.concat(b);
+    return {t,na:a.length,va:sm(a,'est'),nb:b.length,vb:sm(b,'est'),tot:sm(x,'est'),ja:sm(x,'ja'),af:sm(x,'afat'),on:S.temps[t]!==false}; });
+  const projSemHist=proj.filter(r=>!r.est);
+  $('#content').innerHTML=cenarioBar()+`
+  <div class="kpis">
+    <div class="kpi"><div class="lbl">Faturamento estimado</div><div class="val">${brlK(tot)}</div><div class="meta">${fn(rows.length)} propostas Fechada/Quente/Morna · sem as Frias</div></div>
+    <div class="kpi"><div class="lbl">Propostas com itens</div><div class="val">${brlK(sm(prop,'est'))}</div><div class="meta">${fn(prop.length)} propostas · valor do CRM (26/27)</div></div>
+    <div class="kpi"><div class="lbl">◇ Projeções</div><div class="val">${brlK(sm(proj,'est'))}</div><div class="meta">${fn(proj.length)} clientes · valor do CRM ou, sem valor, faturado no ciclo passado${S.proj?'':' · fora do cálculo'}</div></div>
+    <div class="kpi"><div class="lbl">Já faturado no ciclo</div><div class="val">${brlK(ja)}</div><div class="meta">${tot?fp(ja/tot):'–'} do estimado · a faturar ${brlK(Math.max(0,tot-ja))}</div></div>
+  </div>
+  <div class="card" style="margin-top:16px"><div class="hd"><h3>Por temperatura</h3><span class="sub">valores em R$</span></div>
+  <div class="tbl-scroll" style="max-height:none"><table><thead><tr><th>Temperatura</th><th class="num">Propostas</th><th class="num">Valor das propostas (CRM)</th><th class="num">◇ Projeções</th><th class="num">Valor das projeções</th><th class="num">Total estimado</th><th class="num">Já faturado no ciclo</th><th class="num">A faturar</th></tr></thead><tbody>
+  ${porT.map(o=>`<tr style="${o.on?'':'opacity:.45'}"><td>${tb(o.t)}${o.on?'':' <span class="muted" style="font-size:11px">fora do cálculo</span>'}</td><td class="num">${fn(o.na)}</td><td class="num">${brl(o.va)}</td><td class="num">${fn(o.nb)}</td><td class="num">${brl(o.vb)}</td><td class="num" style="font-weight:600">${brl(o.tot)}</td><td class="num">${brl(o.ja)}</td><td class="num">${brl(o.af)}</td></tr>`).join('')}
+  </tbody><tfoot><tr><td>Total</td><td class="num">${fn(prop.length)}</td><td class="num">${brl(sm(prop,'est'))}</td><td class="num">${fn(proj.length)}</td><td class="num">${brl(sm(proj,'est'))}</td><td class="num">${brl(tot)}</td><td class="num">${brl(ja)}</td><td class="num">${brl(sm(rows,'afat'))}</td></tr></tfoot></table></div></div>
+  <div class="card" style="margin-top:16px"><div class="hd"><h3>Por cliente</h3><span class="sub">${fn(rows.length)} propostas · maior valor primeiro</span><div class="spacer"></div><button class="btn sm no-print" id="fatXls" type="button">Exportar Excel</button></div>
+  <div class="tbl-scroll" style="max-height:62vh"><table><thead><tr><th>Cliente</th><th>UF</th><th>Proposta</th><th>Tipo</th><th>Temperatura</th><th>Origem</th><th>Vendedor</th><th class="num">Valor no CRM</th><th class="num">Faturado no ciclo passado</th><th class="num">Valor estimado</th><th class="num">Já faturado no ciclo</th><th class="num">A faturar</th></tr></thead><tbody>
+  ${linhaFat(rows)}
+  </tbody></table></div></div>
+  <div class="card" style="margin-top:16px;border:1px solid #BFDCCB"><div class="hd"><h3>❄ Propostas Frias — à parte, fora do total</h3><span class="sub">${fn(frias.length)} propostas · ${brl(sm(frias,'est'))} · grande chance de não virar venda</span></div>
+  ${frias.length?`<div class="tbl-scroll" style="max-height:none"><table><thead><tr><th>Cliente</th><th>UF</th><th>Proposta</th><th>Tipo</th><th>Temperatura</th><th>Origem</th><th>Vendedor</th><th class="num">Valor no CRM</th><th class="num">Faturado no ciclo passado</th><th class="num">Valor estimado</th><th class="num">Já faturado no ciclo</th><th class="num">A faturar</th></tr></thead><tbody>${linhaFat(frias)}</tbody>
+  <tfoot><tr><td colspan="7">Total Frias</td><td class="num">${brl(sm(frias,'crm'))}</td><td class="num">${brl(sm(frias,'ant'))}</td><td class="num">${brl(sm(frias,'est'))}</td><td class="num">${brl(sm(frias,'ja'))}</td><td class="num">${brl(sm(frias,'afat'))}</td></tr></tfoot></table></div>
+  <div class="help" style="margin:0 20px 16px"><div>Com as Frias, o total seria <b>${brl(tot+sm(frias,'est'))}</b>. Elas aparecem aqui sempre, mesmo com "Fria" desligada na barra de cálculo, e nunca somam no faturamento estimado acima.</div></div>`:'<div class="empty-st">Nenhuma proposta Fria neste filtro.</div>'}</div>
+  ${projSemHist.length?`<div class="help warn" style="margin-top:14px"><div><b>${fn(projSemHist.length)} projeção(ões) sem valor no CRM e sem venda faturada no ciclo passado</b> (o envio foi só bonificação/remessa, ou a nota não está no Relatório de faturamento): ${projSemHist.slice(0,10).map(r=>esc(r.p.cli+'/'+r.p.uf)).join(' · ')}. Entram com R$ 0.</div></div>`:''}
+  ${semIt.length?`<div class="help" style="margin-top:12px"><div><b>Fora da estimativa:</b> ${fn(semIt.length)} propostas sem itens e sem envio no ciclo passado (sem base para projetar) — ${brlK(sm(semIt,p=>+p.v||0))} no CRM. ${bon.length?`Propostas de bonificação (${fn(bon.length)}) não são faturamento e ficam fora.`:''}</div></div>`:''}
+  <div class="help" style="margin-top:12px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h0"/></svg><div><b>Como é calculado:</b> <b>Proposta</b> (com itens no Gerador) = <b>valor 26/27 do CRM</b>. <b>◇ Projeção</b> (proposta sem itens): <b>o CRM prevalece</b> — se a proposta tem valor no CRM, vale esse valor; se está sem valor, entra a <b>venda faturada para o cliente no ciclo passado</b> (12 meses antes do corte de ${esc(CORTE)}, Relatório de faturamento: venda e entrega futura faturada, menos devoluções), a mesma base usada para projetar as quantidades. Bonificação, simples remessa e consignação à Verbum não entram (não são faturamento). <b>Já faturado no ciclo</b> = notas de venda do cliente desde ${esc(CORTE)}; <b>a faturar</b> = estimado − já faturado (venda + aditivo do mesmo cliente contam juntos). Segue a barra de cálculo: temperaturas, projeção, vendedor e UF. <b>Propostas Frias</b> ficam num quadro à parte e <b>não somam</b> no faturamento estimado (grande chance de não virar venda).</div></div>`;
+  bindCenario();
+  document.querySelectorAll('[data-prop]').forEach(e=>e.onclick=()=>modalProp(+e.dataset.prop));
+  $('#fatXls').onclick=()=>{
+    const cols=[{h:'Cliente',w:34,f:'text'},{h:'UF',w:6,f:'text',centro:1},{h:'Proposta',w:12,f:'text'},{h:'Tipo',w:16,f:'text'},{h:'Temperatura',w:12,f:'text'},{h:'Origem',w:12,f:'text'},{h:'Fonte do valor',w:14,f:'text'},{h:'Vendedor',w:18,f:'text'},
+      {h:'Valor no CRM',w:16,f:'money'},{h:'Faturado no ciclo passado',w:16,f:'money'},{h:'Valor estimado',w:16,f:'money'},{h:'Já faturado no ciclo',w:16,f:'money'},{h:'A faturar',w:16,f:'money'}];
+    const TC={Fechada:'1F9D68',Quente:'C64A35',Morna:'D3881F',Fria:'3461BB'};
+    XL.baixar('Estimativa de faturamento',[{nome:'Faturamento',titulo:'Estimativa de faturamento — propostas (CRM) e projeções',contexto:contextoXL(''),cols,congelaCol:1,
+      linhas:rows.map(r=>({v:[r.p.cli,r.p.uf,r.p.id,r.p.tipo,r.p.t,r.orig,r.fonte,r.p.vend||'',r.crm||null,r.ant||null,r.est||0,r.ja||null,r.afat||null],st:[null,null,null,null,{b:1,c:TC[r.p.t]},r.orig==='Projeção'?{i:1,c:'6B3FA0',bg:'F3ECFA'}:null,null,null,null,null,{b:1}]})),
+      total:['Total sem Frias ('+fn(rows.length)+' propostas)','','','','','','','',sm(rows,'crm'),sm(rows,'ant'),tot,ja,sm(rows,'afat')],
+      legenda:[[null,'O CRM prevalece: proposta com itens = valor 26/27 do CRM. Projeção (proposta sem itens) = valor do CRM, se houver; sem valor no CRM = venda faturada para o cliente nos 12 meses antes do corte (Relatório de faturamento; venda e entrega futura faturada, menos devoluções).'],
+        [null,'Já faturado no ciclo = notas de venda do cliente desde o corte; a faturar = estimado − já faturado. Bonificação, simples remessa e consignação à Verbum não entram.']]},
+      {nome:'Por temperatura',titulo:'Estimativa de faturamento por temperatura',contexto:contextoXL(''),
+       cols:[{h:'Temperatura',w:14,f:'text'},{h:'Propostas',w:10,f:'int'},{h:'Valor das propostas (CRM)',w:18,f:'money'},{h:'Projeções',w:10,f:'int'},{h:'Valor das projeções',w:18,f:'money'},{h:'Total estimado',w:18,f:'money'},{h:'Já faturado no ciclo',w:18,f:'money'},{h:'A faturar',w:18,f:'money'}],
+       linhas:porT.map(o=>({v:[o.t+(o.on?'':' (fora do cálculo)'),o.na,o.va,o.nb,o.vb,o.tot,o.ja,o.af],st:[{b:1,c:TC[o.t]}]})),
+       total:['Total (sem Frias)',prop.length,sm(prop,'est'),proj.length,sm(proj,'est'),tot,ja,sm(rows,'afat')]},
+      {nome:'Frias (à parte)',titulo:'Propostas Frias — à parte, fora do faturamento estimado',contexto:contextoXL('grande chance de não virar venda'),cols,congelaCol:1,
+       linhas:frias.map(r=>({v:[r.p.cli,r.p.uf,r.p.id,r.p.tipo,r.p.t,r.orig,r.fonte,r.p.vend||'',r.crm||null,r.ant||null,r.est||0,r.ja||null,r.afat||null],st:[null,null,null,null,{b:1,c:TC[r.p.t]}]})),
+       total:['Total Frias ('+fn(frias.length)+')','','','','','','','',sm(frias,'crm'),sm(frias,'ant'),sm(frias,'est'),sm(frias,'ja'),sm(frias,'afat')]}]);
+  };
+}
+/* ---------- (19/11/2026) Produção Verbum: previsão de demanda da Verbum (planilha própria, não vem do CRM) ---------- */
+// Produz-se o que está na coluna "Sugestão de Produção" (necessidade + 15% no aluno; professor na mesma proporção; kits já descontam o estoque).
+const DV = D.demanda_verbum||null;
+function vVerbum(){
+  if(!DV||!(DV.itens||[]).length){ $('#content').innerHTML=`<div class="card"><div class="hd"><h3>Produção Verbum</h3></div><div class="help warn" style="margin:0 20px 20px"><div>Planilha de demanda da Verbum não encontrada. Coloque o arquivo <b>Demanda Verbum 2027.xlsx</b> (ou outro "Demanda … Verbum ….xlsx") na pasta <b>estoque</b> e rode a atualização.</div></div></div>`; return; }
+  const I=DV.itens, sm=(a,k)=>a.reduce((s,x)=>s+(+x[k]||0),0);
+  const q=(S.vbBusca||'').trim().toLowerCase(), F=I.filter(x=>(!S.vbAba||x.aba===S.vbAba)&&(!q||(x.c+' '+x.n+' '+x.cat).toLowerCase().includes(q)));
+  const abas=[...new Set(I.map(x=>x.aba))];
+  const res=abas.map(a=>{ const L=I.filter(x=>x.aba===a); return {a,n:L.length,nec:sm(L,'nec'),sug:sm(L,'sug'),s:L.reduce((t,x)=>t+Math.max(0,x.s||0),0)}; });
+  const lp=I.filter(x=>/\bLP\b/.test(x.n)), al=I.filter(x=>!/\bLP\b/.test(x.n)&&x.aba!=='Kits');
+  $('#content').innerHTML=`
+  <div class="kpis">
+    <div class="kpi"><div class="lbl">A produzir (sugestão)</div><div class="val">${fn(sm(I,'sug'))}</div><div class="meta">${fn(I.length)} itens · ${fn(abas.length)} abas</div></div>
+    <div class="kpi"><div class="lbl">Necessidade</div><div class="val">${fn(sm(I,'nec'))}</div><div class="meta">margem de produção ${fn(sm(I,'sug')-sm(I,'nec'))} un. (${sm(I,'nec')?fp((sm(I,'sug')-sm(I,'nec'))/sm(I,'nec')):'–'})</div></div>
+    <div class="kpi"><div class="lbl">Livros do aluno</div><div class="val">${fn(sm(al,'sug'))}</div><div class="meta">necessidade ${fn(sm(al,'nec'))}</div></div>
+    <div class="kpi"><div class="lbl">Livros do professor (LP)</div><div class="val">${fn(sm(lp,'sug'))}</div><div class="meta">necessidade ${fn(sm(lp,'nec'))}</div></div>
+  </div>
+  <div class="card" style="margin-top:16px"><div class="hd"><h3>Resumo por aba</h3><span class="sub">planilha ${esc(DV.arq)} · atualizada em ${esc(DV.dt)}</span></div>
+  <div class="tbl-scroll" style="max-height:none"><table><thead><tr><th>Aba</th><th class="num">Itens</th><th class="num">Necessidade</th><th class="num">A produzir (sugestão)</th><th class="num">Diferença</th><th class="num">Estoque Verbum atual</th></tr></thead><tbody>
+  ${res.map(o=>`<tr class="click" data-vba="${esc(o.a)}"><td>${esc(o.a)}</td><td class="num">${fn(o.n)}</td><td class="num">${fn(o.nec)}</td><td class="num" style="font-weight:600">${fn(o.sug)}</td><td class="num ${o.sug-o.nec<0?'falta':''}">${o.sug-o.nec>0?'+':''}${fn(o.sug-o.nec)}</td><td class="num">${o.s?fn(o.s):'<span class="muted">–</span>'}</td></tr>`).join('')}
+  </tbody><tfoot><tr><td>Total</td><td class="num">${fn(I.length)}</td><td class="num">${fn(sm(I,'nec'))}</td><td class="num">${fn(sm(I,'sug'))}</td><td class="num">+${fn(sm(I,'sug')-sm(I,'nec'))}</td><td class="num">${fn(res.reduce((a,o)=>a+o.s,0))}</td></tr></tfoot></table></div></div>
+  <div class="card" style="margin-top:16px"><div class="hd">
+    <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><input id="vbBusca" placeholder="Buscar código ou item" value="${esc(S.vbBusca||'')}" aria-label="Buscar item"></div>
+    <select class="sel" id="vbAba" aria-label="Aba">${opts(abas,S.vbAba||'','Todas as abas')}</select>
+    <div class="spacer"></div><span class="sub">${fn(F.length)} itens · a produzir ${fn(sm(F,'sug'))}</span>
+    <button class="btn sm no-print" id="vbXls" type="button">Exportar Excel</button></div>
+  <div class="tbl-scroll" style="max-height:66vh"><table><thead><tr><th>Cód.</th><th>Item</th><th>Aba</th><th>Categoria</th><th>Formato</th><th class="num">Necessidade</th><th class="num">A produzir (sugestão)</th><th class="num">Estoque Verbum atual</th><th>Regra da necessidade</th></tr></thead><tbody>
+  ${F.map(x=>`<tr><td class="cod">${x.c}</td><td class="itn">${esc(x.n)}${/\bLP\b/.test(x.n)?' <span class="vb">professor</span>':''}</td><td style="font-size:12px">${esc(x.aba)}</td><td style="font-size:12px">${esc(x.cat)}</td><td style="font-size:12px;white-space:nowrap">${esc(x.fmt||'')}</td>
+    <td class="num">${fn(x.nec)}</td><td class="num" style="font-weight:600">${x.sug?fn(x.sug):'<span class="muted">0</span>'}</td><td class="num" title="${x.ep!=null?'Estoque na planilha: '+fn(x.ep):''}">${x.s!=null?fn(Math.round(x.s)):'<span class="muted">sem movimento</span>'}</td><td style="font-size:11.5px">${esc(x.reg||'')}</td></tr>`).join('')}
+  </tbody></table></div></div>
+  ${(DV.notas||[]).length?`<div class="help" style="margin-top:14px"><div><b>Observações da planilha:</b><br>${DV.notas.map(esc).join('<br>')}</div></div>`:''}
+  <div class="help" style="margin-top:12px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h0"/></svg><div><b>Como é calculado:</b> a demanda da Verbum <b>não vem do CRM</b>: é a planilha de previsão da Verbum (${esc(DV.arq)}, pasta estoque), uma aba por coleção. <b>A produzir</b> = coluna <b>Sugestão de Produção</b> da planilha (necessidade + 15% nos livros do aluno; professor na mesma proporção; nos kits o estoque é descontado antes dos 15%). <b>Necessidade</b> = coluna Necessidade. <b>Estoque Verbum atual</b> = saldo da Verbum (Filial + Matriz) pela movimentação (implantação + entradas − saídas); "sem movimento" = item ainda sem entrada no ERP. Para atualizar, substitua a planilha na pasta e rode o ATUALIZAR DASHBOARD.</div></div>`;
+  document.querySelectorAll('[data-vba]').forEach(e=>e.onclick=()=>{S.vbAba=e.dataset.vba; vVerbum();});
+  const b=$('#vbBusca'); b.oninput=()=>{S.vbBusca=b.value; const pos=b.selectionStart; vVerbum(); const n=$('#vbBusca'); n.focus(); n.setSelectionRange(pos,pos);};
+  $('#vbAba').onchange=e=>{S.vbAba=e.target.value; vVerbum();};
+  $('#vbXls').onclick=()=>XL.baixar('Producao Verbum',[
+    {nome:'Produção Verbum',titulo:'Produção Verbum — previsão de demanda e sugestão de produção',contexto:[`Gerado em ${D.gerado} · planilha ${DV.arq} (${DV.dt})`+(S.vbAba?` · aba: ${S.vbAba}`:'')+(S.vbBusca?` · busca: "${S.vbBusca}"`:'')],
+     cols:[{h:'Código',w:9,f:'text',centro:1},{h:'Item',w:46,f:'text'},{h:'Aba',w:16,f:'text'},{h:'Categoria',w:16,f:'text'},{h:'Formato',w:11,f:'text'},{h:'Necessidade',w:12,f:'int'},{h:'A produzir (sugestão)',w:14,f:'int'},{h:'Estoque Verbum atual',w:14,f:'int'},{h:'Regra da necessidade',w:50,f:'text',quebra:1}],
+     congelaCol:2, linhas:F.map(x=>({v:[String(x.c),x.n,x.aba,x.cat,x.fmt||'',x.nec,x.sug,x.s!=null?Math.round(x.s):null,x.reg||''],st:[null,null,null,null,null,null,{b:1}]})),
+     total:['','Total ('+fn(F.length)+' itens)','','','',sm(F,'nec'),sm(F,'sug'),null,''],
+     legenda:[[null,'A produzir = coluna Sugestão de Produção da planilha da Verbum (necessidade + 15% no aluno; professor na mesma proporção; nos kits o estoque é descontado antes).'],[null,'Estoque Verbum atual = saldo da Verbum (Filial + Matriz) pela movimentação. Vazio = item ainda sem movimento no ERP.']]},
+    {nome:'Resumo por aba',titulo:'Produção Verbum — resumo por aba',contexto:[`Gerado em ${D.gerado} · planilha ${DV.arq}`],
+     cols:[{h:'Aba',w:18,f:'text'},{h:'Itens',w:8,f:'int'},{h:'Necessidade',w:12,f:'int'},{h:'A produzir (sugestão)',w:14,f:'int'},{h:'Diferença',w:11,f:'int'},{h:'Estoque Verbum atual',w:14,f:'int'}],
+     linhas:res.map(o=>({v:[o.a,o.n,o.nec,o.sug,o.sug-o.nec,o.s||null]})), total:['Total',I.length,sm(I,'nec'),sm(I,'sug'),sm(I,'sug')-sm(I,'nec'),res.reduce((a,o)=>a+o.s,0)]}]);
 }
 function vVendas(){
   const R=S.vd, {r}=linhasVendas(); const sm=k=>r.reduce((a,x)=>a+x[k],0);
@@ -870,7 +1334,7 @@ function vVendas(){
       <button type="button" class="chip ${R.semNota?'on':''}" id="vdSem" title="Mostra também os clientes das propostas que ainda não tiveram nota no período">Clientes das propostas sem nota</button></div>
     <select class="sel" id="vdUf" aria-label="UF">${opts(ufs,S.uf,'Todas as UFs')}</select>
     <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><input id="vdBusca" placeholder="Buscar cliente ou município" value="${esc(R.busca)}" aria-label="Buscar cliente"></div>
-    <div class="spacer"></div><span class="sub">${fn(r.length)} clientes</span>
+    <div class="spacer"></div><span class="sub">${fn(r.length)} linhas${r.find(a=>a.pf)?' (pessoas físicas somadas numa linha)':''}</span>
     <button class="btn sm no-print" id="vdXl" type="button">Exportar Excel</button>
   </div><div class="tbl-scroll">${r.length?`<table><thead><tr>${COLS.map(([k,t,n])=>`<th class="${n?'num':''} ${R.sort.k===k?'sorted':''}" data-vk="${k}">${t}${R.sort.k===k?`<span class="ar">${R.sort.d>0?'▲':'▼'}</span>`:''}</th>`).join('')}</tr></thead><tbody>
   ${r.map(a=>`<tr ${a.p&&a.p.u?`class="click" data-prop="${a.pi}"`:''}><td class="itn" style="min-width:220px" title="${esc((a.dest||[]).join(' · '))}">${esc(a.n)}${(a.dest||[]).length>1?` <span class="muted" style="font-size:11px">(${a.dest.length} órgãos)</span>`:''}</td><td>${esc(a.cid)}</td><td>${esc(a.uf)}</td>
@@ -878,9 +1342,9 @@ function vVendas(){
     <td class="num">${a.notas||'<span class="muted">–</span>'}</td><td style="font-size:12px;white-space:nowrap">${dBR(a.ult)}</td>
     <td style="font-size:12px;white-space:nowrap">${a.p?`${tb(a.p.t)} <span class="muted">${a.p.v?brl(a.p.v):''}</span>`:'<span class="muted">sem proposta</span>'}</td>
     <td style="font-size:12px">${a.p&&a.p.cond?esc(a.p.cond):'<span class="muted">–</span>'}</td></tr>`).join('')}
-  </tbody><tfoot><tr><td colspan="3">Total (${fn(r.length)} clientes)</td>${VCOL.map(([k])=>`<td class="num">${brl(sm(k))}</td>`).join('')}<td class="num">${brl(sm('tot'))}</td><td class="num">${fn(sm('notas'))}</td><td colspan="3"></td></tr></tfoot></table>`
+  </tbody><tfoot><tr><td colspan="3">Total (${fn(r.length)} linhas)</td>${VCOL.map(([k])=>`<td class="num">${brl(sm(k))}</td>`).join('')}<td class="num">${brl(sm('tot'))}</td><td class="num">${fn(sm('notas'))}</td><td colspan="3"></td></tr></tfoot></table>`
   :`<div class="empty-st">Nenhuma nota ${R.periodo==='corte'?`desde ${esc(CORTE)}`:'no período'} com esses filtros.${R.periodo==='corte'?' Use "Todo o período" para ver o histórico.':''}</div>`}</div></div>
-  <div class="help" style="margin-top:14px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h0"/></svg><div>Fonte: <b>Relatório de faturamento</b> (valor total das notas), agrupado por cliente + município + UF de destino. <b>Venda</b> = notas de venda, venda para entrega futura (faturamento) e definição de preço, menos devoluções. <b>Entrega futura</b> = remessas físicas de vendas já faturadas. <b>Bonificação</b> e <b>Simples remessa / outras saídas</b> (simples remessa, consignação, saída com terceiros) já descontam retornos. A <b>condição de pagamento</b> vem da proposta do cliente no CRM. Clique num cliente com proposta para ver os itens.</div></div>`;
+  <div class="help" style="margin-top:14px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h0"/></svg><div>Fonte: <b>Relatório de faturamento</b> (valor total das notas), agrupado por cliente + município + UF de destino. <b>Venda</b> = notas de venda, venda para entrega futura (faturamento) e definição de preço, menos devoluções. <b>Entrega futura</b> = remessas físicas de vendas já faturadas. <b>Bonificação</b> e <b>Simples remessa / outras saídas</b> (simples remessa, consignação, saída com terceiros) já descontam retornos. <b>Pessoas físicas</b> (CPF, sem proposta) aparecem somadas numa linha só. ${exclVendas().map(t=>'<b>'+esc(t)+'</b> ').join('')}A <b>condição de pagamento</b> vem da proposta do cliente no CRM. Clique num cliente com proposta para ver os itens.</div></div>`;
   $('#vdBusca').oninput=e=>{R.busca=e.target.value; const pos=e.target.selectionStart; vVendas(); const n=$('#vdBusca'); n.focus(); n.setSelectionRange(pos,pos);};
   document.querySelectorAll('[data-vdp]').forEach(b=>b.onclick=()=>{R.periodo=b.dataset.vdp;vVendas();});
   document.querySelectorAll('[data-vdf]').forEach(b=>b.onclick=()=>{R.filtro=b.dataset.vdf;vVendas();});
@@ -898,8 +1362,8 @@ function vVendas(){
       cols, congelaCol:1,
       linhas:r.map((a,k)=>{ const st=[]; st[8]={b:1}; if(a.p) st[11]={b:1,c:TC[a.p.t]}; if(k%2) cols.forEach((_,i)=>st[i]=Object.assign({bg:'F7F8FB'},st[i]||{}));
         return {v:[a.n,(a.dest||[]).join(' · '),a.cid,a.uf,...VCOL.map(([c])=>a[c]||null),a.tot,a.notas||null,dBR(a.ult),a.p?a.p.t:'sem proposta',a.p&&a.p.v||null,a.p?a.p.cond:''],st}; }),
-      total:['Total ('+fn(r.length)+' clientes)','','','',...VCOL.map(([c])=>sm(c)),sm('tot'),sm('notas'),'','',r.reduce((s,a)=>s+(a.p&&a.p.v||0),0),''],
-      legenda:[[null,'Venda = notas de venda + venda para entrega futura (faturamento) + definição de preço − devoluções.'],[null,'Entrega futura = remessas físicas de vendas já faturadas. Bonificação e Simples remessa / outras saídas já descontam retornos.'],[null,'Condição de pagamento e temperatura: proposta do cliente no CRM de Vendas.']]}]);};
+      total:['Total ('+fn(r.length)+' linhas)','','','',...VCOL.map(([c])=>sm(c)),sm('tot'),sm('notas'),'','',r.reduce((s,a)=>s+(a.p&&a.p.v||0),0),''],
+      legenda:[[null,'Venda = notas de venda + venda para entrega futura (faturamento) + definição de preço − devoluções.'],[null,'Entrega futura = remessas físicas de vendas já faturadas. Bonificação e Simples remessa / outras saídas já descontam retornos.'],[null,'Condição de pagamento e temperatura: proposta do cliente no CRM de Vendas.'],[null,'Pessoas físicas (CPF, sem proposta no CRM) estão somadas numa linha só: Pessoas físicas (n clientes).'],...exclVendas().map(t=>['FFF2CC',t])]}]);};
 }
 
 /* ---------- Falta x Análise de Estoque ---------- */
@@ -1020,6 +1484,7 @@ function vRegras(){
     <li>Só entram itens com código: a quantidade é a da proposta gerada no Gerador do CRM, somando todos os kits (aluno, professor, coordenação...).</li>
     <li><b>Estoque</b> = saldo próprio do IAB <b>calculado</b> pela Movimentação de Estoque (implantação + entradas − saídas), com o mesmo código da Análise de Estoque: ignora Lincky, serviços, e-books e brindes Coala, e cria a saída do IAB na consignação para a Verbum. O que está <b>consignado na Verbum não soma</b>. A coluna "Saldo após movimento" do ERP <b>não é usada</b>.</li>
     <li><b>Versão antiga sem saldo:</b> se a proposta, a projeção ou a consignação traz o código de uma <b>versão antiga</b> que está <b>sem saldo</b> no IAB, a quantidade é lançada na <b>versão nova</b> e o código antigo não aparece no relatório (no detalhe do item fica anotado "proposta com cód. X"). Se a versão antiga ainda tem saldo, ela continua aparecendo e é usada antes de imprimir.</li>
+    <li><b>Temperaturas (10/11/2026):</b> na barra de cálculo, clique em Fechada, Quente, Morna ou Fria para incluir ou excluir as propostas dessa temperatura. As excluídas ficam apagadas e saem da demanda (entram a 0%); as incluídas entram a 100%. A escolha fica salva neste computador.</li>
     <li><b>Cálculo (23/10/2026):</b> Falta (imprimir) = <b>demanda total (100%)</b> − saldo atual; se o saldo for maior, a diferença vai para a Sobra. Sem % por temperatura e sem margem de segurança. Nas <b>versões do mesmo livro</b>, soma a demanda e o saldo de todas as versões e o resultado aparece no código mais novo (as versões antigas mostram "no cód. X").</li>
     <li><b>Fora do relatório:</b> itens <b>sem programa</b> e <b>brindes</b> não aparecem (nem na demanda, nem no saldo, nem na falta).</li>
     <li><b>Programa do item:</b> se o item vem em mais de um programa nas propostas (ex.: Grafismo Letras de Forma no kit da Pré-Escola I e da Pré-Escola II), vale o programa que também está no cadastro da Análise de Estoque (<code>cadastro_itens_programas.csv</code>). Sem coincidência, vale o primeiro programa da sequência nas propostas.</li>

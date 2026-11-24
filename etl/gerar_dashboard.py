@@ -1037,6 +1037,27 @@ def gerar():
     print("[ 9-EST ] Estoque: Análise de Estoque e Estimativa de Venda...")
     import subprocess, re as _re2
     PASTA_EST = os.path.join(os.path.dirname(BASE_DIR), "estoque")   # dashboard_logistico\\estoque
+    # (11/11/2026) Envios para PESSOA FÍSICA com 1 ou 2 volumes (saquinho de e-commerce) por empresa e Ano Ref,
+    #   usados só no quadro de insumos da Estimativa. Devoluções ficam fora. Envio = entrega (id_entrega); volumes somados das NFs da entrega.
+    try:
+        _p = df.copy()
+        _p = _p[_p["tipo_cliente"].astype(str).str.upper().str.contains("PESSOA F", na=False)]
+        _p = _p[~_p["_nat"].astype(str).str.upper().str.contains("DEVOL", na=False)]
+        _p["emp"] = _p["empresa"].astype(str).str.upper().str.strip()
+        _p["k"] = _p["id_entrega"].astype(str) if "id_entrega" in _p.columns else ("L" + _p.index.astype(str))
+        _p["vol"] = pd.to_numeric(_p["volumes"], errors="coerce").fillna(0)
+        _e = _p.groupby(["emp", "k"]).agg(ano=("ano_ref", "first"), vol=("vol", "sum")).reset_index()
+        _e = _e[(_e["vol"] >= 1) & (_e["vol"] <= 2)]
+        _pf = {}
+        for (_em, _an), _g in _e.groupby(["emp", "ano"]):
+            try: _an = str(int(float(_an)))
+            except Exception: continue
+            _pf.setdefault("VERBUM" if "VERBUM" in _em else "IAB", {})[_an] = {"envios": int(len(_g)), "volumes": int(_g["vol"].sum())}
+        with open(os.path.join(PASTA_EST, "ecommerce_pf.json"), "w", encoding="utf-8") as _f:
+            json.dump({"gerado": datetime.now().strftime("%d/%m/%Y %H:%M"), "por_emp": _pf}, _f, ensure_ascii=False)
+        print("      E-commerce PF (até 2 volumes): " + " | ".join(f"{k}: " + ", ".join(f"{a} {v['envios']} envios/{v['volumes']} vol." for a, v in sorted(d.items())) for k, d in _pf.items()))
+    except Exception as _e2:
+        print(f"      AVISO: envios PF até 2 volumes não calculados ({type(_e2).__name__}: {_e2})")
     def _rodar(script, nome):
         caminho = os.path.join(PASTA_EST, script)
         if not os.path.isfile(caminho):
@@ -1072,7 +1093,9 @@ def gerar():
     _fontes = "\n".join(_re2.findall(r'@font-face\{[^}]*\}', _tmpl_txt)[:4])
     _css_ana = ("<style>" + _fontes + ":root{--serifa:'Poppins',Arial,sans-serif!important;--sans:'Poppins',Arial,sans-serif!important;"
                 "--marinho:#01337C!important;--marinho-2:#0b4aa3!important;--vinho:#FFB522!important;--fundo:#f5f5f7!important;"
-                "--linha:#e4e4ea!important;--faixa:#eef2fa!important}body{font-size:.95rem}.topo h1,h2{font-weight:600!important}</style>")
+                "--linha:#e4e4ea!important;--faixa:#eef2fa!important}body{font-size:.95rem}.topo h1,h2{font-weight:600!important}"
+                # menu da própria Análise (e os programas) fica escondido: a navegação é pelo menu do dashboard (06/11/2026)
+                "aside.menu,.btn-menu,.fundo-menu{display:none!important}main,#rodape{margin-left:0!important}</style>")
     _css_est = ("<style>.sidebar{display:none!important}.app{grid-template-columns:1fr!important}"
                 ".topbar{top:0}</style>")
     def _embutir(html, css):

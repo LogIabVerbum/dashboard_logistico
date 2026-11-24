@@ -667,9 +667,12 @@ def lancar_nfs_novas(df_base: pd.DataFrame, nfs_existentes: set, historico: dict
     wb.save(QUADRO_ENVIOS)
     wb.close()
     log.info(f"{len(novas)} NF(s) lançada(s) no Quadro de Envios.")
+    return len(novas)
 
-    # O openpyxl apaga os valores calculados das fórmulas ao salvar.
-    # Recalcula pelo Excel (não altera nenhum dado) para o dashboard não sair zerado.
+
+def recalcular_quadro():
+    """O openpyxl apaga os valores calculados das fórmulas ao salvar.
+    Recalcula pelo Excel (não altera nenhum dado) para o dashboard não sair zerado."""
     try:
         from modules.recalc_excel import recalcular_excel
         if not recalcular_excel(QUADRO_ENVIOS):
@@ -677,7 +680,19 @@ def lancar_nfs_novas(df_base: pd.DataFrame, nfs_existentes: set, historico: dict
                         "rodar o ATUALIZAR DASHBOARD.")
     except Exception as e:
         log.warning(f"Recálculo automático indisponível ({e}). Abra o Quadro no Excel e salve.")
-    return len(novas)
+
+
+def preencher_custos_embalagem() -> int:
+    """(12/11/2026) Calcula a coluna AA 'Custo Embalagem' das NFs sem valor (nunca altera o que já foi lançado).
+    Regras e preços: etl\\custo_embalagem.py (preços da aba 'Custo Embalagem' do Quadro; caixas pela base de insumos)."""
+    try:
+        from custo_embalagem import preencher_custo_embalagem
+        base_ins = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "estoque", "insumos_base.json")
+        mov = os.path.join(PASTA_DASHBOARDS, "Movimentação de Estoque.xlsx")
+        return preencher_custo_embalagem(QUADRO_ENVIOS, mov, base_ins)
+    except Exception as e:
+        log.warning(f"Custo de embalagem não calculado ({type(e).__name__}: {e})")
+        return 0
 
 
 # ---------------------------------------------------------------------------
@@ -695,6 +710,9 @@ def main():
         historico      = ler_historico_tipo_cliente()
         fazer_backup()
         total          = lancar_nfs_novas(df_base, nfs_existentes, historico)
+        n_custo        = preencher_custos_embalagem()
+        if total > 0 or n_custo > 0:
+            recalcular_quadro()
 
         log.info("=" * 60)
         if total > 0:

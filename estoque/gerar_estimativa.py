@@ -72,10 +72,12 @@ STATUS_FORA = {8: "Material já enviado (já saiu do estoque)", 9: "Lead não co
 STATUS_FECHADA = {7}
 # Propostas com "Material enviado" que vão ser ENVIADAS DE NOVO (combinado em 22/10/2026): continuam na demanda.
 # Use o código da proposta no CRM. Quando o Comercial abrir a nova proposta, tire daqui.
-REENVIAR = {"P5OC43": "Espírito Santo do Pinhal/SP - reenvio (provavelmente bonificado)",
-            "PN00HE": "São Roque/SP - reenvio (provavelmente bonificado)"}
-# Notas emitidas ANTES do corte que pertencem ao ciclo 2026/2027 (combinado em 04/11/2026): contam como "já saiu"
-# da proposta e aparecem no Resumo de vendas "desde o corte". Use o número da NF.
+# 06/11/2026: os dois reenvios já saíram e estão fora do saldo, então saíram da lista:
+#   P5OC43 Espírito Santo do Pinhal/SP - NF 19117 de 26/10/2026 (R$ 435.306)
+#   PN00HE São Roque/SP - NF 19079 de 06/10/2026 (R$ 19.586, mesmo valor da proposta)
+REENVIAR = {}
+# Notas emitidas ANTES do corte que pertencem ao ciclo 2026/2027: aparecem no Resumo de vendas "desde o corte".
+# (06/11/2026) Não entram mais no "já saiu" das propostas: a nota é anterior ao corte, então já está fora do saldo.
 NOTAS_DO_CICLO = {"19117": "Espírito Santo do Pinhal/SP - reenvio bonificado de 26/10/2026, bate com a proposta P5OC43"}
 
 # ---- Estoque ----
@@ -104,10 +106,12 @@ ARQ_DESCARTE = BASE / r"Logística-IAB\24 - Descartes\Descarte 2026.xlsx"
 # O saldo do IAB fica "congelado" nesta data. Depois dela aparecem, item a item: o que chegou de cada gráfica
 # (notas de compra), o que saiu para os clientes das propostas (venda, bonificação, simples remessa) e as
 # outras movimentações, fechando no SALDO ATUAL (estoque do dia), que é o usado no cálculo da falta.
-CORTE = os.environ.get("ESTIMATIVA_CORTE", "2026-11-01")
+CORTE = os.environ.get("ESTIMATIVA_CORTE", "2026-10-01")   # 06/11/2026: corte passou de 01/11 para 01/10/2026
 NATUREZA_CONSIG_SAIDA = "REMESSA EM CONSIGNAÇÃO PARA A VERBUM (saída criada pelo script)"
 ARQ_FATURAMENTO = PASTA_RELATORIOS / "Relatorio de faturamento.xlsx"
 ABA_DESCARTE = "Dados para Contabilidade"
+# Itens com SALDO ZERO na estimativa (não podem ser enviados; a baixa no ERP vem depois). Código: motivo.
+ITENS_SALDO_ZERO = {1803: "item com erro - não pode ser enviado; baixa no estoque futuramente (10/11/2026)"}
 DESCARTE_DESDE = "2026-10-16"
 # O descarte de 2026 saiu como VENDA DE APARAS para a Eco Primos (NF 19112 de 20/10/2026): saídas para estes
 # parceiros também contam como descarte já lançado.
@@ -259,6 +263,111 @@ def temperatura(p):
 
 
 # ---------------------------------------------------------------- estoque
+def saldo_embalagens(ga, df, cad):
+    """(11/11/2026) Saldo atual dos itens do programa EMBALAGEM (caixas, fitas, filmes, saquinhos) por empresa
+    (IAB; Verbum = Filial + Matriz), pela mesma regra do saldo: implantação + entradas − saídas."""
+    try:
+        rx = getattr(ga, "CLASSES_POR_DESCRICAO", {}).get("EMBALAGEM") or r"CAIXA|FITAS? ADESIVAS?|FILME|STRE[TS]C?H|EMBALAGEM"
+        cods = set(cad.loc[cad["Programas"].fillna("").astype(str).str.upper().str.contains("EMBALAGEM"), "Codigo"].astype(int))
+        cods |= set(df.loc[df["descricao"].fillna("").astype(str).str.upper().str.contains(rx, regex=True), "codigo"].astype(int))
+        e = df[df["codigo"].isin(cods)].copy()
+        if e.empty: return [], [], []
+        impl = e["natureza"].str.upper().eq(ga.NATUREZA_IMPLANTACAO)
+        ent = e["tipo"].eq("ENTRADA") & ~impl
+        sai = e["tipo"].astype(str).str.startswith("SA")
+        e["MOV"] = e["qtd"].where(impl, 0) + e["qtd"].where(ent, 0) - e["qtd"].where(sai, 0)
+        e["EMPX"] = e["empresa_nome"].astype(str).apply(lambda x: "Verbum" if x.startswith("Verbum") else x)
+        e = e[e["EMPX"].isin(["IAB", "Verbum"])]
+        g = e.groupby(["EMPX", "codigo"]).agg(s=("MOV", "sum"), ult=("data", "max"), d=("descricao", "last")).reset_index()
+        out = [{"emp": r.EMPX, "cod": int(r.codigo), "d": str(r.d).split("|")[0].strip(), "s": round(float(r.s), 2),
+                "ult": "" if pd.isna(r.ult) else f"{r.ult:%d/%m/%Y}"} for r in g.itertuples()]
+        # (11/11/2026) notas de COMPRA das embalagens (quantidade e valor unitário) + último custo conhecido de cada item
+        cu = pd.to_numeric(e["custo_unit"], errors="coerce")
+        comp = e[ent & e["natureza"].str.upper().str.startswith("COMPRA")].copy()
+        compras = [{"dt": f"{r.data:%d/%m/%Y}" if not pd.isna(r.data) else "", "emp": r.EMPX, "nf": _nf_txt(r.nf),
+                    "forn": r.parceiro.strip() if isinstance(r.parceiro, str) else "", "cod": int(r.codigo), "d": str(r.descricao).split("|")[0].strip(),
+                    "q": float(r.qtd), "cu": None if pd.isna(c) or c <= 0 else round(float(c), 4)}
+                   for r, c in zip(comp.sort_values("data").itertuples(), cu[comp.sort_values("data").index])]
+        ref = e[(ent | impl) & (cu > 0)].assign(cu=cu).sort_values("data").groupby("codigo").agg(cu=("cu", "last"), dt=("data", "last"), nat=("natureza", "last"))
+        for o in out:
+            if o["cod"] in ref.index:
+                r = ref.loc[o["cod"]]
+                o["cu"] = round(float(r["cu"]), 4); o["cud"] = f"{r['dt']:%d/%m/%Y}"; o["cun"] = str(r["nat"]).strip().title()
+        # (11/11/2026) consumo = saídas no período da movimentação (baixa por ajuste/descarte, requisição interna e outras)
+        sx = e[sai].copy()
+        nat = sx["natureza"].str.upper()
+        sx["grp"] = "ou"
+        sx.loc[nat.str.contains("REQUISI", na=False), "grp"] = "rq"
+        sx.loc[nat.str.contains("AJUSTE|DESCARTE", na=False), "grp"] = "aj"
+        cs = sx.pivot_table(index=["EMPX", "codigo"], columns="grp", values="qtd", aggfunc="sum", fill_value=0)
+        for o in out:
+            k = (o["emp"], o["cod"])
+            if k in cs.index:
+                r = cs.loc[k]
+                o["c_aj"], o["c_rq"], o["c_ou"] = (float(r.get(x, 0)) for x in ("aj", "rq", "ou"))
+        per = [f"{df['data'].min():%d/%m/%Y}", f"{df['data'].max():%d/%m/%Y}"] if len(df) else ["", ""]
+        print(f"  Embalagens: saldo de {len(out)} itens (IAB e Verbum) | {len(compras)} entradas de compra | consumo {per[0]} a {per[1]}")
+        return out, compras, per
+    except Exception as ex:
+        print(f"  Aviso: saldo das embalagens não calculado ({type(ex).__name__}: {ex})")
+        return [], [], []
+
+
+# (12/11/2026) Etiquetas (papel couchê por cor de tarja + etiqueta branca 10x8). O gerar_analise ignora "PAPEL COUCH",
+# então o saldo é lido direto da planilha de Movimentação. Compras vieram ora em etiqueta (R$ 0,10), ora em rolo de
+# 400 (R$ 39,48): movimento com custo unitário >= R$ 10 é tratado como ROLO e convertido em etiquetas.
+ETIQUETAS_COD = {2263: "ETIQUETA BRANCA 10X8 CM"}
+RE_ETIQUETA = r"PAPEL COUCH|ETIQUETA BRANCA"
+ETQ_POR_ROLO = 400
+
+
+def saldo_etiquetas(ga):
+    try:
+        arq = ga.ARQ_MOVIMENTACAO
+        m = pd.read_excel(arq, usecols=["CODIGO_PRODUTO", "DESCRICAO_PRODUTO", "EMPRESA_ESTOQUE", "TIPO_MOVIMENTO",
+                                        "NATUREZA_TIPO_USO", "QUANTIDADE", "CUSTO_UNITARIO", "DATA_MOVIMENTO",
+                                        "NUMERO_NF", "NOME_PARCEIRO"])
+        m = m[~m["EMPRESA_ESTOQUE"].astype(str).str.upper().str.contains("LINCKY")]
+        m["cod"] = pd.to_numeric(m["CODIGO_PRODUTO"], errors="coerce")
+        m = m[m["cod"].isin(list(ETIQUETAS_COD)) | m["DESCRICAO_PRODUTO"].astype(str).str.upper().str.contains(RE_ETIQUETA, regex=True)
+              & ~m["DESCRICAO_PRODUTO"].astype(str).str.upper().str.contains("IMPRESSORA|TONER|QUE ETIQUETA", regex=True)].copy()
+        per = []
+        if len(m):
+            dt = pd.to_datetime(m["DATA_MOVIMENTO"], errors="coerce")
+            per = [f"{dt.min():%d/%m/%Y}", f"{dt.max():%d/%m/%Y}"]
+        cu = pd.to_numeric(m["CUSTO_UNITARIO"], errors="coerce")
+        q = pd.to_numeric(m["QUANTIDADE"], errors="coerce").fillna(0)
+        fat = cu.ge(10).map({True: ETQ_POR_ROLO, False: 1})          # rolo -> etiquetas
+        m["et"] = q * fat
+        m["cu_et"] = (cu / fat).where(cu > 0)
+        nat = m["NATUREZA_TIPO_USO"].astype(str).str.upper()
+        tp = m["TIPO_MOVIMENTO"].astype(str).str.upper()
+        impl = nat.str.contains("IMPLANTA")
+        ent = tp.eq("ENTRADA") & ~impl
+        sai = tp.str.startswith("SA")
+        m["mov"] = m["et"].where(impl | ent, 0) - m["et"].where(sai, 0)
+        m["sai"] = m["et"].where(sai, 0)
+        m["dt"] = pd.to_datetime(m["DATA_MOVIMENTO"], errors="coerce")
+        out = []
+        cods = sorted(set(m["cod"].dropna().astype(int)) | set(ETIQUETAS_COD))
+        for c in cods:
+            g = m[m["cod"] == c]
+            d = str(g["DESCRICAO_PRODUTO"].iloc[-1]).split("|")[0].strip() if len(g) else ETIQUETAS_COD.get(c, "")
+            comp = g[ent.reindex(g.index, fill_value=False) & nat.reindex(g.index).str.startswith("COMPRA") & g["cu_et"].notna()].sort_values("dt")
+            o = {"cod": int(c), "d": d, "mov": int(len(g)), "s": round(float(g["mov"].sum()), 0), "c": round(float(g["sai"].sum()), 0),
+                 "ult": "" if g.empty or pd.isna(g["dt"].max()) else f"{g['dt'].max():%d/%m/%Y}"}
+            if len(comp):
+                r = comp.iloc[-1]
+                o.update(cu=round(float(r["cu_et"]), 4), cud=f"{r['dt']:%d/%m/%Y}", nf=_nf_txt(r["NUMERO_NF"]),
+                         forn=str(r["NOME_PARCEIRO"]).strip(), ce=round(float(comp["et"].sum()), 0))
+            out.append(o)
+        print(f"  Etiquetas: {len(out)} itens (saldo e consumo em etiquetas; rolo = {ETQ_POR_ROLO})")
+        return out, per
+    except Exception as ex:
+        print(f"  Aviso: etiquetas não calculadas ({type(ex).__name__}: {ex})")
+        return [{"cod": c, "d": d, "mov": 0} for c, d in ETIQUETAS_COD.items()], []
+
+
 def carregar_estoque():
     """Saldo próprio do IAB calculado pelas regras do gerar_analise.py (Análise de Estoque)."""
     try:
@@ -277,6 +386,18 @@ def carregar_estoque():
         print(f"  Uso/consumo da empresa fora do estoque: {df.loc[fora, 'codigo'].nunique()} códigos ({int(fora.sum())} movimentos)")
         df = df[~fora].copy()
     analise = analise_estoque(ga, df, cad)          # mesma avaliação da aba Estoque Geral (alertas, conciliação)
+    emb, emb_compras, emb_per = saldo_embalagens(ga, df, cad)
+    etq, etq_per = saldo_etiquetas(ga)
+    # (19/11/2026) saldo da Verbum (Filial + Matriz) por código, para a página Produção Verbum
+    try:
+        vbx = df[df["empresa_nome"].astype(str).str.startswith("Verbum")]
+        impv = vbx["natureza"].str.upper().eq(ga.NATUREZA_IMPLANTACAO)
+        entv = vbx["tipo"].eq("ENTRADA") & ~impv
+        saiv = vbx["tipo"].astype(str).str.startswith("SA")
+        saldo_vb = (vbx["qtd"].where(impv, 0) + vbx["qtd"].where(entv, 0) - vbx["qtd"].where(saiv, 0)).groupby(vbx["codigo"]).sum()
+        saldo_vb = {int(k): float(v) for k, v in saldo_vb.items()}
+    except Exception as ex:
+        print(f"  Aviso: saldo da Verbum por código não calculado ({ex})"); saldo_vb = {}              # (11/11/2026) caixas, fitas, saquinhos - para o quadro de insumos
     df = ga.aplicar_coala(df, cad)                  # brindes Coala saem do IAB
     iab = df[df["empresa_nome"].eq("IAB")].copy()     # já vem sem a baixa dupla de terceiros (ga.anular_duplicidade_terceiros)
     impl = iab["natureza"].str.upper().eq(ga.NATUREZA_IMPLANTACAO)
@@ -296,9 +417,13 @@ def carregar_estoque():
                                | iab["parceiro"].fillna("").astype(str).str.upper().str.contains(RE_DESCARTE_PARCEIRO))][["codigo", "data", "qtd"]]
     mov = iab[["codigo", "data", "tipo", "natureza", "parceiro", "cidade", "uf", "qtd", "MOV"]].copy()
     mov["nf"] = iab["nf"].map(_nf_txt)
+    # saídas da Verbum para os clientes dela (escolas): usadas para casar com a consignação IAB → Verbum (06/11/2026)
+    vbm = df[df["empresa_nome"].astype(str).str.startswith("Verbum") & df["tipo"].astype(str).str.upper().str.startswith("SA")
+             & ~df["parceiro"].fillna("").astype(str).str.upper().str.contains("ALFA E BETO|VERBUM EDUCA", regex=True)]
+    mov_vb = vbm[["codigo", "data", "natureza", "parceiro", "cidade", "uf", "qtd"]].copy()
     ult_compra = iab[ent & iab["natureza"].str.upper().str.startswith("COMPRA")].groupby("codigo")["data"].max().to_dict()
-    return {"saldo": saldo, "consig": consig, "consig_info": consig_info, "desc": desc, "ult": ult,
-            "descartes_erp": descartes_erp, "mov": mov, "ult_compra": ult_compra,
+    return {"saldo": saldo, "consig": consig, "consig_info": consig_info, "desc": desc, "ult": ult, "emb": emb, "emb_compras": emb_compras, "emb_per": emb_per, "etq": etq, "etq_per": etq_per, "saldo_vb": saldo_vb,
+            "descartes_erp": descartes_erp, "mov": mov, "mov_vb": mov_vb, "ult_compra": ult_compra,
             "grupo": dict(zip(cad["Codigo"].astype(int), cad["Grupo"].fillna("").astype(str))),
             "programas": dict(zip(cad["Codigo"].astype(int), cad["Programas"].fillna("").astype(str))),
             "custo": ref.groupby("codigo")["custo_unit"].last(), "custo_dt": ref.groupby("codigo")["data"].last(),
@@ -524,7 +649,7 @@ def montar(regs, est):
               + ", ".join(f"{a}→{b} ({int(q):,} un.)".replace(",", ".") for (a, b), q in sorted(trocas.items())))
     projetar_sem_itens(props, linhas, item_id, est)
     adicionar_consignacao_verbum(props, linhas, item_id, est)
-    pos = movimento_pos_corte(props, itens, item_id, est)
+    pos = movimento_pos_corte(props, itens, item_id, est, linhas)
     fora = [l for l in linhas if itens[l[1]]["c"] in ITENS_FORA_DEMANDA]
     if fora:
         linhas[:] = [l for l in linhas if itens[l[1]]["c"] not in ITENS_FORA_DEMANDA]
@@ -581,6 +706,16 @@ def mesma_cidade(chave, chaves):
     import difflib
     m = difflib.get_close_matches(chave, list(chaves), n=1, cutoff=0.9)
     return m[0] if m else None
+
+
+RE_ESCOLA = r"col[eé]gio|escola|educacional|centro de educa|instituto educa|creche|ensino|pedag"
+
+
+def eh_escola(nome, cidade=""):
+    """Escola / colégio particular (cliente da Verbum). Escolas municipais/estaduais e órgãos públicos não entram."""
+    n = norm(nome)
+    return (bool(re.search(norm(RE_ESCOLA), n)) and not re.search(r"municipa|estadua|federa|prefeit|secretaria", n)
+            and not eh_orgao_municipal(nome, cidade))
 
 
 def eh_orgao_municipal(nome, cidade):
@@ -641,16 +776,14 @@ def _do_ciclo(mov):
     return mov["nf"].isin(NOTAS_DO_CICLO) if "nf" in mov else pd.Series(False, index=mov.index)
 
 
-def movimento_pos_corte(props, itens, item_id, est):
+def movimento_pos_corte(props, itens, item_id, est, linhas=None):
     """Depois do corte: recebimentos por gráfica (notas de compra) e saídas para os clientes das propostas."""
     corte = pd.Timestamp(CORTE)
     vazio = {"corte": f"{corte:%d/%m/%Y}", "graficas": [], "saidas": [], "rec": {}, "sp": {}, "net": {}, "sem_proposta": 0}
     mov = est.get("mov")
     if mov is None:
         return vazio
-    m = mov[(mov["data"] >= corte) | _do_ciclo(mov)]
-    if _do_ciclo(mov).any():
-        print(f"  Notas antes do corte que contam no ciclo novo: {', '.join(sorted(NOTAS_DO_CICLO))}")
+    m = mov[mov["data"] >= corte]
     nat = m["natureza"].astype(str).str.upper()
     # só as compras dos itens da estimativa (e de versões com a mesma descrição): livros, não brindes/embalagens
     chaves = {chave_versao(it["c"], est) for it in itens}
@@ -664,38 +797,106 @@ def movimento_pos_corte(props, itens, item_id, est):
         recd.setdefault(int(cod), {})[gi[g]] = float(q)
         item_id(int(cod), str(est["desc"].get(cod, "")), "")
     casar = Casador(props)
-    sai = m[(m["tipo"].str.startswith("SA") & (nat.isin(NAT_SAIDA_CLIENTE) | nat.eq(NATUREZA_CONSIG_SAIDA.upper())))
+    # consignação IAB → Verbum NÃO entra direto: só abate quando a Verbum fatura o mesmo item para a escola (abaixo)
+    sai = m[(m["tipo"].str.startswith("SA") & nat.isin(NAT_SAIDA_CLIENTE))
             | (m["tipo"].eq("ENTRADA") & nat.str.contains(RE_DEVOLUCAO_CLIENTE))]
     saidas, sp, sem = {}, {}, 0.0
+    # (06/11/2026) Enviou outra versão do mesmo livro (ex.: pediu 1973, saiu 1392): abate a linha da proposta mesmo assim,
+    # porque a proposta pode ser ajustada no envio. Vale quando a proposta não tem o código exato que saiu.
+    na_prop, por_versao = set(), {}
+    for l in (linhas or []):
+        na_prop.add((l[0], l[1]))
+        por_versao.setdefault((l[0], chave_versao(itens[l[1]]["c"], est)), l[1])
+    trocadas = 0.0
+    vb = casar.vb   # "proposta" da consignação Verbum
+    # colunas nomeadas antes do saldo: escolas via Verbum e clientes com proposta "Material enviado" (fora da demanda)
+    esc_nomes, esc = [], {}
+    def _col(nome, cod, q):
+        if nome not in esc_nomes: esc_nomes.append(nome)
+        j = esc_nomes.index(nome)
+        esc.setdefault(cod, {})[j] = esc.get(cod, {}).get(j, 0) + q
+    # (10/11/2026) proposta "Material enviado" fora da demanda (ex.: Pinhal, São Roque): o envio depois do corte
+    # aparece numa coluna com o nome do cliente, em vez de ficar escondido em "± Outras mov."
+    env_idx = [i for i, p in enumerate(props) if not p.get("u") and p.get("st") == 8]
+    casar_env = Casador([dict(props[i], u=True) for i in env_idx]) if env_idx else None
+    enviados = 0.0
     for r in sai.itertuples():
         pi = casar(r.parceiro, r.cidade, r.uf)
         q = float(r.qtd) * (1 if str(r.tipo).startswith("SA") else -1)
         if pi is None:
+            k = casar_env(r.parceiro, r.cidade, r.uf) if casar_env else None
+            if k is not None:
+                p_ = props[env_idx[k]]
+                _col(f"{p_['cli']} / {p_['uf']} (material enviado)", int(r.codigo), q)
+                sp[int(r.codigo)] = sp.get(int(r.codigo), 0) + q
+                enviados += q
+                continue
             sem += q
             continue
         cod = int(r.codigo)
         ii = item_id(cod, str(est["desc"].get(cod, "")), "")
+        if (pi, ii) not in na_prop:
+            alt = por_versao.get((pi, chave_versao(cod, est)))
+            if alt is not None:
+                ii = alt; trocadas += q
         saidas[(pi, ii)] = saidas.get((pi, ii), 0) + q
         sp[cod] = sp.get(cod, 0) + q
+    # (06/11/2026) Consignação IAB → Verbum depois do corte casada com a NF da Verbum para a escola (mesmo item):
+    # a quantidade casada abate a demanda da Verbum e aparece numa coluna com o nome da escola, antes do saldo.
+    escolas, cons_sem = 0.0, 0.0
+    cons = m[m["tipo"].str.startswith("SA") & nat.eq(NATUREZA_CONSIG_SAIDA.upper())]
+    mvb = est.get("mov_vb")
+    if len(cons):
+        fila = {}
+        for r in cons.sort_values("data").itertuples():
+            fila.setdefault(int(r.codigo), []).append([r.data, float(r.qtd)])
+        if mvb is not None and len(mvb) and vb is not None:
+            nvb = mvb["natureza"].astype(str).str.upper()
+            vs = mvb[(mvb["data"] >= corte) & nvb.isin(NAT_SAIDA_CLIENTE)].sort_values("data")
+            for r in vs.itertuples():
+                cod = int(r.codigo); falta = float(r.qtd)
+                for e in fila.get(cod, []):
+                    if falta <= 0: break
+                    if e[0] > r.data or e[1] <= 0: continue
+                    q = min(falta, e[1]); e[1] -= q; falta -= q
+                    _col(str(r.parceiro or "").strip().title() + " (via Verbum)", cod, q)
+                    ii = item_id(cod, str(est["desc"].get(cod, "")), "")
+                    if (vb, ii) not in na_prop:
+                        alt = por_versao.get((vb, chave_versao(cod, est)))
+                        if alt is not None: ii = alt
+                    saidas[(vb, ii)] = saidas.get((vb, ii), 0) + q
+                    sp[cod] = sp.get(cod, 0) + q
+                    escolas += q
+        cons_sem = sum(e[1] for l in fila.values() for e in l)
     net = m.groupby("codigo")["MOV"].sum()
+    # (06/11/2026) Ajustes de estoque depois do corte (entrada, saída/descarte, com terceiros) entram no SALDO DO CORTE,
+    # como se fossem implantação: não aparecem em "± Outras mov." e não se misturam com clientes e fornecedores.
+    aj = m[nat.str.contains("AJUSTE")].groupby("codigo")["MOV"].sum()
     n = lambda v: f"{int(v):,}".replace(",", ".")
     print(f"  Corte {corte:%d/%m/%Y}: {len(graficas)} gráficas com recebimento, {n(rec['qtd'].sum())} un. recebidas, "
           f"{n(sum(sp.values()))} un. saíram para clientes das propostas"
-          + (f", {n(sem)} un. para clientes sem proposta" if sem else ""))
+          + (f", {n(sem)} un. para clientes sem proposta" if sem else "")
+          + (f", {n(trocadas)} un. enviadas em outra versão abatidas da proposta" if trocadas else "")
+          + (f", {n(enviados)} un. para clientes com proposta Material enviado (coluna própria)" if enviados else "")
+          + (f", {n(escolas)} un. consignadas à Verbum e já faturadas para escolas" if escolas else "")
+          + (f", {n(cons_sem)} un. consignadas à Verbum ainda sem NF da Verbum para escola" if cons_sem else ""))
     return {"corte": f"{corte:%d/%m/%Y}", "graficas": graficas, "saidas": [[pi, ii, q] for (pi, ii), q in saidas.items() if q],
-            "rec": recd, "sp": sp, "net": {int(k): float(v) for k, v in net.items()}, "sem_proposta": sem}
+            "rec": recd, "sp": sp, "net": {int(k): float(v) for k, v in net.items()}, "sem_proposta": sem,
+            "esc_nomes": esc_nomes, "esc": esc, "aj": {int(k): float(v) for k, v in aj.items()}}
 
 
 def completar_saldos(itens, pos):
-    """Saldo no corte + recebido das gráficas − saiu para as propostas ± outras movimentações = saldo atual."""
+    """Saldo no corte (+ ajustes de estoque feitos depois dele) + recebido das gráficas − saiu para as propostas
+    ± outras movimentações = saldo atual."""
     for it in itens:
         c = it["c"]
-        net = pos["net"].get(c, 0.0)
+        net = pos["net"].get(c, 0.0) - pos.get("aj", {}).get(c, 0.0)   # sem os ajustes: eles ficam no saldo do corte
         rg = pos["rec"].get(c, {})
         sp = pos["sp"].get(c, 0.0)
         it["sc"] = it["s"] - net
         it["rg"] = [[g, q] for g, q in rg.items()]
         it["sp"] = sp
+        it["ve"] = [[j, q] for j, q in pos.get("esc", {}).get(c, {}).items()]
         it["om"] = net - sum(rg.values()) + sp
 
 
@@ -912,6 +1113,12 @@ OPS_RESUMO = {
     # de terceiros (ajuste de estoque), não é envio nem venda ao cliente. No saldo do IAB ela é só uma saída normal.
 }
 CNPJ_IAB = "08.458.084/0001-13"
+# Notas que NÃO entram no resumo de vendas (exceção combinada com Anderson): (nº NF, trecho do destinatário) -> motivo
+NOTAS_IGNORAR_VENDAS = {
+    ("19098", "AMARANTE"): "devolução de Amarante (15/10/2026) - a troca já foi enviada na NF 18711 de 23/06/2026",
+    ("19099", "AMARANTE"): "devolução de Amarante (15/10/2026) - a troca já foi enviada na NF 18711 de 23/06/2026",
+    ("19101", "AMARANTE"): "devolução de Amarante (15/10/2026) - a troca já foi enviada na NF 18711 de 23/06/2026",
+}
 # Clientes que recebem como "Simples remessa (outras)" mas é VENDA (combinado em 22/10/2026):
 # Pilar/AL - o material é doado e outra empresa paga por recibo (outro documento fiscal).
 SIMPLES_REMESSA_E_VENDA = {("pilar", "AL")}
@@ -944,9 +1151,14 @@ def resumo_vendas(props):
     f["dt"] = pd.to_datetime(f["DT_EMISSAO_NF"], dayfirst=True, errors="coerce")
     f["valor"] = pd.to_numeric(f["VALOR_TOTAL_NOTA"], errors="coerce").fillna(0)
     casar = Casador(props, so_usadas=False)
-    clientes, idx, notas = [], {}, []
+    clientes, idx, notas, excl = [], {}, [], []
     for r in f.itertuples():
         nome = str(r.CLIENTE_DESTINATARIO or "").strip()
+        ign = next((m for (nf, t), m in NOTAS_IGNORAR_VENDAS.items() if _nf_txt(r.NRO_NFE) == nf and t in norm(nome).upper()), None)
+        if ign:
+            excl.append({"nf": _nf_txt(r.NRO_NFE), "cli": nome, "dt": "" if pd.isna(r.dt) else f"{r.dt:%d/%m/%Y}",
+                         "v": round(float(r.valor), 2), "motivo": ign})
+            continue
         cid, uf = str(r.CIDADE_DESTINO or "").strip(), str(r.UF_DESTINO or "").strip().upper()
         orgao = eh_orgao_municipal(nome, cid)
         # órgãos municipais (prefeitura, secretaria, fundo...) do mesmo município = um cliente só
@@ -967,12 +1179,180 @@ def resumo_vendas(props):
                                                        or any(norm(t) in norm(nome) and uf == u for t, u in CLIENTES_SR_VENDA)):
             col = "v"
         nfx = _nf_txt(r.NRO_NFE)
-        notas.append([idx[k], 0 if pd.isna(r.dt) else int(r.dt.timestamp()) + 43200, col, round(sinal * float(r.valor), 2),
-                      nfx, 1 if nfx in NOTAS_DO_CICLO else 0])
+        # (23/11/2026) o relatório já traz devolução/retorno com valor NEGATIVO: o sinal vale sobre o valor absoluto
+        # (antes, sinal × valor negativo virava positivo e a devolução SOMAVA na venda/bonificação)
+        notas.append([idx[k], 0 if pd.isna(r.dt) else int(r.dt.timestamp()) + 43200, col, round(sinal * abs(float(r.valor)), 2),
+                      nfx, 1 if nfx in NOTAS_DO_CICLO else 0, 1 if ("DEVOLU" in r.op or "RETORNO" in r.op) else 0])
     per = [f"{f['dt'].min():%d/%m/%Y}", f"{f['dt'].max():%d/%m/%Y}"] if len(f) else ["", ""]
     print(f"  Resumo de vendas: {len(notas)} notas de {len(clientes)} clientes ({per[0]} a {per[1]}), "
           f"{sum(1 for c in clientes if c['pi'] >= 0)} ligados a uma proposta")
-    return {"clientes": clientes, "notas": notas, "periodo": per}
+    if excl:
+        print(f"  Resumo de vendas: {len(excl)} notas fora por exceção ({', '.join(e['nf'] for e in excl)})")
+    return {"clientes": clientes, "notas": notas, "periodo": per, "excl": excl}
+
+
+ARQ_INSUMOS = PASTA / "Base Insumos - Itens por Caixa.xlsx"
+
+
+def carregar_insumos():
+    """(11/11/2026) Parâmetros de embalagem (itens por caixa, modelo, fita, etiquetas) levantados dos romaneios
+    de 2025/2026 - arquivo 'Base Insumos - Itens por Caixa.xlsx' (as células amarelas podem ser ajustadas)."""
+    if not ARQ_INSUMOS.exists():
+        print(f"  Aviso: base de insumos não encontrada ({ARQ_INSUMOS.name}) - quadro de insumos fica vazio")
+        return None
+    cache = PASTA / "insumos_base.json"
+    try:
+        import openpyxl, shutil, tempfile
+        # copia antes de ler: funciona mesmo com a planilha aberta no Excel / sincronizando no OneDrive
+        tmp = Path(tempfile.gettempdir()) / "base_insumos_tmp.xlsx"
+        shutil.copyfile(ARQ_INSUMOS, tmp)
+        wb = openpyxl.load_workbook(tmp, data_only=True)
+        num = lambda v: float(v) if isinstance(v, (int, float)) else None
+        mods = {}
+        for r in wb["Modelos de Caixa"].iter_rows(min_row=2, values_only=True):
+            if r[0] is None: continue
+            mods[str(r[0]).strip()] = {"emp": r[1], "cod": r[2], "m": r[3], "f": num(r[7]) or 0, "e": num(r[8]) or 1,
+                                       "a": num(r[4]), "l": num(r[5]), "c": num(r[6])}   # medidas em cm (A x L x C)
+        itens = {}
+        for r in wb["Itens por Caixa"].iter_rows(min_row=2, values_only=True):
+            if r[0] is None or not num(r[5]): continue
+            itens[str(int(r[0]))] = {"k": str(r[4] or "").strip(), "cap": num(r[5]), "pk": num(r[9]), "kgu": num(r[10]), "cx": num(r[11]) or 0}
+        kits = {}
+        for r in wb["Kits por Caixa"].iter_rows(min_row=2, values_only=True):
+            if r[0] is None: continue
+            kits[str(r[0]).strip()] = {"k": str(r[2] or "").strip(), "n": num(r[4]), "pk": num(r[6]), "e": num(r[10]) if len(r) > 10 else None}
+        print(f"  Base de insumos: {len(itens)} itens, {len(kits)} kits, {len(mods)} modelos de caixa")
+        res = {"mods": mods, "itens": itens, "kits": kits}
+        try: cache.write_text(json.dumps(res, ensure_ascii=False), encoding="utf-8")
+        except Exception: pass
+        return res
+    except Exception as e:
+        print(f"  Aviso: não foi possível ler a base de insumos ({type(e).__name__}: {e})")
+        if cache.exists():
+            print("  Usando a última base de insumos lida com sucesso (insumos_base.json)")
+            return json.loads(cache.read_text(encoding="utf-8"))
+        return None
+
+
+def carregar_ecommerce_pf():
+    """(11/11/2026) Envios para pessoa física com até 2 volumes (saquinho de e-commerce), gravado pelo gerar_dashboard.py
+    em ecommerce_pf.json. Projeção do ciclo = volumes do Ano Ref anterior completo (out-set)."""
+    arq = PASTA / "ecommerce_pf.json"
+    if not arq.exists():
+        return None
+    try:
+        j = json.loads(arq.read_text(encoding="utf-8"))
+        hoje = datetime.now()
+        atual = hoje.year + 1 if hoje.month >= 10 else hoje.year
+        out = {}
+        for emp, anos in (j.get("por_emp") or {}).items():
+            ref = anos.get(str(atual - 1), {"envios": 0, "volumes": 0})
+            cur = anos.get(str(atual), {"envios": 0, "volumes": 0})
+            out["Verbum" if emp.upper().startswith("VERBUM") else "IAB"] = {
+                "ref": str(atual - 1), "envios": ref["envios"], "volumes": ref["volumes"],
+                "atual": str(atual), "envios_at": cur["envios"], "volumes_at": cur["volumes"]}
+        print("  E-commerce PF (até 2 volumes): " + " | ".join(f"{k} {v['ref']}: {v['volumes']} saquinhos" for k, v in out.items()))
+        return {"gerado": j.get("gerado", ""), "por_emp": out}
+    except Exception as e:
+        print(f"  Aviso: não foi possível ler ecommerce_pf.json ({e})")
+        return None
+
+
+def carregar_demanda_verbum(est):
+    """(19/11/2026) Previsão de demanda da Verbum (planilha 'Demanda Verbum *.xlsx' na pasta estoque). A Verbum não usa as
+    propostas do CRM: a produção é a coluna 'Sugestão de Produção' de cada aba (Resumo fica de fora)."""
+    arqs = sorted(PASTA.glob("Demanda*Verbum*.xlsx"), key=lambda p: p.stat().st_mtime)
+    if not arqs:
+        return None
+    arq = arqs[-1]
+    try:
+        import openpyxl, shutil, tempfile
+        tmp = Path(tempfile.gettempdir()) / "demanda_verbum_tmp.xlsx"
+        shutil.copyfile(arq, tmp)
+        wb = openpyxl.load_workbook(tmp, data_only=True)
+        num = lambda v: float(v) if isinstance(v, (int, float)) else None
+        sv = est.get("saldo_vb", {}) or {}
+        itens, notas = [], []
+        for ws in wb:
+            linhas = list(ws.iter_rows(values_only=True))
+            if not linhas:
+                continue
+            if ws.title.strip().lower() == "resumo":
+                notas = [str(r[0]).strip() for r in linhas if r and isinstance(r[0], str) and (r[0].startswith("•") or r[0].startswith("Arquivo"))]
+                continue
+            cab = [str(c or "").strip().lower() for c in linhas[0]]
+            def col(*nomes):
+                for n in nomes:
+                    for i, c in enumerate(cab):
+                        if c.startswith(n):
+                            return i
+                return None
+            ic, inn, icat, ifm, inec, iest, isug, ireg = (col("código", "codigo"), col("nome"), col("categoria"), col("formato"),
+                                                        col("necessidade"), col("estoque"), col("sugestão", "sugestao"), col("regra"))
+            if ic is None or isug is None:
+                continue
+            for r in linhas[1:]:
+                g = lambda i: r[i] if i is not None and i < len(r) else None
+                try:
+                    cod = int(str(g(ic)).strip())
+                except Exception:
+                    continue
+                itens.append({"aba": ws.title, "c": cod, "n": str(g(inn) or "").strip(), "cat": str(g(icat) or "").strip(),
+                              "fmt": str(g(ifm) or "").strip(), "nec": num(g(inec)) or 0, "sug": num(g(isug)) or 0,
+                              "ep": num(g(iest)), "reg": str(g(ireg) or "").strip(), "s": sv.get(cod)})
+        print(f"  Demanda Verbum: {len(itens)} itens ({arq.name}) | produção sugerida {int(sum(i['sug'] for i in itens)):,} un.".replace(",", "."))
+        return {"arq": arq.name, "dt": datetime.fromtimestamp(arq.stat().st_mtime).strftime("%d/%m/%Y %H:%M"), "itens": itens, "notas": notas}
+    except Exception as e:
+        print(f"  Aviso: não foi possível ler a demanda da Verbum ({type(e).__name__}: {e})")
+        return None
+
+
+# (19/11/2026) Caixas da produção Verbum: os códigos da Verbum não aparecem nos romaneios, então cada item usa a
+# quantidade por caixa dos MESMOS títulos já enviados pelo IAB (códigos de referência abaixo, lidos da base de insumos).
+# Livro do professor (LP) usa o parâmetro do livro do aluno. Caixa IAB 220 → Verbum 220 (2025); Germinar → Verbum 515 (2024).
+VB_CX_REGRAS = [
+    # (aba regex, nome regex, códigos de referência na base, descrição da origem)
+    (r"Enraizar - LPM", r"", [1863, 1865, 1884, 1886, 1905, 1907, 1926], "Enraizar LPM já enviado (vol. III/IV)"),
+    (r"Enraizar - HGC", r"", [1864, 1866, 1885, 1887, 1906], "Enraizar HGC já enviado (vol. III/IV)"),
+    (r"Germinar", r"", [2031, 2032, 2035, 2036], "Germinar já enviado (Pré I/II vol. III/IV)"),
+    (r"Plenitude", r"", [2006], "Plenitude 2º ano vol. II"),
+    (r"Movimente", r"", [2011], "Movimente 3º ano vol. II"),
+    (r"Consci", r"", [1864, 1866, 1885, 1887, 1906], "estimado: sem envio próprio, usa o Enraizar HGC (mesmo formato)"),
+    (r"Grafismo", r"Introdu", [1380], "Grafismo e Caligrafia Introdução (IAB)"),
+    (r"Grafismo", r"Cursiva", [1381], "Grafismo e Caligrafia Letras Cursivas (IAB)"),
+    (r"Grafismo", r"Forma", [1379], "Grafismo e Caligrafia Letras de Forma (IAB)"),
+    (r"Grafismo", r"Mini ?livro", [2059], "Minilivros (IAB)"),
+    (r"Kits", r"EVA \(54", [25], "Letras do Alfabeto em EVA (IAB)"),
+    (r"Kits", r"Cartaz", [23], "Cartaz do Alfabeto (IAB)"),
+    (r"Kits", r"Cartela", [24], "Cartelas de Letras do Alfabeto (IAB)"),
+]
+VB_CX_MODELO = {"236": "2025", "547": "2026", "562": "2027", "2023": "2024", "240": "2024", "2022": "2024"}
+
+
+def caixas_demanda_verbum(dv, ins):
+    """Anexa a cada item da demanda Verbum o parâmetro de caixa {k, cap, kgu, ref}. Sem regra → sem parâmetro (fica de fora)."""
+    if not dv or not ins:
+        return dv
+    from statistics import median
+    base = ins.get("itens", {})
+    for x in dv["itens"]:
+        x["cx"] = None
+        for ra, rn, refs, orig in VB_CX_REGRAS:
+            if re.search(ra, x["aba"], re.I) and (not rn or re.search(rn, x["n"], re.I)):
+                ps = [base[str(c)] for c in refs if str(c) in base and base[str(c)].get("cap")]
+                if not ps:
+                    break
+                ks = [p["k"] for p in ps]
+                k = max(set(ks), key=ks.count)
+                kgu = [p["kgu"] for p in ps if p.get("kgu")]
+                caps = sorted(p["cap"] for p in ps)
+                x["cx"] = {"k": VB_CX_MODELO.get(k, k if k.startswith("20") else "VB:" + k), "cap": caps[len(caps) // 2],
+                           "kgu": median(kgu) if kgu else 0, "ref": orig + " · cód. " + ", ".join(str(c) for c in refs)}
+                break
+    sem = [x for x in dv["itens"] if not x["cx"] and x["nec"] > 0]
+    if sem:
+        print(f"  Demanda Verbum: {len(sem)} itens sem parâmetro de caixa: " + ", ".join(f"{x['c']} {x['n']}" for x in sem))
+    return dv
 
 
 def main():
@@ -983,12 +1363,21 @@ def main():
     est = carregar_estoque()
     zerar_negativos(est)
     descarte = aplicar_descarte(est)
+    for cod, motivo in ITENS_SALDO_ZERO.items():   # tratado como descarte previsto (sai do saldo até a baixa no ERP)
+        q = max(0.0, float(est["saldo"].get(cod, 0)))
+        est["saldo"].loc[cod] = float(est["saldo"].get(cod, 0)) - q
+        if q > 0:
+            descarte["por"][int(cod)] = descarte["por"].get(int(cod), 0) + q
+            descarte["un"] += q; descarte["itens"] = len(descarte["por"])
+        print(f"  Saldo zerado na estimativa: cód. {cod} ({str(est['desc'].get(cod, '')).strip()}) - "
+              f"{int(q):,} un. fora do saldo - {motivo}".replace(",", "."))
     est["dsc_por"] = descarte["por"]
     props, itens, linhas, pos = montar(regs, est)
     vendas = resumo_vendas(props)
     sem_erp = [i["c"] for i in itens if not i["erp"]]
     if sem_erp:
         print(f"  Aviso: {len(sem_erp)} códigos das propostas não existem na movimentação: {sem_erp[:15]}")
+    ins = carregar_insumos()
     dados = {
         "versao": VERSAO_MODELO,
         "gerado": datetime.now().strftime("%d/%m/%Y %H:%M"),
@@ -996,8 +1385,17 @@ def main():
         "pcts": pcts_crm(),
         "descarte": {k: v for k, v in descarte.items() if k != "por"},
         "corte": pos["corte"], "graficas": pos["graficas"], "saidas": pos["saidas"], "sem_proposta": pos["sem_proposta"],
+        "escolas_vb": pos.get("esc_nomes", []),
         "vendas": vendas,
         "props": props, "itens": itens, "linhas": linhas,
+        "insumos": ins,
+        "ecommerce_pf": carregar_ecommerce_pf(),
+        "embalagens": est.get("emb", []),
+        "embalagens_compras": est.get("emb_compras", []),
+        "embalagens_periodo": est.get("emb_per", []),
+        "etiquetas": est.get("etq", [{"cod": c, "d": d, "mov": 0} for c, d in ETIQUETAS_COD.items()]),
+        "etiquetas_periodo": est.get("etq_per", []),
+        "demanda_verbum": caixas_demanda_verbum(carregar_demanda_verbum(est), ins),
     }
     if not ARQ_MODELO.exists():
         sys.exit(f"ERRO: modelo não encontrado: {ARQ_MODELO}")
